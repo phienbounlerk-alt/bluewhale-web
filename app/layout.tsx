@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import Navbar from '@/components/layout/Navbar'
+import BottomNav from '@/components/layout/BottomNav'
 import { Noto_Sans_Lao } from 'next/font/google'
 
 const notoSansLao = Noto_Sans_Lao({ subsets: ['lao'], weight: ['400', '500', '700', '900'], display: 'swap' })
@@ -15,8 +16,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="lo">
       <body className={notoSansLao.className}>
         <Navbar />
-        <main className="min-h-screen">{children}</main>
-        <footer className="bg-[#1247D8] text-white mt-16 py-10">
+        <main className="min-h-screen pb-20 md:pb-0">{children}</main>
+        <BottomNav />
+        <footer className="bg-[#1247D8] text-white mt-8 py-10 mb-16 md:mb-0">
           <div className="max-w-7xl mx-auto px-4 text-center">
             <div className="text-2xl mb-2">🐋 BlueWhale</div>
             <p className="text-white/70 text-sm">ຕະຫຼາດດິຈິຕອລ ອັນດັບ 1 ລາວ</p>
