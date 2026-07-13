@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Navbar from '@/components/layout/Navbar'
 import BottomNav from '@/components/layout/BottomNav'
+import { AuthProvider } from '@/lib/auth-context'
 import { Noto_Sans_Lao } from 'next/font/google'
 
 const notoSansLao = Noto_Sans_Lao({ subsets: ['lao'], weight: ['400', '500', '700', '900'], display: 'swap' })
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="lo">
       <body className={notoSansLao.className}>
+        <AuthProvider>
         <Navbar />
         <main className="min-h-screen pb-20 md:pb-0">{children}</main>
         <BottomNav />
@@ -29,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
         </footer>
+        </AuthProvider>
       </body>
     </html>
   )

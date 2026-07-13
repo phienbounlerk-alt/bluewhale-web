@@ -2,11 +2,13 @@
 import Link from 'next/link'
 import { ShoppingCart, Search, User, Menu, X } from 'lucide-react'
 import { useCart } from '@/store/cart'
+import { useAuth } from '@/lib/auth-context'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function Navbar() {
   const count = useCart(s => s.count())
+  const { user, signOut } = useAuth()
   const [open, setOpen] = useState(false)
   const [q, setQ] = useState('')
   const router = useRouter()
@@ -47,9 +49,19 @@ export default function Navbar() {
               <span className="absolute -top-1 -right-1 bg-[#EE4D2D] text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">{count}</span>
             )}
           </Link>
-          <Link href="/login" className="p-2 hidden sm:block">
-            <User size={22} className="text-white" />
-          </Link>
+          {user ? (
+            <Link href="/profile" className="p-2 hidden sm:block">
+              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                <span className="text-white text-xs font-black">
+                  {(user.user_metadata?.full_name || user.email || 'U')[0].toUpperCase()}
+                </span>
+              </div>
+            </Link>
+          ) : (
+            <Link href="/login" className="p-2 hidden sm:block">
+              <User size={22} className="text-white" />
+            </Link>
+          )}
           <button onClick={() => setOpen(!open)} className="p-2 sm:hidden text-white">
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
