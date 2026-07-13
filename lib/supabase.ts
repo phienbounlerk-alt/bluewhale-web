@@ -17,6 +17,8 @@ export type Product = {
   stock: number
   rating?: number
   review_count?: number
+  is_cod?: boolean
+  is_free_shipping?: boolean
 }
 
 export type CartItem = {

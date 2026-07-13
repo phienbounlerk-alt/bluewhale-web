@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ShoppingCart, Star } from 'lucide-react'
+import { Heart, ShoppingCart, Star } from 'lucide-react'
 import { useCart } from '@/store/cart'
 import { fmt, discountPct, type Product } from '@/lib/supabase'
 import { useState } from 'react'
@@ -9,6 +9,7 @@ import { useState } from 'react'
 export default function ProductCard({ p }: { p: Product }) {
   const add = useCart(s => s.add)
   const [added, setAdded] = useState(false)
+  const [fav, setFav] = useState(false)
 
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -21,7 +22,8 @@ export default function ProductCard({ p }: { p: Product }) {
   const display = p.discount_price ?? p.price
 
   return (
-    <Link href={`/products/${p.id}`} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group border border-gray-100 flex flex-col">
+    <Link href={`/products/${p.id}`}
+      className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group border border-gray-100 flex flex-col">
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-gray-100">
         {p.image_url ? (
@@ -34,6 +36,10 @@ export default function ProductCard({ p }: { p: Product }) {
             -{pct}%
           </div>
         )}
+        <button onClick={e => { e.preventDefault(); setFav(!fav) }}
+          className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full shadow flex items-center justify-center">
+          <Heart size={14} className={fav ? 'fill-red-500 text-red-500' : 'text-gray-400'} />
+        </button>
       </div>
 
       {/* Info */}
@@ -44,9 +50,19 @@ export default function ProductCard({ p }: { p: Product }) {
         {p.rating && (
           <div className="flex items-center gap-1 mt-1">
             <Star size={10} className="text-yellow-400 fill-yellow-400" />
-            <span className="text-xs text-gray-500">{p.rating} ({p.review_count})</span>
+            <span className="text-xs text-gray-500">{p.rating} · ລາຍ {p.review_count}</span>
           </div>
         )}
+
+        {/* Badges */}
+        <div className="flex gap-1 mt-1.5 flex-wrap">
+          {p.is_cod && (
+            <span className="text-[10px] bg-green-50 text-green-600 border border-green-200 px-1.5 py-0.5 rounded-md font-bold">COD</span>
+          )}
+          {p.is_free_shipping && (
+            <span className="text-[10px] bg-blue-50 text-blue-600 border border-blue-200 px-1.5 py-0.5 rounded-md font-bold">ສົ່ງຟຣີ</span>
+          )}
+        </div>
 
         {/* Price + cart */}
         <div className="flex items-center justify-between mt-2">
