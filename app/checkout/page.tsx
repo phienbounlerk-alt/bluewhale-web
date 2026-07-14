@@ -1,9 +1,9 @@
 'use client'
 import { useCart } from '@/store/cart'
 import { fmt, supabase } from '@/lib/supabase'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { CheckCircle, MapPin, Phone, User } from 'lucide-react'
+import { CheckCircle, MapPin, Phone, User, Upload, Image } from 'lucide-react'
 
 const FREE = 200000, SHIP = 20000
 
@@ -15,8 +15,11 @@ export default function CheckoutPage() {
   const [method, setMethod] = useState('')
   const [done, setDone] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [form, setForm] = useState({ name: '', phone: '', address: '' })
   const [settings, setSettings] = useState({ cod_enabled: true, qr_enabled: false, qr_image_url: null as string | null })
+  const [receiptUrl, setReceiptUrl] = useState<string | null>(null)
+  const fileRef = useRef<HTMLInputElement>(null)
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
 
@@ -25,22 +28,40 @@ export default function CheckoutPage() {
       .then(({ data }) => {
         if (data) {
           setSettings(data)
-          // set default method
           if (data.cod_enabled) setMethod('cod')
           else if (data.qr_enabled) setMethod('qr')
         }
       })
   }, [])
 
+  const uploadReceipt = async (file: File) => {
+    setUploading(true)
+    const ext = file.name.split('.').pop()
+    const path = `receipts/${Date.now()}.${ext}`
+    const { error } = await supabase.storage.from('products').upload(path, file, { upsert: true })
+    if (!error) {
+      const { data } = supabase.storage.from('products').getPublicUrl(path)
+      setReceiptUrl(data.publicUrl)
+    }
+    setUploading(false)
+  }
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!form.name || !form.phone || !form.address || !method) return
+    if (method === 'qr' && !receiptUrl) {
+      alert('ກະລຸນາ upload ສະລິບໂອນເງິນກ່ອນ')
+      return
+    }
     setLoading(true)
+    const { data: { user } } = await supabase.auth.getUser()
     await supabase.from('orders').insert({
+      user_id: user?.id ?? null,
       customer_name: form.name,
       customer_phone: form.phone,
       address: form.address,
       payment_method: method,
+      receipt_url: receiptUrl,
       items: items.map(i => ({ id: i.product.id, name: i.product.name, qty: i.quantity, price: i.product.discount_price ?? i.product.price })),
       total: grand,
       status: 'pending',
@@ -116,12 +137,35 @@ export default function CheckoutPage() {
                 ))}
               </div>
 
-              {/* QR Image */}
+              {/* QR + Upload slip */}
               {method === 'qr' && settings.qr_image_url && (
-                <div className="mt-4 text-center">
-                  <p className="text-sm text-gray-600 mb-2">ສະແກນ QR ນີ້ເພື່ອໂອນເງິນ</p>
-                  <img src={settings.qr_image_url} alt="QR Payment" className="w-48 h-48 object-contain mx-auto border border-gray-200 rounded-xl" />
-                  <p className="text-xs text-gray-400 mt-2">ຈຳນວນ: {fmt(grand)}</p>
+                <div className="mt-4 space-y-4">
+                  <div className="text-center">
+                    <p className="text-sm text-gray-600 mb-2">ສະແກນ QR ນີ້ເພື່ອໂອນເງິນ</p>
+                    <img src={settings.qr_image_url} alt="QR Payment" className="w-48 h-48 object-contain mx-auto border border-gray-200 rounded-xl" />
+                    <p className="text-sm font-black text-[#1247D8] mt-2">ຈຳນວນ: {fmt(grand)}</p>
+                  </div>
+
+                  {/* Upload receipt */}
+                  <div className="border-t pt-4">
+                    <p className="text-sm font-bold text-gray-700 mb-2">📎 ອັບໂຫລດສະລິບໂອນເງິນ <span className="text-red-500">*</span></p>
+                    {receiptUrl ? (
+                      <div className="relative">
+                        <img src={receiptUrl} alt="Receipt" className="w-full max-h-48 object-contain border border-green-200 rounded-xl bg-green-50" />
+                        <button type="button" onClick={() => fileRef.current?.click()}
+                          className="mt-2 text-xs text-[#1247D8] hover:underline">ປ່ຽນຮູບ</button>
+                        <p className="text-xs text-green-600 font-bold mt-1">✅ ອັບໂຫລດສຳເລັດ</p>
+                      </div>
+                    ) : (
+                      <button type="button" onClick={() => fileRef.current?.click()}
+                        className="w-full border-2 border-dashed border-gray-300 rounded-xl py-6 flex flex-col items-center gap-2 hover:border-[#1247D8] transition-colors">
+                        <Upload size={20} className="text-gray-400" />
+                        <span className="text-sm text-gray-500">{uploading ? 'ກຳລັງອັບໂຫລດ...' : 'ກົດເພື່ອອັບໂຫລດສະລິບ'}</span>
+                      </button>
+                    )}
+                    <input ref={fileRef} type="file" accept="image/*" className="hidden"
+                      onChange={e => { const f = e.target.files?.[0]; if (f) uploadReceipt(f) }} />
+                  </div>
                 </div>
               )}
             </div>
@@ -154,7 +198,7 @@ export default function CheckoutPage() {
               <span>ລວມ</span><span className="text-[#1247D8]">{fmt(grand)}</span>
             </div>
           </div>
-          <button type="submit" disabled={loading || !method}
+          <button type="submit" disabled={loading || !method || uploading}
             className="block w-full mt-5 bg-[#1247D8] text-white text-center font-black py-4 rounded-2xl hover:bg-[#0d35b0] transition-colors disabled:opacity-60">
             {loading ? 'ກຳລັງສົ່ງ...' : 'ຢືນຢັນການສັ່ງຊື້ ✓'}
           </button>

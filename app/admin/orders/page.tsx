@@ -1,7 +1,7 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { supabase, fmt } from '@/lib/supabase'
-import { Search, ChevronDown, ChevronUp, Phone, MapPin } from 'lucide-react'
+import { Search, ChevronDown, ChevronUp, Phone, MapPin, Upload } from 'lucide-react'
 
 const STATUS = ['pending','confirmed','processing','shipping','delivered','cancelled']
 const STATUS_LAO: Record<string, string> = {
@@ -24,6 +24,8 @@ export default function AdminOrders() {
   const [filter, setFilter] = useState('all')
   const [updating, setUpdating] = useState<string | null>(null)
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [uploading, setUploading] = useState<string | null>(null)
+  const fileRefs = useRef<Record<string, HTMLInputElement | null>>({})
 
   useEffect(() => {
     supabase.from('orders').select('*').order('created_at', { ascending: false })
@@ -44,6 +46,19 @@ export default function AdminOrders() {
     await supabase.from('orders').update({ status }).eq('id', id)
     setOrders(os => os.map(o => o.id === id ? { ...o, status } : o))
     setUpdating(null)
+  }
+
+  const uploadShippingSlip = async (orderId: string, file: File) => {
+    setUploading(orderId)
+    const ext = file.name.split('.').pop()
+    const path = `shipping/${orderId}.${ext}`
+    const { error } = await supabase.storage.from('products').upload(path, file, { upsert: true })
+    if (!error) {
+      const { data } = supabase.storage.from('products').getPublicUrl(path)
+      await supabase.from('orders').update({ shipping_slip_url: data.publicUrl }).eq('id', orderId)
+      setOrders(os => os.map(o => o.id === orderId ? { ...o, shipping_slip_url: data.publicUrl } : o))
+    }
+    setUploading(null)
   }
 
   const toggle = (id: string) => setExpanded(e => e === id ? null : id)
@@ -98,9 +113,7 @@ export default function AdminOrders() {
 
                   {/* Customer info */}
                   <div className="mt-3 space-y-1">
-                    {o.customer_name && (
-                      <p className="text-sm font-bold text-gray-700">👤 {o.customer_name}</p>
-                    )}
+                    {o.customer_name && <p className="text-sm font-bold text-gray-700">👤 {o.customer_name}</p>}
                     {o.customer_phone && (
                       <p className="text-sm text-gray-500 flex items-center gap-1">
                         <Phone size={12} /> {o.customer_phone}
@@ -118,7 +131,6 @@ export default function AdminOrders() {
                     <span className={`text-xs font-bold px-3 py-1 rounded-full ${STATUS_COLOR[o.status] ?? 'bg-gray-100 text-gray-500'}`}>
                       {STATUS_LAO[o.status] ?? o.status}
                     </span>
-
                     <div className="flex gap-1 flex-wrap ml-auto">
                       {STATUS.filter(s => s !== o.status).map(s => (
                         <button key={s} onClick={() => updateStatus(o.id, s)}
@@ -127,6 +139,53 @@ export default function AdminOrders() {
                           → {STATUS_LAO[s]}
                         </button>
                       ))}
+                    </div>
+                  </div>
+
+                  {/* Slips row */}
+                  <div className="mt-4 grid grid-cols-2 gap-3">
+                    {/* Customer receipt */}
+                    <div>
+                      <p className="text-xs font-bold text-gray-500 mb-1">📎 ສະລິບລູກຄ້າ</p>
+                      {o.receipt_url ? (
+                        <a href={o.receipt_url} target="_blank" rel="noreferrer">
+                          <img src={o.receipt_url} alt="Receipt" className="w-full h-24 object-cover rounded-xl border border-gray-200 hover:opacity-80 transition-opacity" />
+                        </a>
+                      ) : (
+                        <div className="w-full h-24 rounded-xl border border-dashed border-gray-200 flex items-center justify-center text-xs text-gray-400">
+                          ບໍ່ມີສະລິບ
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Shipping slip (admin upload) */}
+                    <div>
+                      <p className="text-xs font-bold text-gray-500 mb-1">🚚 ສະລິບຝາກເຄື່ອງ</p>
+                      {o.shipping_slip_url ? (
+                        <div className="relative">
+                          <a href={o.shipping_slip_url} target="_blank" rel="noreferrer">
+                            <img src={o.shipping_slip_url} alt="Shipping" className="w-full h-24 object-cover rounded-xl border border-green-200 hover:opacity-80 transition-opacity" />
+                          </a>
+                          <button onClick={() => fileRefs.current[o.id]?.click()}
+                            className="absolute bottom-1 right-1 bg-white text-xs px-2 py-0.5 rounded-lg border border-gray-200 shadow-sm">
+                            ປ່ຽນ
+                          </button>
+                        </div>
+                      ) : (
+                        <button onClick={() => fileRefs.current[o.id]?.click()}
+                          disabled={uploading === o.id}
+                          className="w-full h-24 rounded-xl border-2 border-dashed border-[#1247D8]/40 flex flex-col items-center justify-center gap-1 hover:bg-blue-50 transition-colors">
+                          <Upload size={16} className="text-[#1247D8]" />
+                          <span className="text-xs text-[#1247D8] font-bold">
+                            {uploading === o.id ? 'ກຳລັງອັບ...' : 'ອັບສະລິບ'}
+                          </span>
+                        </button>
+                      )}
+                      <input
+                        ref={el => { fileRefs.current[o.id] = el }}
+                        type="file" accept="image/*" className="hidden"
+                        onChange={e => { const f = e.target.files?.[0]; if (f) uploadShippingSlip(o.id, f) }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -139,7 +198,6 @@ export default function AdminOrders() {
                       <span>ສິນຄ້າ {items.length} ລາຍການ</span>
                       {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                     </button>
-
                     {isOpen && (
                       <div className="px-4 pb-4 space-y-2 border-t border-gray-100">
                         {items.map((item: any, i: number) => (
