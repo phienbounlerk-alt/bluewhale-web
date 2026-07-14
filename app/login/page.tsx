@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 type Tab = 'email' | 'phone' | 'facebook'
 
@@ -16,6 +16,8 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirect') ?? '/'
 
   const reset = () => { setError(''); setLoading(false) }
 
@@ -24,7 +26,7 @@ export default function LoginPage() {
     e.preventDefault(); reset(); setLoading(true)
     const { error: err } = await supabase.auth.signInWithPassword({ email, password })
     if (err) { setError('ອີເມວ ຫຼື ລະຫັດຜ່ານ ບໍ່ຖືກຕ້ອງ'); setLoading(false) }
-    else router.push('/')
+    else router.push(redirectTo)
   }
 
   /* ---- Phone: send OTP ---- */
@@ -42,7 +44,7 @@ export default function LoginPage() {
     const formatted = phone.startsWith('+') ? phone : `+856${phone.replace(/^0/, '')}`
     const { error: err } = await supabase.auth.verifyOtp({ phone: formatted, token: otp, type: 'sms' })
     if (err) { setError('ລະຫັດ OTP ບໍ່ຖືກຕ້ອງ'); setLoading(false) }
-    else router.push('/')
+    else router.push(redirectTo)
   }
 
   /* ---- Facebook OAuth ---- */

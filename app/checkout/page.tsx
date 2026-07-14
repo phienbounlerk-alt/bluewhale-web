@@ -3,12 +3,14 @@ import { useCart } from '@/store/cart'
 import { fmt, supabase } from '@/lib/supabase'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { CheckCircle, MapPin, Phone, User, Upload, Image } from 'lucide-react'
 
 const FREE = 200000, SHIP = 20000
 
 export default function CheckoutPage() {
   const { items, total, clear } = useCart()
+  const router = useRouter()
   const subtotal = total()
   const shipping = subtotal >= FREE ? 0 : SHIP
   const grand = subtotal + shipping
@@ -16,6 +18,7 @@ export default function CheckoutPage() {
   const [done, setDone] = useState(false)
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [authChecked, setAuthChecked] = useState(false)
   const [form, setForm] = useState({ name: '', phone: '', address: '' })
   const [settings, setSettings] = useState({ cod_enabled: true, qr_enabled: false, qr_image_url: null as string | null })
   const [receiptUrl, setReceiptUrl] = useState<string | null>(null)
@@ -24,6 +27,13 @@ export default function CheckoutPage() {
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
 
   useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) {
+        router.replace('/login?redirect=/checkout')
+      } else {
+        setAuthChecked(true)
+      }
+    })
     supabase.from('payment_settings').select('*').eq('id', 1).single()
       .then(({ data }) => {
         if (data) {
@@ -81,6 +91,8 @@ export default function CheckoutPage() {
       </Link>
     </div>
   )
+
+  if (!authChecked) return <div className="flex items-center justify-center py-20 text-gray-400">ກຳລັງກວດສອບ...</div>
 
   if (items.length === 0) return (
     <div className="max-w-md mx-auto px-4 py-20 text-center">
