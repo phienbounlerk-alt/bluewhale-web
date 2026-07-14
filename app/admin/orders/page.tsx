@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState, useRef } from 'react'
 import { supabase, fmt } from '@/lib/supabase'
-import { Search, ChevronDown, ChevronUp, Phone, MapPin, Upload } from 'lucide-react'
+import { Search, ChevronDown, ChevronUp, Phone, MapPin, Upload, Plus } from 'lucide-react'
 
 const STATUS = ['pending','confirmed','processing','shipping','delivered','cancelled']
 const STATUS_LAO: Record<string, string> = {
@@ -17,6 +17,7 @@ const STATUS_COLOR: Record<string, string> = {
   cancelled:  'bg-gray-100 text-gray-500',
 }
 const METHOD_LAO: Record<string, string> = { cod: '💵 COD', qr: '📷 QR ໂອນ' }
+const COURIERS = ['J&T Express', 'BEST Express', 'ລາວໂພດ', 'Ninja Van', 'Flash Express', 'ອື່ນໆ']
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState<any[]>([])
@@ -25,6 +26,8 @@ export default function AdminOrders() {
   const [updating, setUpdating] = useState<string | null>(null)
   const [expanded, setExpanded] = useState<string | null>(null)
   const [uploading, setUploading] = useState<string | null>(null)
+  const [noteInputs, setNoteInputs] = useState<Record<string, string>>({})
+  const [addingNote, setAddingNote] = useState<string | null>(null)
   const fileRefs = useRef<Record<string, HTMLInputElement | null>>({})
 
   useEffect(() => {
@@ -43,9 +46,32 @@ export default function AdminOrders() {
 
   const updateStatus = async (id: string, status: string) => {
     setUpdating(id)
-    await supabase.from('orders').update({ status }).eq('id', id)
-    setOrders(os => os.map(o => o.id === id ? { ...o, status } : o))
+    const order = orders.find(o => o.id === id)
+    const logs: any[] = Array.isArray(order?.tracking_logs) ? order.tracking_logs : []
+    const newLog = { status, note: `ອັບເດດສະຖານະ → ${STATUS_LAO[status]}`, created_at: new Date().toISOString() }
+    const newLogs = [...logs, newLog]
+    await supabase.from('orders').update({ status, tracking_logs: newLogs }).eq('id', id)
+    setOrders(os => os.map(o => o.id === id ? { ...o, status, tracking_logs: newLogs } : o))
     setUpdating(null)
+  }
+
+  const addNote = async (id: string) => {
+    const note = noteInputs[id]?.trim()
+    if (!note) return
+    setAddingNote(id)
+    const order = orders.find(o => o.id === id)
+    const logs: any[] = Array.isArray(order?.tracking_logs) ? order.tracking_logs : []
+    const newLog = { status: order?.status, note, created_at: new Date().toISOString() }
+    const newLogs = [...logs, newLog]
+    await supabase.from('orders').update({ tracking_logs: newLogs }).eq('id', id)
+    setOrders(os => os.map(o => o.id === id ? { ...o, tracking_logs: newLogs } : o))
+    setNoteInputs(n => ({ ...n, [id]: '' }))
+    setAddingNote(null)
+  }
+
+  const updateTracking = async (id: string, field: string, value: string) => {
+    await supabase.from('orders').update({ [field]: value }).eq('id', id)
+    setOrders(os => os.map(o => o.id === id ? { ...o, [field]: value } : o))
   }
 
   const uploadShippingSlip = async (orderId: string, file: File) => {
@@ -94,12 +120,13 @@ export default function AdminOrders() {
           {filtered.map(o => {
             const isOpen = expanded === o.id
             const items = Array.isArray(o.items) ? o.items : []
+            const logs: any[] = Array.isArray(o.tracking_logs) ? o.tracking_logs : []
             const total = o.total ?? o.total_amount ?? 0
 
             return (
               <div key={o.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                {/* Header */}
                 <div className="p-4">
+                  {/* Header */}
                   <div className="flex items-start justify-between gap-3 flex-wrap">
                     <div>
                       <p className="font-black text-gray-800">#{o.id.slice(0, 8).toUpperCase()}</p>
@@ -111,22 +138,14 @@ export default function AdminOrders() {
                     </div>
                   </div>
 
-                  {/* Customer info */}
+                  {/* Customer */}
                   <div className="mt-3 space-y-1">
                     {o.customer_name && <p className="text-sm font-bold text-gray-700">👤 {o.customer_name}</p>}
-                    {o.customer_phone && (
-                      <p className="text-sm text-gray-500 flex items-center gap-1">
-                        <Phone size={12} /> {o.customer_phone}
-                      </p>
-                    )}
-                    {o.address && (
-                      <p className="text-sm text-gray-500 flex items-start gap-1">
-                        <MapPin size={12} className="mt-0.5 shrink-0" /> {o.address}
-                      </p>
-                    )}
+                    {o.customer_phone && <p className="text-sm text-gray-500 flex items-center gap-1"><Phone size={12} />{o.customer_phone}</p>}
+                    {o.address && <p className="text-sm text-gray-500 flex items-start gap-1"><MapPin size={12} className="mt-0.5 shrink-0" />{o.address}</p>}
                   </div>
 
-                  {/* Status + actions */}
+                  {/* Status */}
                   <div className="flex items-center gap-2 mt-3 flex-wrap">
                     <span className={`text-xs font-bold px-3 py-1 rounded-full ${STATUS_COLOR[o.status] ?? 'bg-gray-100 text-gray-500'}`}>
                       {STATUS_LAO[o.status] ?? o.status}
@@ -142,14 +161,35 @@ export default function AdminOrders() {
                     </div>
                   </div>
 
-                  {/* Slips row */}
+                  {/* Tracking number + courier */}
+                  <div className="mt-4 grid grid-cols-2 gap-2">
+                    <div>
+                      <p className="text-xs text-gray-400 mb-1">🚚 ບໍລິສັດສົ່ງ</p>
+                      <select
+                        value={o.courier ?? ''}
+                        onChange={e => updateTracking(o.id, 'courier', e.target.value)}
+                        className="w-full text-xs border border-gray-200 rounded-lg px-2 py-1.5 outline-none bg-white">
+                        <option value="">ເລືອກ...</option>
+                        {COURIERS.map(c => <option key={c} value={c}>{c}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400 mb-1">📦 ເລກ Tracking</p>
+                      <input
+                        defaultValue={o.tracking_number ?? ''}
+                        onBlur={e => updateTracking(o.id, 'tracking_number', e.target.value)}
+                        placeholder="ໃສ່ເລກ..."
+                        className="w-full text-xs border border-gray-200 rounded-lg px-2 py-1.5 outline-none" />
+                    </div>
+                  </div>
+
+                  {/* Slips */}
                   <div className="mt-4 grid grid-cols-2 gap-3">
-                    {/* Customer receipt */}
                     <div>
                       <p className="text-xs font-bold text-gray-500 mb-1">📎 ສະລິບລູກຄ້າ</p>
                       {o.receipt_url ? (
                         <a href={o.receipt_url} target="_blank" rel="noreferrer">
-                          <img src={o.receipt_url} alt="Receipt" className="w-full h-24 object-cover rounded-xl border border-gray-200 hover:opacity-80 transition-opacity" />
+                          <img src={o.receipt_url} alt="Receipt" className="w-full h-24 object-cover rounded-xl border border-gray-200 hover:opacity-80" />
                         </a>
                       ) : (
                         <div className="w-full h-24 rounded-xl border border-dashed border-gray-200 flex items-center justify-center text-xs text-gray-400">
@@ -157,40 +197,64 @@ export default function AdminOrders() {
                         </div>
                       )}
                     </div>
-
-                    {/* Shipping slip (admin upload) */}
                     <div>
                       <p className="text-xs font-bold text-gray-500 mb-1">🚚 ສະລິບຝາກເຄື່ອງ</p>
                       {o.shipping_slip_url ? (
                         <div className="relative">
                           <a href={o.shipping_slip_url} target="_blank" rel="noreferrer">
-                            <img src={o.shipping_slip_url} alt="Shipping" className="w-full h-24 object-cover rounded-xl border border-green-200 hover:opacity-80 transition-opacity" />
+                            <img src={o.shipping_slip_url} alt="Shipping" className="w-full h-24 object-cover rounded-xl border border-green-200 hover:opacity-80" />
                           </a>
                           <button onClick={() => fileRefs.current[o.id]?.click()}
-                            className="absolute bottom-1 right-1 bg-white text-xs px-2 py-0.5 rounded-lg border border-gray-200 shadow-sm">
-                            ປ່ຽນ
-                          </button>
+                            className="absolute bottom-1 right-1 bg-white text-xs px-2 py-0.5 rounded-lg border border-gray-200 shadow-sm">ປ່ຽນ</button>
                         </div>
                       ) : (
                         <button onClick={() => fileRefs.current[o.id]?.click()}
                           disabled={uploading === o.id}
                           className="w-full h-24 rounded-xl border-2 border-dashed border-[#1247D8]/40 flex flex-col items-center justify-center gap-1 hover:bg-blue-50 transition-colors">
                           <Upload size={16} className="text-[#1247D8]" />
-                          <span className="text-xs text-[#1247D8] font-bold">
-                            {uploading === o.id ? 'ກຳລັງອັບ...' : 'ອັບສະລິບ'}
-                          </span>
+                          <span className="text-xs text-[#1247D8] font-bold">{uploading === o.id ? 'ກຳລັງອັບ...' : 'ອັບສະລິບ'}</span>
                         </button>
                       )}
+                      <input ref={el => { fileRefs.current[o.id] = el }} type="file" accept="image/*" className="hidden"
+                        onChange={e => { const f = e.target.files?.[0]; if (f) uploadShippingSlip(o.id, f) }} />
+                    </div>
+                  </div>
+
+                  {/* Timeline logs */}
+                  <div className="mt-4">
+                    <p className="text-xs font-bold text-gray-500 mb-2">📋 Timeline</p>
+                    {logs.length > 0 ? (
+                      <div className="space-y-2 mb-3">
+                        {logs.map((log, i) => (
+                          <div key={i} className="flex gap-2 items-start">
+                            <div className="mt-1 w-2 h-2 rounded-full bg-[#1247D8] shrink-0" />
+                            <div className="flex-1">
+                              <p className="text-xs text-gray-700">{log.note}</p>
+                              <p className="text-xs text-gray-400">{new Date(log.created_at).toLocaleString('lo-LA')}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-gray-400 mb-2">ຍັງບໍ່ມີ log</p>
+                    )}
+                    {/* Add note */}
+                    <div className="flex gap-2">
                       <input
-                        ref={el => { fileRefs.current[o.id] = el }}
-                        type="file" accept="image/*" className="hidden"
-                        onChange={e => { const f = e.target.files?.[0]; if (f) uploadShippingSlip(o.id, f) }}
-                      />
+                        value={noteInputs[o.id] ?? ''}
+                        onChange={e => setNoteInputs(n => ({ ...n, [o.id]: e.target.value }))}
+                        onKeyDown={e => e.key === 'Enter' && addNote(o.id)}
+                        placeholder="ເພີ່ມໂນດ... (Enter)"
+                        className="flex-1 text-xs border border-gray-200 rounded-lg px-3 py-1.5 outline-none" />
+                      <button onClick={() => addNote(o.id)} disabled={addingNote === o.id}
+                        className="bg-[#1247D8] text-white text-xs px-3 py-1.5 rounded-lg disabled:opacity-50 flex items-center gap-1">
+                        <Plus size={12} /> ເພີ່ມ
+                      </button>
                     </div>
                   </div>
                 </div>
 
-                {/* Expand items */}
+                {/* Items */}
                 {items.length > 0 && (
                   <>
                     <button onClick={() => toggle(o.id)}

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { supabase, fmt } from '@/lib/supabase'
 import Link from 'next/link'
-import { ClipboardList, ChevronDown, ChevronUp, Phone, MapPin } from 'lucide-react'
+import { ClipboardList, ChevronDown, ChevronUp, MapPin, Copy, Check } from 'lucide-react'
 
 const STATUS_LAO: Record<string, string> = {
   pending: 'ລໍຖ້າ', confirmed: 'ຢືນຢັນ', processing: 'ກຳລັງກຽມ',
@@ -16,6 +16,9 @@ const STATUS_COLOR: Record<string, string> = {
   delivered:  'bg-green-100 text-green-700',
   cancelled:  'bg-gray-100 text-gray-500',
 }
+const STATUS_ICON: Record<string, string> = {
+  pending: '🕐', confirmed: '✅', processing: '📦', shipping: '🚚', delivered: '🎉', cancelled: '❌'
+}
 const METHOD_LAO: Record<string, string> = { cod: '💵 COD', qr: '📷 QR ໂອນ' }
 const TABS = ['ທັງໝົດ', 'ລໍຖ້າ', 'ຢືນຢັນ', 'ກຳລັງກຽມ', 'ກຳລັງສົ່ງ', 'ສຳເລັດ', 'ຍົກເລີກ']
 const TAB_STATUS = ['all', 'pending', 'confirmed', 'processing', 'shipping', 'delivered', 'cancelled']
@@ -25,6 +28,7 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true)
   const [tab, setTab] = useState(0)
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [copied, setCopied] = useState<string | null>(null)
   const [user, setUser] = useState<any>(null)
 
   useEffect(() => {
@@ -35,19 +39,20 @@ export default function OrdersPage() {
         .select('*')
         .eq('user_id', data.user.id)
         .order('created_at', { ascending: false })
-        .then(({ data: orders }) => {
-          setOrders(orders ?? [])
-          setLoading(false)
-        })
+        .then(({ data: rows }) => { setOrders(rows ?? []); setLoading(false) })
     })
   }, [])
 
   const filtered = tab === 0 ? orders : orders.filter(o => o.status === TAB_STATUS[tab])
   const toggle = (id: string) => setExpanded(e => e === id ? null : id)
 
-  if (loading) return (
-    <div className="flex items-center justify-center py-20 text-gray-400">ກຳລັງໂຫຼດ...</div>
-  )
+  const copyTracking = (num: string, id: string) => {
+    navigator.clipboard.writeText(num)
+    setCopied(id)
+    setTimeout(() => setCopied(null), 2000)
+  }
+
+  if (loading) return <div className="flex items-center justify-center py-20 text-gray-400">ກຳລັງໂຫຼດ...</div>
 
   if (!user) return (
     <div className="max-w-md mx-auto px-4 py-20 text-center">
@@ -60,8 +65,7 @@ export default function OrdersPage() {
     <div className="max-w-2xl mx-auto px-4 py-8">
       <h1 className="text-xl font-black text-gray-800 mb-6">📦 ການສັ່ງຊື້ຂອງຂ້ອຍ</h1>
 
-      {/* Tabs */}
-      <div className="flex gap-1 overflow-x-auto pb-2 mb-6 scrollbar-hide">
+      <div className="flex gap-1 overflow-x-auto pb-2 mb-6">
         {TABS.map((t, i) => (
           <button key={t} onClick={() => setTab(i)}
             className={`shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${tab === i ? 'bg-[#1247D8] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
@@ -85,10 +89,13 @@ export default function OrdersPage() {
           {filtered.map(o => {
             const isOpen = expanded === o.id
             const items = Array.isArray(o.items) ? o.items : []
+            const logs: any[] = Array.isArray(o.tracking_logs) ? o.tracking_logs : []
             const total = o.total ?? o.total_amount ?? 0
+
             return (
               <div key={o.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="p-4">
+                  {/* Header */}
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <p className="font-black text-sm text-gray-800">#{o.id.slice(0, 8).toUpperCase()}</p>
@@ -100,9 +107,9 @@ export default function OrdersPage() {
                     </div>
                   </div>
 
-                  <div className="mt-2 flex items-center gap-2">
+                  <div className="mt-2">
                     <span className={`text-xs font-bold px-3 py-1 rounded-full ${STATUS_COLOR[o.status] ?? 'bg-gray-100 text-gray-500'}`}>
-                      {STATUS_LAO[o.status] ?? o.status}
+                      {STATUS_ICON[o.status]} {STATUS_LAO[o.status] ?? o.status}
                     </span>
                   </div>
 
@@ -110,6 +117,44 @@ export default function OrdersPage() {
                     <p className="mt-2 text-xs text-gray-400 flex items-center gap-1">
                       <MapPin size={10} /> {o.address}
                     </p>
+                  )}
+
+                  {/* Tracking info */}
+                  {(o.courier || o.tracking_number) && (
+                    <div className="mt-3 bg-orange-50 border border-orange-100 rounded-xl px-3 py-2.5">
+                      <p className="text-xs font-bold text-orange-700 mb-1">🚚 ຂໍ້ມູນການສົ່ງ</p>
+                      {o.courier && <p className="text-xs text-gray-700">ບໍລິສັດ: <span className="font-bold">{o.courier}</span></p>}
+                      {o.tracking_number && (
+                        <div className="flex items-center gap-2 mt-1">
+                          <p className="text-xs text-gray-700">ເລກຕິດຕາມ: <span className="font-bold font-mono">{o.tracking_number}</span></p>
+                          <button onClick={() => copyTracking(o.tracking_number, o.id)}
+                            className="text-orange-500 hover:text-orange-700 transition-colors">
+                            {copied === o.id ? <Check size={12} /> : <Copy size={12} />}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Timeline */}
+                  {logs.length > 0 && (
+                    <div className="mt-4">
+                      <p className="text-xs font-bold text-gray-500 mb-3">📋 ສະຖານະການສົ່ງ</p>
+                      <div className="relative pl-4">
+                        <div className="absolute left-1.5 top-2 bottom-2 w-px bg-gray-200" />
+                        <div className="space-y-3">
+                          {[...logs].reverse().map((log, i) => (
+                            <div key={i} className="flex gap-3 items-start relative">
+                              <div className={`absolute -left-2.5 mt-1 w-2.5 h-2.5 rounded-full border-2 border-white ${i === 0 ? 'bg-[#1247D8]' : 'bg-gray-300'}`} />
+                              <div className="flex-1 pl-2">
+                                <p className={`text-xs font-medium ${i === 0 ? 'text-gray-800' : 'text-gray-500'}`}>{log.note}</p>
+                                <p className="text-xs text-gray-400">{new Date(log.created_at).toLocaleString('lo-LA')}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   )}
 
                   {/* Slips */}
@@ -133,12 +178,9 @@ export default function OrdersPage() {
                       )}
                     </div>
                   )}
-
-                  {o.status === 'shipping' && !o.shipping_slip_url && (
-                    <p className="mt-3 text-xs text-orange-500 font-medium">📦 ກຳລັງສົ່ງ — ຮ້ານຈະອັບໃບຝາກໃນໄວໆນີ້</p>
-                  )}
                 </div>
 
+                {/* Items expand */}
                 {items.length > 0 && (
                   <>
                     <button onClick={() => toggle(o.id)}
