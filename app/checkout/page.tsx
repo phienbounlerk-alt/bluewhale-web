@@ -1,7 +1,7 @@
 'use client'
 import { useCart } from '@/store/cart'
-import { fmt } from '@/lib/supabase'
-import { useState } from 'react'
+import { fmt, supabase } from '@/lib/supabase'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { CheckCircle, MapPin, Phone, User } from 'lucide-react'
 
@@ -12,15 +12,40 @@ export default function CheckoutPage() {
   const subtotal = total()
   const shipping = subtotal >= FREE ? 0 : SHIP
   const grand = subtotal + shipping
-  const [method, setMethod] = useState('cod')
+  const [method, setMethod] = useState('')
   const [done, setDone] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({ name: '', phone: '', address: '' })
+  const [settings, setSettings] = useState({ cod_enabled: true, qr_enabled: false, qr_image_url: null as string | null })
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
 
-  const submit = (e: React.FormEvent) => {
+  useEffect(() => {
+    supabase.from('payment_settings').select('*').eq('id', 1).single()
+      .then(({ data }) => {
+        if (data) {
+          setSettings(data)
+          // set default method
+          if (data.cod_enabled) setMethod('cod')
+          else if (data.qr_enabled) setMethod('qr')
+        }
+      })
+  }, [])
+
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!form.name || !form.phone || !form.address) return
+    if (!form.name || !form.phone || !form.address || !method) return
+    setLoading(true)
+    await supabase.from('orders').insert({
+      customer_name: form.name,
+      customer_phone: form.phone,
+      address: form.address,
+      payment_method: method,
+      items: items.map(i => ({ id: i.product.id, name: i.product.name, qty: i.quantity, price: i.product.discount_price ?? i.product.price })),
+      total: grand,
+      status: 'pending',
+    })
+    setLoading(false)
     setDone(true)
     clear()
   }
@@ -42,6 +67,11 @@ export default function CheckoutPage() {
       <Link href="/products" className="text-[#1247D8] underline">ເລືອກຊື້ສິນຄ້າ</Link>
     </div>
   )
+
+  const methods = [
+    settings.cod_enabled && { id: 'cod', label: 'COD — ຈ່າຍປາຍທາງ', icon: '💵', desc: 'ຈ່າຍເມື່ອໄດ້ຮັບສິນຄ້າ' },
+    settings.qr_enabled && settings.qr_image_url && { id: 'qr', label: 'ໂອນເງິນ QR', icon: '📷', desc: 'ສະແກນ QR Code ຊຳລະ' },
+  ].filter(Boolean) as { id: string; label: string; icon: string; desc: string }[]
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
@@ -70,25 +100,32 @@ export default function CheckoutPage() {
           </div>
 
           {/* Payment method */}
-          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-            <h2 className="font-black text-gray-800 mb-4">💳 ວິທີຊຳລະ</h2>
-            <div className="space-y-2">
-              {[
-                { id: 'cod', label: 'COD — ຈ່າຍປາຍທາງ', icon: '💵', desc: 'ຈ່າຍເມື່ອໄດ້ຮັບສິນຄ້າ' },
-                { id: 'bcel', label: 'BCEL One', icon: '📱', desc: 'ໂອນຜ່ານ BCEL One App' },
-                { id: 'laoqr', label: 'Lao QR', icon: '📷', desc: 'ສະແກນ QR Code ຊຳລະ' },
-              ].map(m => (
-                <label key={m.id} className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-colors ${method === m.id ? 'border-[#1247D8] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}>
-                  <input type="radio" name="method" value={m.id} checked={method === m.id} onChange={() => setMethod(m.id)} className="text-[#1247D8]" />
-                  <span className="text-xl">{m.icon}</span>
-                  <div>
-                    <div className="font-bold text-sm">{m.label}</div>
-                    <div className="text-xs text-gray-500">{m.desc}</div>
-                  </div>
-                </label>
-              ))}
+          {methods.length > 0 && (
+            <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+              <h2 className="font-black text-gray-800 mb-4">💳 ວິທີຊຳລະ</h2>
+              <div className="space-y-2">
+                {methods.map(m => (
+                  <label key={m.id} className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-colors ${method === m.id ? 'border-[#1247D8] bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}>
+                    <input type="radio" name="method" value={m.id} checked={method === m.id} onChange={() => setMethod(m.id)} className="text-[#1247D8]" />
+                    <span className="text-xl">{m.icon}</span>
+                    <div>
+                      <div className="font-bold text-sm">{m.label}</div>
+                      <div className="text-xs text-gray-500">{m.desc}</div>
+                    </div>
+                  </label>
+                ))}
+              </div>
+
+              {/* QR Image */}
+              {method === 'qr' && settings.qr_image_url && (
+                <div className="mt-4 text-center">
+                  <p className="text-sm text-gray-600 mb-2">ສະແກນ QR ນີ້ເພື່ອໂອນເງິນ</p>
+                  <img src={settings.qr_image_url} alt="QR Payment" className="w-48 h-48 object-contain mx-auto border border-gray-200 rounded-xl" />
+                  <p className="text-xs text-gray-400 mt-2">ຈຳນວນ: {fmt(grand)}</p>
+                </div>
+              )}
             </div>
-          </div>
+          )}
 
           {/* Items summary */}
           <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
@@ -117,9 +154,9 @@ export default function CheckoutPage() {
               <span>ລວມ</span><span className="text-[#1247D8]">{fmt(grand)}</span>
             </div>
           </div>
-          <button type="submit"
-            className="block w-full mt-5 bg-[#1247D8] text-white text-center font-black py-4 rounded-2xl hover:bg-[#0d35b0] transition-colors">
-            ຢືນຢັນການສັ່ງຊື້ ✓
+          <button type="submit" disabled={loading || !method}
+            className="block w-full mt-5 bg-[#1247D8] text-white text-center font-black py-4 rounded-2xl hover:bg-[#0d35b0] transition-colors disabled:opacity-60">
+            {loading ? 'ກຳລັງສົ່ງ...' : 'ຢືນຢັນການສັ່ງຊື້ ✓'}
           </button>
           <Link href="/cart" className="block w-full mt-2 text-gray-400 text-sm text-center hover:underline">ກັບໄປກະຕ່າ</Link>
         </div>
