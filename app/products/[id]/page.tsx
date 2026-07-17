@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ShoppingCart, Star, Shield, Truck, ArrowLeft } from 'lucide-react'
 import { use } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
@@ -13,6 +14,7 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
   const add = useCart(s => s.add)
+  const router = useRouter()
 
   useEffect(() => { getProduct(id).then(setP) }, [id])
 
@@ -101,10 +103,10 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
               <ShoppingCart size={18} />
               {added ? 'ເພີ່ມແລ້ວ ✓' : 'ເພີ່ມໃສ່ກະຕ່າ'}
             </button>
-            <Link href="/cart"
+            <button onClick={() => { handleAdd(); router.push('/cart') }}
               className="flex-1 flex items-center justify-center py-4 rounded-2xl font-black border-2 border-[#1247D8] text-[#1247D8] hover:bg-[#1247D8] hover:text-white transition-all">
               ຊື້ດ່ວນ →
-            </Link>
+            </button>
           </div>
         </div>
       </div>
