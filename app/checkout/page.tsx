@@ -67,6 +67,7 @@ export default function CheckoutPage() {
     const { data: { user } } = await supabase.auth.getUser()
     await supabase.from('orders').insert({
       user_id: user?.id ?? null,
+      customer_email: user?.email ?? null,
       customer_name: form.name,
       customer_phone: form.phone,
       address: form.address,

@@ -32,14 +32,38 @@ export default function OrdersPage() {
   const [user, setUser] = useState<any>(null)
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getUser().then(async ({ data }) => {
       setUser(data.user)
       if (!data.user) { setLoading(false); return }
-      supabase.from('orders')
-        .select('*')
-        .eq('user_id', data.user.id)
-        .order('created_at', { ascending: false })
-        .then(({ data: rows }) => { setOrders(rows ?? []); setLoading(false) })
+
+      const uid = data.user.id
+      const email = data.user.email ?? ''
+
+      // ດຶງ orders ທີ່ user_id ຕົງ
+      const { data: byId } = await supabase.from('orders')
+        .select('*').eq('user_id', uid).order('created_at', { ascending: false })
+
+      // ດຶງ orders ເກົ່າທີ່ user_id = null ແຕ່ email ຕົງກັນ (ຖ້າ checkout ເກົ່າ save email)
+      const { data: byEmail } = email
+        ? await supabase.from('orders').select('*')
+            .is('user_id', null)
+            .eq('customer_email', email)
+            .order('created_at', { ascending: false })
+        : { data: [] }
+
+      // ລວມ ແລະ ເອົາ unique ດ້ວຍ id
+      const all = [...(byId ?? []), ...(byEmail ?? [])]
+      const unique = all.filter((o, i, arr) => arr.findIndex(x => x.id === o.id) === i)
+      unique.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+
+      // Link user_id ໃສ່ order ເກົ່າໃຫ້ໄວໆ
+      const orphans = (byEmail ?? []).map(o => o.id)
+      if (orphans.length > 0) {
+        await supabase.from('orders').update({ user_id: uid }).in('id', orphans)
+      }
+
+      setOrders(unique)
+      setLoading(false)
     })
   }, [])
 
