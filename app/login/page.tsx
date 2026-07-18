@@ -4,15 +4,12 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-type Tab = 'email' | 'phone' | 'facebook' | 'google'
+type Tab = 'email' | 'facebook' | 'google'
 
 export default function LoginPage() {
   const [tab, setTab] = useState<Tab>('email')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [phone, setPhone] = useState('')
-  const [otp, setOtp] = useState('')
-  const [otpSent, setOtpSent] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -26,24 +23,6 @@ export default function LoginPage() {
     e.preventDefault(); reset(); setLoading(true)
     const { error: err } = await supabase.auth.signInWithPassword({ email, password })
     if (err) { setError('ອີເມວ ຫຼື ລະຫັດຜ່ານ ບໍ່ຖືກຕ້ອງ'); setLoading(false) }
-    else router.push(redirectTo)
-  }
-
-  /* ---- Phone: send OTP ---- */
-  const sendOtp = async (e: React.FormEvent) => {
-    e.preventDefault(); reset(); setLoading(true)
-    const formatted = phone.startsWith('+') ? phone : `+856${phone.replace(/^0/, '')}`
-    const { error: err } = await supabase.auth.signInWithOtp({ phone: formatted })
-    if (err) { setError('ສົ່ງ OTP ບໍ່ສຳເລັດ: ' + err.message); setLoading(false) }
-    else { setOtpSent(true); setLoading(false) }
-  }
-
-  /* ---- Phone: verify OTP ---- */
-  const verifyOtp = async (e: React.FormEvent) => {
-    e.preventDefault(); reset(); setLoading(true)
-    const formatted = phone.startsWith('+') ? phone : `+856${phone.replace(/^0/, '')}`
-    const { error: err } = await supabase.auth.verifyOtp({ phone: formatted, token: otp, type: 'sms' })
-    if (err) { setError('ລະຫັດ OTP ບໍ່ຖືກຕ້ອງ'); setLoading(false) }
     else router.push(redirectTo)
   }
 
@@ -67,7 +46,6 @@ export default function LoginPage() {
 
   const tabs: { key: Tab; label: string; icon: string }[] = [
     { key: 'email', label: 'ອີເມວ', icon: '✉️' },
-    { key: 'phone', label: 'ເບີໂທ', icon: '📱' },
     { key: 'facebook', label: 'Facebook', icon: '🔵' },
     { key: 'google', label: 'Google', icon: '🔴' },
   ]
@@ -85,7 +63,7 @@ export default function LoginPage() {
         {/* Tabs */}
         <div className="flex border-b border-gray-100">
           {tabs.map(t => (
-            <button key={t.key} onClick={() => { setTab(t.key); setError(''); setOtpSent(false) }}
+            <button key={t.key} onClick={() => { setTab(t.key); setError('') }}
               className={`flex-1 py-3 text-sm font-bold flex flex-col items-center gap-0.5 transition-colors
                 ${tab === t.key ? 'text-[#1247D8] border-b-2 border-[#1247D8]' : 'text-gray-400 hover:text-gray-600'}`}>
               <span className="text-base">{t.icon}</span>
@@ -121,53 +99,6 @@ export default function LoginPage() {
                 {loading ? 'ກຳລັງໂຫຼດ...' : 'ເຂົ້າສູ່ລະບົບ'}
               </button>
             </form>
-          )}
-
-          {/* Phone tab */}
-          {tab === 'phone' && (
-            <>
-              {!otpSent ? (
-                <form onSubmit={sendOtp} className="space-y-4">
-                  <div>
-                    <label className="text-xs font-bold text-gray-500 mb-1 block uppercase tracking-wide">ເບີໂທ</label>
-                    <div className="flex gap-2">
-                      <div className="bg-gray-100 rounded-xl px-3 py-3 text-sm font-bold text-gray-600 flex items-center shrink-0">
-                        🇱🇦 +856
-                      </div>
-                      <input value={phone} onChange={e => setPhone(e.target.value)} type="tel" required
-                        placeholder="20 xxxx xxxx"
-                        className="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-[#1247D8] transition-colors" />
-                    </div>
-                    <p className="text-xs text-gray-400 mt-1">ໃສ່ເບີ ລາວ ເຊັ່ນ: 20 5555 5555</p>
-                  </div>
-                  <button type="submit" disabled={loading}
-                    className="w-full bg-[#1247D8] text-white font-black py-4 rounded-2xl hover:bg-[#0d35b0] transition-colors disabled:opacity-60 text-base">
-                    {loading ? 'ກຳລັງສົ່ງ...' : 'ສົ່ງລະຫັດ OTP'}
-                  </button>
-                </form>
-              ) : (
-                <form onSubmit={verifyOtp} className="space-y-4">
-                  <div className="text-center py-2">
-                    <p className="text-sm text-gray-600">ສົ່ງລະຫັດໄປທີ່</p>
-                    <p className="font-black text-[#1247D8]">{phone}</p>
-                  </div>
-                  <div>
-                    <label className="text-xs font-bold text-gray-500 mb-1 block uppercase tracking-wide">ລະຫັດ OTP 6 ຕົວ</label>
-                    <input value={otp} onChange={e => setOtp(e.target.value)} type="text"
-                      inputMode="numeric" maxLength={6} required placeholder="_ _ _ _ _ _"
-                      className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-[#1247D8] transition-colors text-center text-2xl tracking-widest font-black" />
-                  </div>
-                  <button type="submit" disabled={loading}
-                    className="w-full bg-[#1247D8] text-white font-black py-4 rounded-2xl hover:bg-[#0d35b0] transition-colors disabled:opacity-60 text-base">
-                    {loading ? 'ກຳລັງກວດ...' : 'ຢືນຢັນ OTP'}
-                  </button>
-                  <button type="button" onClick={() => { setOtpSent(false); setOtp(''); setError('') }}
-                    className="w-full text-gray-400 text-sm hover:text-gray-600 py-1">
-                    ← ປ່ຽນເບີໂທ
-                  </button>
-                </form>
-              )}
-            </>
           )}
 
           {/* Facebook tab */}
