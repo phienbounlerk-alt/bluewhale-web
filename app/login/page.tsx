@@ -1,13 +1,10 @@
 'use client'
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-type Tab = 'email' | 'facebook' | 'google'
-
-export default function LoginPage() {
-  const [tab, setTab] = useState<Tab>('email')
+function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -18,7 +15,6 @@ export default function LoginPage() {
 
   const reset = () => { setError(''); setLoading(false) }
 
-  /* ---- Email login ---- */
   const loginEmail = async (e: React.FormEvent) => {
     e.preventDefault(); reset(); setLoading(true)
     const { error: err } = await supabase.auth.signInWithPassword({ email, password })
@@ -26,7 +22,6 @@ export default function LoginPage() {
     else router.push(redirectTo)
   }
 
-  /* ---- Facebook OAuth ---- */
   const loginFacebook = async () => {
     reset(); setLoading(true)
     await supabase.auth.signInWithOAuth({
@@ -35,7 +30,6 @@ export default function LoginPage() {
     })
   }
 
-  /* ---- Google OAuth ---- */
   const loginGoogle = async () => {
     reset(); setLoading(true)
     await supabase.auth.signInWithOAuth({
@@ -44,16 +38,9 @@ export default function LoginPage() {
     })
   }
 
-  const tabs: { key: Tab; label: string; icon: string }[] = [
-    { key: 'email', label: 'ອີເມວ', icon: '✉️' },
-    { key: 'facebook', label: 'Facebook', icon: '🔵' },
-    { key: 'google', label: 'Google', icon: '🔴' },
-  ]
-
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-8">
       <div className="bg-white rounded-3xl shadow-lg w-full max-w-sm overflow-hidden">
-        {/* Header */}
         <div className="bg-[#1247D8] px-8 pt-8 pb-6 text-white text-center">
           <div className="text-4xl mb-2">🐋</div>
           <h1 className="text-2xl font-black">BlueWhale</h1>
@@ -67,7 +54,6 @@ export default function LoginPage() {
             </div>
           )}
 
-          {/* Social buttons */}
           <button onClick={loginGoogle} disabled={loading}
             className="w-full flex items-center gap-3 bg-white hover:bg-gray-50 text-gray-700 font-bold py-3.5 rounded-2xl transition-colors disabled:opacity-60 border-2 border-gray-200 px-4">
             <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
@@ -93,23 +79,20 @@ export default function LoginPage() {
             <div className="flex-1 h-px bg-gray-200" />
           </div>
 
-          {/* Email form */}
           <form onSubmit={loginEmail} className="space-y-3">
             <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#1247D8] transition-colors">
               <svg className="w-4 h-4 mx-3 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
               <input value={email} onChange={e => setEmail(e.target.value)} type="email" required
-                placeholder="ອີເມວ"
-                className="flex-1 py-3 pr-4 outline-none text-sm" />
+                placeholder="ອີເມວ" className="flex-1 py-3 pr-4 outline-none text-sm" />
             </div>
             <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#1247D8] transition-colors">
               <svg className="w-4 h-4 mx-3 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
               <input value={password} onChange={e => setPassword(e.target.value)} type="password" required
-                placeholder="ລະຫັດຜ່ານ"
-                className="flex-1 py-3 pr-4 outline-none text-sm" />
+                placeholder="ລະຫັດຜ່ານ" className="flex-1 py-3 pr-4 outline-none text-sm" />
             </div>
             <button type="submit" disabled={loading}
               className="w-full bg-[#1247D8] text-white font-black py-3.5 rounded-2xl hover:bg-[#0d35b0] transition-colors disabled:opacity-60">
@@ -126,5 +109,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   )
 }
