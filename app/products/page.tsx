@@ -49,16 +49,6 @@ function ProductsContent() {
         </select>
       </div>
 
-      {/* Category tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-2 mb-5">
-        {cats.map(c => (
-          <button key={c} onClick={() => setCat(c)}
-            className={`shrink-0 px-4 py-2 rounded-full text-sm font-bold transition-colors ${cat === c ? 'bg-[#1247D8] text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}>
-            {c}
-          </button>
-        ))}
-      </div>
-
       {/* Count */}
       <p className="text-gray-500 text-sm mb-4">{filtered.length} ລາຍການ</p>
 
