@@ -106,9 +106,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <div className="bg-white rounded-lg px-2 py-1 h-9 flex items-center">
                   <img src="/jdb.png" alt="JDB" className="h-7 w-auto object-contain" />
                 </div>
-                {/* LDB - badge */}
-                <div className="bg-white rounded-lg px-3 h-9 flex items-center">
-                  <span className="text-[#00529B] font-black text-sm tracking-wide">LDB</span>
+                {/* LDB - real logo */}
+                <div className="bg-white rounded-lg px-2 py-1 h-9 flex items-center">
+                  <img src="/ldb.jpg" alt="LDB" className="h-7 w-auto object-contain" />
                 </div>
                 {/* COD */}
                 <div className="bg-[#EE4D2D] rounded-lg px-3 h-9 flex items-center">
