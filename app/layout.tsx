@@ -97,10 +97,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="border-t border-white/10">
             <div className="max-w-7xl mx-auto px-4 py-5 flex flex-wrap items-center gap-4">
               <p className="text-xs text-white/50 shrink-0">ຮັບຊຳລະ:</p>
-              <div className="flex flex-wrap gap-2">
-                {['BCEL One', 'JDB', 'LDB', 'COD', 'ໂອນເງິນ'].map(m => (
-                  <span key={m} className="bg-white/10 text-white text-xs font-bold px-3 py-1.5 rounded-lg">{m}</span>
-                ))}
+              <div className="flex flex-wrap items-center gap-3">
+                {/* BCEL One - real logo */}
+                <div className="bg-white rounded-lg px-2 py-1 h-9 flex items-center">
+                  <img src="/bcel-one.png" alt="BCEL One" className="h-7 w-auto object-contain" />
+                </div>
+                {/* JDB - real logo */}
+                <div className="bg-white rounded-lg px-2 py-1 h-9 flex items-center">
+                  <img src="/jdb.png" alt="JDB" className="h-7 w-auto object-contain" />
+                </div>
+                {/* LDB - badge */}
+                <div className="bg-white rounded-lg px-3 h-9 flex items-center">
+                  <span className="text-[#00529B] font-black text-sm tracking-wide">LDB</span>
+                </div>
+                {/* COD */}
+                <div className="bg-[#EE4D2D] rounded-lg px-3 h-9 flex items-center">
+                  <span className="text-white font-black text-xs">COD<br className="hidden"/><span className="text-[10px] font-normal ml-1">ຈ່າຍປາຍທາງ</span></span>
+                </div>
+                {/* ໂອນເງິນ */}
+                <div className="bg-white/10 rounded-lg px-3 h-9 flex items-center">
+                  <span className="text-white text-xs font-bold">💸 ໂອນເງິນ</span>
+                </div>
               </div>
               <p className="text-xs text-white/30 ml-auto hidden md:block">ສົ່ງຟຣີ ເມື່ອຊື້ຄົບ ₭200,000</p>
             </div>

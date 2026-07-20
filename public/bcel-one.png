@@ -1,0 +1,2229 @@
+<!DOCTYPE html>
+
+
+
+
+ 
+
+<html lang="la">
+      <head>
+        <title>ທະນາຄານ ການຄ້າຕ່າງປະເທດລາວ ມະຫາຊົນ</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="google-site-verification" content="PwFsBp95Tf0EKKvSWyqJaeCudMV7m2YnMFHjbL_4aVY" />
+        <meta name="description" content="ທະນາຄານການຄ້າຕ່າງປະເທດລາວ ມະຫາຊົນ ໃຫ້ບໍລິການຜະລິດຕະພັນຢ່າງຫາກຫຼາຍ ເຊັ່ນ ບັນຊີເງິນຝາກ, ຕູ້ເອທີເອັມ, ຕູ້ເງີນຝາກ, ບັດ,ເຮັດທຸລະກໍາຜ່ານມີຖື, ສິນເຊື່ອ ແລະ ຜະລິດຕະພັນອື່ນໆ.">
+        <meta name="author" content="ທະນາຄານ ການຄ້າຕ່າງປະເທດລາວ ມະຫາຊົນ">
+  	    <meta name="keywords" content="BCEL Bank">
+        <meta property="og:title" content="ທະນາຄານ ການຄ້າຕ່າງປະເທດລາວ ມະຫາຊົນ" />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="www.bcel.com.la" />
+		<meta property="og:url" content="https://www.bcel.com.la" />
+		<meta property="og:description" content="ທະນາຄານການຄ້າຕ່າງປະເທດລາວ ມະຫາຊົນ ໃຫ້ບໍລິການຜະລິດຕະພັນຢ່າງຫາກຫຼາຍ ເຊັ່ນ ບັນຊີເງິນຝາກ, ຕູ້ເອທີເອັມ, ຕູ້ເງີນຝາກ, ບັດ,ເຮັດທຸລະກໍາຜ່ານມີຖື, ສິນເຊື່ອ ແລະ ຜະລິດຕະພັນອື່ນໆ."/>
+	  
+       
+<link rel="icon" href="/bcel/resources/imgs/favicon.ico">
+<link rel="stylesheet" href="/bcel/resources/css/styles.web.min.css">
+
+       
+<script src="/bcel/resources/js/jquery.web.min.js"></script>
+<script src="/bcel/resources/js_data/index.min.js"></script>
+<script src="/bcel/resources/slick/slick.js"></script>
+
+ <!--[if lt IE 9]>
+	 <script src="/bcel/resources/js/html5shiv.web.min.js"></script>
+<![endif]-->
+      
+     
+    </head>
+    
+    <body >
+           
+ 		 
+
+
+
+
+ 
+
+
+
+     
+    
+    
+    
+
+     
+     
+      
+
+            <div class="head-top" id="top">
+        
+            <div class="container">
+            
+                <a href="bcel-news.html?fType=bcel-news&type=news" class="lghide "><span class="glyphicon glyphicon-bell"> </span></a>  
+                <a href="promotion.html?pType=" class="lghide "><span class="glyphicon glyphicon-bullhorn"> </span></a>  
+                
+                <a href="bcel-news.html?fType=bcel-news&type=news" class="xs-hide ">ຂ່າວສານ</a>  
+                <a href="bcel-career.html?Id=career" class=" ">ສະໝັກວຽກ</a> 
+                <a href="form-download.html?Id=forms" class="xs-hide ">ແບບຟອມຕ່າງໆ</a> 
+                <a href="promotion.html?pType=promotion" class=" xs-hide ">ກິດຈະກໍາ &amp; ໂປຼໂມຊັນ</a>    
+                <a href="bcel-land.html" class="">ຂາຍດິນ ແລະ ເຮືອນ</a>
+           
+                <a class="xs-hide " href="https://www.bcel.com.la:8443/" target="_blank">ອີເມວ </a>
+          
+                
+                
+                
+
+
+					
+		                
+		                    
+		                    
+		                        <a  href="sssshttp://www.bcel.com.la/bcel//home.html?lang=en" class="lghide  ">EN</a>
+		                    
+		                    
+				 
+            </div>
+        </div> 
+
+      
+        <div class="navbar navbar-default  topnav" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>    
+                </div>
+                <span id="home"><a class="logo" href="home.html"> <img src="/bcel/resources/imgs/logo.png" class="bcel-logo" alt="Logo"  /></a><a class="navbar-brand" href="home.html" id="mhide">ທະນາຄານ ການຄ້າຕ່າງປະເທດລາວ ມະຫາຊົນ</a></span>
+
+                <div class="navbar-collapse collapse ">
+                    <ul class="nav navbar-nav navbar-cen">
+
+
+                        <li id="xhide"><a href="home.html"><span class="glyphicons glyphicons-bank homebank"></span></a></li>
+
+                        
+                        <li class="dropdown mega-dropdown" id="dd1">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">ຜະລິດຕະພັນ &amp; ບໍລິການ <span class="chevron_toggleable1 fa fa-angle-down"></span></a>				
+                            <div class="dropdown-menu mega-dropdown-menu">
+                                <div class="container">
+                                    
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+                                            <ul class="tabmenu">
+
+                                                <li><a href="product.html?prid=deposits" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-coins"></span>ເງິນຝາກ</a></li>
+                                                <li><a href="product.html?prid=credits" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-money"></span>ສິນເຊື່ອ</a></li>
+                                                <li><a href="product-card.html?prid=cards&type=cr" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-credit-card"></span>ບັດ</a></li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="col-xs-12  col-sm-6 col-md-4 col-lg-4">
+                                            <ul class="tabmenu">
+                                             	<li><a href="product.html?prid=e-banking" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-iphone-shake"></span>ບໍລິການ ເອເລັກໂທຣນິກ</a></li>
+                                                <li><a href="product.html?prid=atm" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-modal-window"></span>ເອທີເອັມ</a></li>
+                                                <li><a href="product.html?prid=ft" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-transfer"></span>ໂອນເງິນ</a></li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                            <ul class="tabmenu">
+                                                <li><a href="product.html?prid=tf" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-invoice"></span>ການຄ້າດ້ານການເງິນ</a></li>
+                                                <li><a href="product.html?prid=utilities-payment" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-notes-2"></span>ຊຳລະສາທາລະນຸປະໂພກ</a></li>
+                                                <li><a href="product.html?prid=other-service" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-tie"></span>ບໍລິການອື່ນໆ</a></li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+
+                           </div>				
+                       </div>
+                    </li>
+                    
+
+                   
+                    <li class="dropdown mega-dropdown" id="dd2">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">ນັກລົງທຶນສໍາພັນ <span class="chevron_toggleable2 fa fa-angle-down"></span></a>				
+                            <div class="dropdown-menu mega-dropdown-menu">
+                                <div class="container">
+                                    
+                                                 
+                                   
+                                   
+                                   
+                                   <div class="container">
+                                    
+                                    <div class="row tabpad">
+                                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+                                            <ul class="tabmenu">
+                                                <li><a href="financail-report.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-list-alt"></span>ລາຍງານດ້ານການເງິນ</a></li>
+                                                <li><a href="dividend-data.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-notes-2"></span>ເງິນປັນຜົນ</a></li>
+                                                <li><a href="financail-data.html?fid=article" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-notes-2"></span>ກົດລະບຽບຂອງ ທຄຕລ</a></li>  
+                                              
+                                            </ul>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                            <ul class="tabmenu">
+                                               <li><a href="summary-business.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-list-alt"></span>ບົດສະຫຼຸບການເຄື່ອນໄຫວທຸລະກິດ</a></li>             
+                                               <li><a href="stock.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-charts"></span>ລາຄາຮຸ້ນຍ້ອນຫລັງ</a></li>
+                                               
+                                            
+                                            </ul>
+                                        </div>
+                                        <div class="col-xs-12  col-sm-6 col-md-4 col-lg-4">
+                                            <ul class="tabmenu">
+                                               <li><a href="financail-data.html?fid=market-announce" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-bullhorn"></span>ແຈ້ງຂ່າວການລົງທຶນ</a></li>   
+                                               <li><a href="share-structure.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-flowchart"></span>ໂຄງສ້າງຜູ້ຖືຮຸ້ນ</a></li>
+                                      
+                                            </ul>
+                                        </div>
+                                    </div>
+                                
+                                   
+                                </div>				
+                           </div>
+                   </li>
+                   
+                  
+
+                 
+                     <li class="dropdown mega-dropdown" id="dd3">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> ກ່ຽວກັບ ທຄຕລ <span class="chevron_toggleable3 fa fa-angle-down"></span></a>				
+                            <div class="dropdown-menu mega-dropdown-menu">
+                                <div class="container">
+                                    
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+                                            <ul class="tabmenu">
+                                                <li><a href="history.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-history"></span>ປະຫວັດຄວາມເປັນມາ</a></li>
+                                                <li><a href="organize-chart.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-flowchart"></span>ໂຄງຮ່າງການຈັດຕັ້ງ</a></li>
+                                                <li><a href="bcel-ceo.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-vcard"></span>ຄະນະບໍລິຫານ</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                            <ul class="tabmenu">
+                                                <li><a href="local-partner.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-handshake"></span>ບໍລິສັດໃນເຄືອ</a></li>
+                                                <li> <a href="bcel-award.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-cup"></span>ຜົນສຳເລັດ</a></li>
+                                                <li><a href="bcel-slogan.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-education"></span>ຄຳຂວັນ ແລະ ເຄື່ອງໝາຍການຄ້າ</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                            <ul class="tabmenu">      
+                                                <li><a href="bcel-news.html?fType=bcel-news&type=news" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-newspaper"></span>ຂ່າວສານ</a></li>
+                                                <li><a href="bcel-activity.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-picture"></span>ກິດຈະກໍາຕ່າງໆ</a></li>
+                                                
+                                                
+                                                  
+												
+												
+												
+												
+												
+                                                	<li><a href="bcel-calendar.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-calendar"></span>ປະຕິທິນ ທຄຕລ</a></li>
+                                           		
+                                            </ul>
+                                        </div>    
+                                    </div>
+                                  
+                                </div>				
+                           </div>
+                   </li>
+
+                   
+                    <li class="dropdown mega-dropdown" id="dd4">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> ຕິດຕໍ່ພວກເຮົາ <span class="chevron_toggleable4 fa fa-angle-down"></span></a>				
+                            <div class="dropdown-menu mega-dropdown-menu">
+                                <div class="container">
+                                    
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+                                            <ul class="tabmenu">
+                                                <li> <a href="contact-corporate.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-group"></span>ສໍານັກງານໃຫຍ່</a></li>
+                                                <li><a href="list-branch.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-google-maps"></span>ສາຂາ ແລະ ໜ່ວຍບໍລິການ</a></li>
+                                                 <li><a href="moneygram-location.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-google-maps"></span>ທີ່ຕັ້ງຕົວແທນຍ່ອຍ MoneyGram</a></li>
+                                                
+                                                
+                                            </ul>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                            <ul class="tabmenu">
+                                                <li><a href="inter-partner.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-global"></span>ທະນາຄານຕົວແທນຢູ່ຕ່າງປະເທດ</a></li>             
+                                                <li> <a href="aml.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-shield"></span>ພະແນກສະກັດກັ້ນການຟອກເງິນ</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                            <ul class="tabmenu">
+                                                <li><a href="feedback.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-comments"></span>ຄຳຄິດເຫັນ</a></li>
+                                                <li><a href="faq.html" data-toggle="collapse" data-target=".navbar-collapse"><span class="glyphicons glyphicons-conversation"></span>ຄໍາຖາມທີ່ຖາມເລື້ອຍໆ</a></li>
+                                               
+                                            </ul>
+                                        </div>    
+                                    </div>
+                                  
+                             </div>				
+                         </div>
+                   </li>
+                </ul>
+                
+                 <ul class="nav navbar-nav navbar-right">
+                        <li > 
+                            <form action="search.html" class="search-form" method="GET">
+                                <div class="form-group has-feedback">
+                                    
+                                    <label for="search" class="sr-only">Search</label>
+                                    <input type="text" class="form-control "  name="q" id="q" placeholder="ຄົ້ນຫາ" onkeyup="check_q(this)">
+                                    <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                </div>
+                            </form>
+                        </li>
+
+
+                    <li id="xhide">
+	                     
+	                        
+	                            
+	                            
+	                                <a  href="http://www.bcel.com.la/bcel//home.html?lang=en" class=""> <span id="langId" class="langbtn"> EN</span></a>
+	                            
+	                           
+	                      
+               </li>
+               <li class="dropdown right-dropdown" id="dd5"> 
+               
+                             
+                            
+ 
+                            
+                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" >
+                               <i class="glyphicon glyphicon-lock "></i> <span>ເຂົ້າສູ່ລະບົບ</span> <span class="chevron_toggleable5 fa fa-angle-down fa-lg"></span>
+                             </a>
+  
+                             
+                            <ul class="dropdown-menu" role="menu">
+                             
+                                
+                                
+                                
+                                
+                                
+                               
+                               
+                                <li>
+                                   <a href="https://www.bcel.com.la/bcelibank/index.jsp" target="_blank" class="dropdown-item"> 
+                                   <img src="/bcel/resources/imgs/ibank1_1.png"  alt="ibank1" class="login-logo"> BCEL I-Bank <span class="fa fa-angle-right fa-lg m-pull-right"></span>
+                                   </a>	
+                                </li>
+                                
+                               
+                               
+                                      
+  								<li>
+  									  
+                                     <a href="Stmt-check.html" class="dropdown-item">
+                                     	<span class="glyphicons glyphicons-check login-logo m-pull-left "></span>ກວດບັນຊີສໍາຮອງ <span class="fa fa-angle-right fa-lg m-pull-right">  </span>
+                                     </a>	
+                                 </li>
+                              	
+											
+									<li>
+									 
+                                     <a href="Certificate-Account-Statement.html"class="dropdown-item" >
+                                     	<span class="glyphicons glyphicons-check login-logo m-pull-left"></span>ກວດໃບຢັ້ງຢືນຂໍ້ມູນ ບັນຊີເງິນຝາກ<span class="fa fa-angle-right fa-lg  m-pull-right"></span>
+                                     	</a>
+                                    </li> 
+                                    
+                                    <li>
+									 
+                                     <a href="Certificate-bank-confirmation.html"class="dropdown-item" >
+                                     	<span class="glyphicons glyphicons-check login-logo m-pull-left"></span>ໃບຢັ້ງຢືນຍອດເຫຼືອບັນຊີ <span class="fa fa-angle-right fa-lg  m-pull-right"></span>
+                                     	</a>
+                                    </li> 
+                                    
+                                    			  
+  									<li>
+  									  
+  									  
+  									     <a href="https://www.bcel.com.la/bcelform"class="dropdown-item" target="_blank">
+                                     	<span class="glyphicons glyphicons-list-alt login-logo m-pull-left"></span>ຕື່ມແບບຟອມເປີດບັນຊີ(ອອນໄລນ໌) <span class="fa fa-angle-right fa-lg  m-pull-right"></span>
+                                     	</a>
+                                     	
+                 
+                                    </li>
+                                    
+                            </ul>
+           
+   				    </li>
+                 </ul>
+             </div>
+         </div> 
+       </div>
+  
+     <div class="clrboth"></div>
+        
+        <div id="render-page">
+          
+
+
+
+
+ 
+
+
+
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+    
+    <ol class="carousel-indicators">
+        
+		            
+		                
+		                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+		                
+		                
+		            
+        
+		            
+		                
+		                
+		                    <li data-target="#myCarousel" data-slide-to="1" ></li>
+		                
+		            
+        
+		            
+		                
+		                
+		                    <li data-target="#myCarousel" data-slide-to="2" ></li>
+		                
+		            
+        
+		            
+		                
+		                
+		                    <li data-target="#myCarousel" data-slide-to="3" ></li>
+		                
+		            
+        
+		            
+		                
+		                
+		                    <li data-target="#myCarousel" data-slide-to="4" ></li>
+		                
+		            
+        
+		            
+		                
+		                
+		                    <li data-target="#myCarousel" data-slide-to="5" ></li>
+		                
+		            
+        
+		            
+		                
+		                
+		                    <li data-target="#myCarousel" data-slide-to="6" ></li>
+		                
+		            
+        
+		            
+		                
+		                
+		                    <li data-target="#myCarousel" data-slide-to="7" ></li>
+		                
+		            
+        
+		            
+		                
+		                
+		                    <li data-target="#myCarousel" data-slide-to="8" ></li>
+		                
+		            
+        
+		            
+		                
+		                
+		                    <li data-target="#myCarousel" data-slide-to="9" ></li>
+		                
+		            
+        
+		            
+		                
+		                
+		                    <li data-target="#myCarousel" data-slide-to="10" ></li>
+		                
+		            
+        
+		            
+		                
+		                
+		                    <li data-target="#myCarousel" data-slide-to="11" ></li>
+		                
+		            
+        
+		            
+		                
+		                
+		                    <li data-target="#myCarousel" data-slide-to="12" ></li>
+		                
+		            
+        
+		            
+		                
+		                
+		                    <li data-target="#myCarousel" data-slide-to="13" ></li>
+		                
+		            
+        
+    </ol>
+		
+    <div class="carousel-inner" role="listbox">
+
+       
+            
+                
+                    <div class="item active">
+                            	  
+			                    
+			                     
+			                    
+			                      
+			                    	
+			                    	      
+			                        		
+			                    	
+			                    
+			                    
+    				 <a id="ft_la501" href="product-review.html?prd=ft&id=mg">
+    				 	<picture>
+    				 		<source srcset="/bcel/bcelweb-datas/ui-product/imgs/bcel1/bcel_web_file_10_6f19a3041412d8360e6bce342603c141.jpg" alt="ft_la501" media="(max-width: 600px)">
+  							<source srcset="/bcel/bcelweb-datas/ui-product/files/bcel1/bcel_web_file_10_a82df141a538031b6c1e0dbb04bc3194.jpg" alt="ft_la501"  class="img-resp">                         
+                        	<img src="/bcel/bcelweb-datas/ui-product/files/bcel1/bcel_web_file_10_a82df141a538031b6c1e0dbb04bc3194.jpg" alt="ft_la501" class="img-resp">
+
+                            </picture>
+                            </a>
+                    </div>
+                
+                
+            
+        
+            
+                
+                
+                    <div class="item">
+                         
+			                    
+			                    
+			                     
+			                    
+			                    
+			                      
+			                    	
+			                    	      
+			                        		
+			                    	
+			                    
+                    
+                    <a id="bcel1_la475" href="product-review.html?prd=bcel1&id=OneBank">
+                    
+                    		<picture>
+    				 			<source srcset="/bcel/bcelweb-datas/ui-product/imgs/bcel1/bcel_web_file_6_d045569dec73427b680e7e301d4b9643.jpg" media="(max-width: 600px)">
+  								<source srcset="/bcel/bcelweb-datas/ui-product/files/bcel1/bcel_web_file_6_d045569dec73427b680e7e301d4b9643.jpg" alt="bcel1_la475" class="img-resp">                         
+									<img src="/bcel/bcelweb-datas/ui-product/files/bcel1/bcel_web_file_6_d045569dec73427b680e7e301d4b9643.jpg" alt="bcel1_la475" class="img-resp" >
+                            </picture>
+                            </a>
+              
+                      
+                        
+                    </div>
+                
+            
+        
+            
+                
+                
+                    <div class="item">
+                         
+			                    
+			                    
+			                     
+			                    
+			                    
+			                      
+			                    	
+			                    	      
+			                        		
+			                    	
+			                    
+                    
+                    <a id="ft_la437" href="product-review.html?prd=ft&id=GLN">
+                    
+                    		<picture>
+    				 			<source srcset="/bcel/bcelweb-datas/ui-product/imgs/inter-remittance/bcel_web_file_1_6d96775dd59a30843d051b200b4b9911.png" media="(max-width: 600px)">
+  								<source srcset="/bcel/bcelweb-datas/ui-product/files/ft/bcel_web_file_34_1ebfe33d036e6aabcc5ad5dc743009a2.jpg" alt="ft_la437" class="img-resp">                         
+									<img src="/bcel/bcelweb-datas/ui-product/files/ft/bcel_web_file_34_1ebfe33d036e6aabcc5ad5dc743009a2.jpg" alt="ft_la437" class="img-resp" >
+                            </picture>
+                            </a>
+              
+                      
+                        
+                    </div>
+                
+            
+        
+            
+                
+                
+                    <div class="item">
+                         
+			                    
+			                    
+			                     
+			                    
+			                    
+			                      
+			                    	
+			                    	      
+			                        		
+			                    	
+			                    
+                    
+                    <a id="cards_la433" href="product-review.html?prd=cards&id=visacorp">
+                    
+                    		<picture>
+    				 			<source srcset="/bcel/bcelweb-datas/ui-product/imgs/cards/bcel_web_file_126_6505d3241e80ffdfe7343ac80ecf2328.jpg" media="(max-width: 600px)">
+  								<source srcset="/bcel/bcelweb-datas/ui-product/files/cards/bcel_web_file_135_f1f80ac89166c81098bfd983c8b9eda3.jpg" alt="cards_la433" class="img-resp">                         
+									<img src="/bcel/bcelweb-datas/ui-product/files/cards/bcel_web_file_135_f1f80ac89166c81098bfd983c8b9eda3.jpg" alt="cards_la433" class="img-resp" >
+                            </picture>
+                            </a>
+              
+                      
+                        
+                    </div>
+                
+            
+        
+            
+                
+                
+                    <div class="item">
+                         
+			                    
+			                    
+			                     
+			                    
+			                    
+			                      
+			                    	
+			                    	      
+			                        		
+			                    	
+			                    
+                    
+                    <a id="e-banking_la446" href="product-review.html?prd=e-banking&id=crossborder">
+                    
+                    		<picture>
+    				 			<source srcset="/bcel/bcelweb-datas/ui-product/imgs/e-banking/bcel_web_file_108_ca1b4e5f5c5306c29ba4127c7fbb45dc.jpg" media="(max-width: 600px)">
+  								<source srcset="/bcel/bcelweb-datas/ui-product/files/e-banking/bcel_web_file_89_ca1b4e5f5c5306c29ba4127c7fbb45dc.jpg" alt="e-banking_la446" class="img-resp">                         
+									<img src="/bcel/bcelweb-datas/ui-product/files/e-banking/bcel_web_file_89_ca1b4e5f5c5306c29ba4127c7fbb45dc.jpg" alt="e-banking_la446" class="img-resp" >
+                            </picture>
+                            </a>
+              
+                      
+                        
+                    </div>
+                
+            
+        
+            
+                
+                
+                    <div class="item">
+                         
+			                    
+			                    
+			                     
+			                    
+			                    
+			                      
+			                    	
+			                    	      
+			                        		
+			                    	
+			                    
+                    
+                    <a id="cards_la390" href="product-review.html?prd=cards&id=VISA_Platinum2">
+                    
+                    		<picture>
+    				 			<source srcset="/bcel/bcelweb-datas/ui-product/imgs/cards/bcel_web_file_5_268e67b7fbc0e5b65b8159b264a79ba2.gif" media="(max-width: 600px)">
+  								<source srcset="/bcel/bcelweb-datas/ui-product/files/cards/bcel_web_file_136_5e688d0bcbf1405e54ae7f97ab1f3e99.jpg" alt="cards_la390" class="img-resp">                         
+									<img src="/bcel/bcelweb-datas/ui-product/files/cards/bcel_web_file_136_5e688d0bcbf1405e54ae7f97ab1f3e99.jpg" alt="cards_la390" class="img-resp" >
+                            </picture>
+                            </a>
+              
+                      
+                        
+                    </div>
+                
+            
+        
+            
+                
+                
+                    <div class="item">
+                         
+			                    
+			                    
+			                     
+			                    
+			                    
+			                      
+			                    	
+			                    	      
+			                        		
+			                    	
+			                    
+                    
+                    <a id="cards_la389" href="product-review.html?prd=cards&id=VISA_platinum">
+                    
+                    		<picture>
+    				 			<source srcset="/bcel/bcelweb-datas/ui-product/imgs/cards/bcel_web_file_6_d662d3b5cfed92c4b83429d9c3abfd34.gif" media="(max-width: 600px)">
+  								<source srcset="/bcel/bcelweb-datas/ui-product/files/cards/bcel_web_file_137_a9009b3de907c5d4662af3e7f96b189.jpg" alt="cards_la389" class="img-resp">                         
+									<img src="/bcel/bcelweb-datas/ui-product/files/cards/bcel_web_file_137_a9009b3de907c5d4662af3e7f96b189.jpg" alt="cards_la389" class="img-resp" >
+                            </picture>
+                            </a>
+              
+                      
+                        
+                    </div>
+                
+            
+        
+            
+                
+                
+                    <div class="item">
+                         
+			                    
+			                    
+			                     
+			                    
+			                    
+			                      
+			                    	
+			                    	      
+			                        		
+			                    	
+			                    
+                    
+                    <a id="cards_la493" href="product-review.html?prd=cards&id=PlatinumDebit">
+                    
+                    		<picture>
+    				 			<source srcset="/bcel/bcelweb-datas/ui-product/imgs/cards/bcel_web_file_8_dab7995bf46feff8a608e77361c02744.gif" media="(max-width: 600px)">
+  								<source srcset="/bcel/bcelweb-datas/ui-product/files/cards/bcel_web_file_133_e6591353bcc6cc772ec4d172aefb4726.jpg" alt="cards_la493" class="img-resp">                         
+									<img src="/bcel/bcelweb-datas/ui-product/files/cards/bcel_web_file_133_e6591353bcc6cc772ec4d172aefb4726.jpg" alt="cards_la493" class="img-resp" >
+                            </picture>
+                            </a>
+              
+                      
+                        
+                    </div>
+                
+            
+        
+            
+                
+                
+                    <div class="item">
+                         
+			                    
+			                    
+			                     
+			                    
+			                    
+			                      
+			                    	
+			                    	      
+			                        		
+			                    	
+			                    
+                    
+                    <a id="cards_la402" href="product-review.html?prd=cards&id=visa">
+                    
+                    		<picture>
+    				 			<source srcset="/bcel/bcelweb-datas/ui-product/imgs/cards/bcel_web_file_162_bf6caad2f37b7b4efcf8c25477581c62.jpg" media="(max-width: 600px)">
+  								<source srcset="/bcel/bcelweb-datas/ui-product/files/cards/bcel_web_file_155_c3bc9be4a65c0b0ae532d69d53571904.jpg" alt="cards_la402" class="img-resp">                         
+									<img src="/bcel/bcelweb-datas/ui-product/files/cards/bcel_web_file_155_c3bc9be4a65c0b0ae532d69d53571904.jpg" alt="cards_la402" class="img-resp" >
+                            </picture>
+                            </a>
+              
+                      
+                        
+                    </div>
+                
+            
+        
+            
+                
+                
+                    <div class="item">
+                         
+			                    
+			                    
+			                     
+			                    
+			                    
+			                      
+			                    	
+			                    	      
+			                        		
+			                    	
+			                    
+                    
+                    <a id="credits_la425" href="product-review.html?prd=credits&id=CSMLoan">
+                    
+                    		<picture>
+    				 			<source srcset="/bcel/bcelweb-datas/ui-product/imgs/credits/bcel_web_file_18_bd0511335d5d46b35c4c2b4361c03bc.jpg" media="(max-width: 600px)">
+  								<source srcset="/bcel/bcelweb-datas/ui-product/files/credits/bcel_web_file_21_920cd8feaa520a128c1f74b69608155c.jpg" alt="credits_la425" class="img-resp">                         
+									<img src="/bcel/bcelweb-datas/ui-product/files/credits/bcel_web_file_21_920cd8feaa520a128c1f74b69608155c.jpg" alt="credits_la425" class="img-resp" >
+                            </picture>
+                            </a>
+              
+                      
+                        
+                    </div>
+                
+            
+        
+            
+                
+                
+                    <div class="item">
+                         
+			                    
+			                    
+			                     
+			                    
+			                    
+			                      
+			                    	
+			                    	      
+			                        		
+			                    	
+			                    
+                    
+                    <a id="credits_la424" href="product-review.html?prd=credits&id=HomeLoan">
+                    
+                    		<picture>
+    				 			<source srcset="/bcel/bcelweb-datas/ui-product/imgs/credits/bcel_web_file_17_b71776b0f2d6ecdeda2d516ab55af8da.jpg" media="(max-width: 600px)">
+  								<source srcset="/bcel/bcelweb-datas/ui-product/files/credits/bcel_web_file_22_770a0c529ff15d424366c88b8a646f38.jpg" alt="credits_la424" class="img-resp">                         
+									<img src="/bcel/bcelweb-datas/ui-product/files/credits/bcel_web_file_22_770a0c529ff15d424366c88b8a646f38.jpg" alt="credits_la424" class="img-resp" >
+                            </picture>
+                            </a>
+              
+                      
+                        
+                    </div>
+                
+            
+        
+            
+                
+                
+                    <div class="item">
+                         
+			                    
+			                    
+			                     
+			                    
+			                    
+			                      
+			                    	
+			                    	      
+			                        		
+			                    	
+			                    
+                    
+                    <a id="credits_la453" href="product-review.html?prd=credits&id=SME3percent">
+                    
+                    		<picture>
+    				 			<source srcset="/bcel/bcelweb-datas/ui-product/imgs/credits/bcel_web_file_23_4857db1c893a2b3b22479fdd53f66136.jpg" media="(max-width: 600px)">
+  								<source srcset="/bcel/bcelweb-datas/ui-product/files/credits/bcel_web_file_28_4857db1c893a2b3b22479fdd53f66136.jpg" alt="credits_la453" class="img-resp">                         
+									<img src="/bcel/bcelweb-datas/ui-product/files/credits/bcel_web_file_28_4857db1c893a2b3b22479fdd53f66136.jpg" alt="credits_la453" class="img-resp" >
+                            </picture>
+                            </a>
+              
+                      
+                        
+                    </div>
+                
+            
+        
+            
+                
+                
+                    <div class="item">
+                         
+			                    
+			                    
+			                     
+			                    
+			                    
+			                      
+			                    	
+			                    	      
+			                        		
+			                    	
+			                    
+                    
+                    <a id="deposits_la239" href="product-review.html?prd=deposits&id=ac-kids">
+                    
+                    		<picture>
+    				 			<source srcset="/bcel/bcelweb-datas/ui-product/imgs/deposits/bcel_web_file_25_27426d24d0bb0c96bf214d553f28fddc.jpg" media="(max-width: 600px)">
+  								<source srcset="/bcel/bcelweb-datas/ui-product/files/deposits/bcel_web_file_17_38d0d5c3b8e1d5539130576e584639f8.jpg" alt="deposits_la239" class="img-resp">                         
+									<img src="/bcel/bcelweb-datas/ui-product/files/deposits/bcel_web_file_17_38d0d5c3b8e1d5539130576e584639f8.jpg" alt="deposits_la239" class="img-resp" >
+                            </picture>
+                            </a>
+              
+                      
+                        
+                    </div>
+                
+            
+        
+            
+                
+                
+                    <div class="item">
+                         
+			                    
+			                    
+			                     
+			                    
+			                    
+			                      
+			                    	
+			                    	      
+			                        		
+			                    	
+			                    
+                    
+                    <a id="atm_la59" href="product-review.html?prd=atm&id=bconnex">
+                    
+                    		<picture>
+    				 			<source srcset="/bcel/bcelweb-datas/ui-product/imgs/atm/bcel_web_file_17_86b890a61f757b66ad8b1a069406ad27.jpg" media="(max-width: 600px)">
+  								<source srcset="/bcel/bcelweb-datas/ui-product/files/atm/bcel_web_file_11_86b890a61f757b66ad8b1a069406ad27.jpg" alt="atm_la59" class="img-resp">                         
+									<img src="/bcel/bcelweb-datas/ui-product/files/atm/bcel_web_file_11_86b890a61f757b66ad8b1a069406ad27.jpg" alt="atm_la59" class="img-resp" >
+                            </picture>
+                            </a>
+              
+                      
+                        
+                    </div>
+                
+            
+         
+    </div>
+
+
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+  
+</div>
+
+
+          
+
+
+
+<div class="clrboth"></div>
+
+
+<div class="bggrey">
+  <div class="container-bcel">
+     <div class="row-bcel">        
+        <div class="col-xs-12 col-sm-12 col-md-7  col-lg-7">
+
+         
+		 		<div class="col-xs-12 col-sm-12 col-md-12  col-lg-12">
+			 		 <table >
+			 		 <tbody>
+				 		 <tr >
+				 		 <td class="border-title">
+									<a class="title-l br-red" >ຄວາມຮູ້ &amp; ຂ່າວສານ</a>
+									&nbsp;
+									<a class="text-grey" href="bcel-news.html?fType=bcel-news&type=news">ເບິ່ງທັງໝົດ</a>
+									<a href="bcel-news.html?fType=bcel-news&type=news"class="spanindx"> <span class="fa fa-angle-right fa-lg "></span></a> 
+				 		 	</td>
+				 		 </tr>
+			 		 <tbody>
+			 	   </table>
+				</div>
+		
+	          
+							 
+						
+							   
+								   	
+								   		
+								   	
+								   	
+							   
+							   <div class="col-xs-12 col-sm-12 col-md-12  col-lg-12">
+								    	<div class="card card-width">
+								           
+								                   <a href="bcel-news-details.html?fid=1467&fType=bcel-news&type=BID">
+														 <img src="/bcel/bcelweb-datas/file-path/bcel-news/img/bcel_web_file_298_b7a558170f6aa686c96eaccd143a9648.PNG" alt="1467"  class="img-resp2">
+								                    </a>
+								             
+								             
+								             <div class="card-body">
+								               <p class="card-title card-text"><a href="bcel-news-details.html?fid=1467&fType=bcel-news&type=BID">ແຈ້ງເຊີນເຂົ້າຮ່ວມຍື່ນຊອງປະມູນລ...</a></p>
+								               <p class="card-text pb-1">15/07/2026</p>
+								            </div>
+								    </div>  
+							   </div>
+							   
+						 
+						
+							   
+								   	
+								   	
+								   			
+								   	
+							   
+							   <div class="col-xs-12 col-sm-6 col-md-6  col-lg-6">
+								    	<div class="card card-width">
+								           
+								                   <a href="bcel-news-details.html?fid=1464&fType=bcel-news&type=BID">
+														 <img src="/bcel/bcelweb-datas/file-path/bcel-news/img/bcel_web_file_297_4f91dc0666c3da018ddb814ab02c95b1.png" alt="1464"  class="img-resp2">
+								                    </a>
+								             
+								             
+								             <div class="card-body">
+								               <p class="card-title card-text"><a href="bcel-news-details.html?fid=1464&fType=bcel-news&type=BID">ແຈ້ງເຊີນເຂົ້າຮ່ວມຍືນຊອງປະມູນລາ...</a></p>
+								               <p class="card-text pb-1">08/07/2026</p>
+								            </div>
+								    </div>  
+							   </div>
+							   
+						 
+						
+							   
+								   	
+								   	
+								   			
+								   	
+							   
+							   <div class="col-xs-12 col-sm-6 col-md-6  col-lg-6">
+								    	<div class="card card-width">
+								           
+								                   <a href="bcel-news-details.html?fid=1463&fType=bcel-news&type=BID">
+														 <img src="/bcel/bcelweb-datas/file-path/bcel-news/img/bcel_web_file_295_86f6cacbbbea7f4b718def1becefa399.png" alt="1463"  class="img-resp2">
+								                    </a>
+								             
+								             
+								             <div class="card-body">
+								               <p class="card-title card-text"><a href="bcel-news-details.html?fid=1463&fType=bcel-news&type=BID">ແຈ້ງເຊີນເຂົ້າຮ່ວມຍື່ນຊອງປະມູນລ...</a></p>
+								               <p class="card-text pb-1">07/07/2026</p>
+								            </div>
+								    </div>  
+							   </div>
+							   
+						
+	
+		 
+		 
+		 		<div class="col-xs-12 col-sm-12 col-md-12  col-lg-12">
+			 		 <table >
+			 		 <tbody>
+				 		 <tr >
+				 		 <td class="border-title">
+									<a class="title-l br-red" >ກິດຈະກໍາ &amp; ໂປຼໂມຊັນ</a>
+									&nbsp;
+									<a class="text-grey" href="promotion.html?pType=">ເບິ່ງທັງໝົດ</a>
+									<a href="promotion.html?pType="class="slick-arrow"><span class="fa fa-angle-right fa-lg "></span></a> 
+				 		 	</td>
+				 		 </tr>
+			 		 <tbody>
+			 	   </table>
+				</div>
+		 
+		  
+							 
+						
+							   
+								   	
+								   		
+								   	
+								   	
+							   
+							   
+							    
+  
+			                    
+			                      
+			                    	
+			                    			
+			                    	
+			                    	
+			                    
+
+							   <div class="col-xs-12 col-sm-6 col-md-6  col-lg-6">
+								    	<div class="card card-width">
+								            
+								                   <a href="promotion-review-card.html?pmt=cards&type=all&id=bcel-card">
+														    <img src="/bcel/bcelweb-datas/ui-product/imgs/cards/bcel_web_file_115_baf731a0441c036eda19a3f7ee0130f9.jpg" alt="bcel_web_file_115_baf731a0441c036eda19a3f7ee0130f9.jpg" class="img-resp2" />
+														    </a>
+
+								             
+								             
+								             <div class="card-body">
+								               <p class="card-title card-text"><a href="promotion-review-card.html?pmt=cards&type=all&id=bcel-card">ໂປຣໂມຊັນ ບັດ...</a></p>
+								               <p class="card-text pb-1"></p>
+								            </div>
+								    </div>  
+							   </div>
+						
+	</div>
+
+<div class="col-xs-12 col-sm-12 col-md-5  col-lg-5">	     
+            <div class="panel-group" id="accordion">
+                    <div class="panel panel-white">
+                        <div class="panel-heading bgred">
+                            <h1 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true"><span class="fa fa-angle-down fa-lg "></span> ອັດຕາແລກປ່ຽນເງິນຕາ</a>
+                            </h1>
+                        </div>
+                         
+                        <div id="collapse1" class="panel-collapse collapse in">
+                            <div class="panel-body ">
+                                <div class="table-responsive">
+                                    
+                                    <table id="fxRate" class="table table-striped">
+										<tbody>
+                                         
+                                            <tr>
+	                                            <th></th>
+	                                            <th>ສະກຸນເງິນ</th>
+	                                            <th>ອັດຕາຊື້</th>
+	                                            <th>ອັດຕາຂາຍ</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><img src="/bcel/resources/imgs/flag/USD.png" class="ccy-logo"  alt="USD"/> </td>
+                                                <td>USD</td>
+                                                <td class="xred" id="usd_buy">22,454</td>
+                                            <td class="xred" id="usd_sell">22,705</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><img src="/bcel/resources/imgs/flag/THB.png" class="ccy-logo"  alt="THB"/> </td>
+                                                <td>THB</td>
+                                                <td class="xred" id="thb_buy">674.87</td>
+                                            <td class="xred" id="thb_sell">688.36</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><img src="/bcel/resources/imgs/flag/EUR.png" class="ccy-logo"  alt="EUR"/> </td>
+                                                <td>EUR</td>
+                                                <td class="xred" id="eur_buy">25,592</td>
+                                            <td class="xred" id="eur_sell">26,109</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><img src="/bcel/resources/imgs/flag/GBP.png" class="ccy-logo"  alt="GBP"/> </td>
+                                                <td>GBP</td>
+                                                <td class="xred" id="gbp_buy">30,091</td>
+                                            <td class="xred" id="gbp_sell">30,693</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="text-center"><img src="/bcel/resources/imgs/flag/AUD.png" class="ccy-logo"  alt="AUD"/> </td>
+                                                <td>AUD</td>
+                                                <td class="xred" id="aud_buy">15,296</td>
+                                            <td class="xred" id="aud_sell">15,847</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><img src="/bcel/resources/imgs/flag/CAD.png" class="ccy-logo"  alt="CAD"/> </td>
+                                                <td>CAD</td>
+                                                <td class="xred" id="cad_buy">15,532</td>
+                                            <td class="xred" id="cad_sell">16,102</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="text-center"><img src="/bcel/resources/imgs/flag/JPY.png" class="ccy-logo"  alt="JPY"/> </td>
+                                                <td>JPY</td>
+                                                <td class="xred" id="jpy_buy">139.67</td>
+                                            <td class="xred" id="jpy_sell">142.46</td>
+                                            </tr>
+                                               <tr>
+                                                <td class="text-center"><img src="/bcel/resources/imgs/flag/CHF.png" class="ccy-logo"  alt="CHF"/> </td>
+                                                <td>CHF</td>
+                                                <td class="xred" id="chf_buy">27,193</td>
+                                            <td class="xred" id="chf_sell">28,349</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center"><img src="/bcel/resources/imgs/flag/CNY.png" class="ccy-logo"  alt="CNY"/> </td>
+                                                <td>CNY</td>
+                                                <td class="xred" id="cny_buy">3,267</td>
+                                            <td class="xred" id="cny_sell">3,332</td>
+                                            </tr>
+                                             <tr>
+                                                <td class="text-center"><img src="/bcel/resources/imgs/flag/SGD.png" class="ccy-logo"  alt="SGD"/> </td>
+                                                <td>SGD</td>
+                                                <td class="xred" id="sgd_buy">16,847</td>
+                                            	<td class="xred" id="sgd_sell">17,388</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="" colspan="3"><b>ວັນທີ :</b> <span id="dates_ex"> 2026-07-17</span></td>
+                                            	<td class="xred " id="td_ex_detail"><a href="exchange-rate.html" >ລາຍລະອຽດ...</a></td>
+                                            </tr>
+                                        
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>     
+       
+           
+                    <div class="panel panel-white">
+                         <div class="panel-heading grey-lv3">
+                            <h1 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" class="collapsed" aria-expanded="false">
+                                <span class="fa fa-angle-down fa-lg"></span> ລາຄາຮຸ້ນ</a>
+                            </h1>
+                        </div>
+               
+   
+                        <div id="collapse2" class="panel-collapse collapse " aria-expanded="false">
+                        
+                            <div class="panel-body ">
+                                <div class="table-responsive">
+                                    <table id="stock" class="table table-striped">
+										<tbody>
+                                         
+                                            <tr>
+                                                <th class="">ລາຄາປະຈຸບັນ</th>
+                                                <th class="xred">2,560</th>
+                                            </tr>
+                                            <tr>
+                                                <td >ມື້ກ່ອນໜ້າ</td>
+                                                <td >2,540</td>
+                                            </tr>
+                                            <tr>
+                                                <td >ເປີດ</td>
+                                                <td >2,550</td>
+                                            </tr>
+                                            <tr>
+                                                <td >ປ່ຽນແປງ</td>
+	                                            
+	                                            
+	                                                <td class="xgreen"><img  src="/bcel/resources/imgs/ico_up.gif" alt="ico_up"/> 0.79</td>
+	                                            
+	                                            
+                                            </tr>
+                                            <tr>
+                                                <td >ປ່ຽນແປງ (%)</td>
+	                                            
+	                                            
+	                                                <td class="xgreen"><img  src="/bcel/resources/imgs/ico_up.gif" alt="ico_up"/> 20</td>
+	                                            
+	                                            
+                                            </tr>
+                                            <tr>
+                                                <td >ສູງ</td>
+                                            	<td>2,560</td>
+                                            </tr>
+                                            <tr>
+                                                <td >ຕໍ່າ</td>
+                                            	<td>2,540</td>
+                                            </tr>
+                                            <tr>
+                                                <td >ປະລິມານ ຊື້-ຂາຍ (ຮຸ້ນ)</td>
+                                            	<td>86,600</td>
+                                            </tr>
+                                            <tr>
+                                                <td >ມູນຄ່າ ຊື້-ຂາຍ (ກີບ)</td>
+                                            	<td>221,374,000</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="xred" >ວັນທີ : 2026-07-17 14:58:59</td>
+                                            	<td class="xred" ><a class="" href="stock.html" >ລາຍລະອຽດ...</a></td>
+                                            </tr>
+                                         
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                </div> 
+          
+          
+
+                    <div class="panel panel-white">
+                        <div class="panel-heading grey-lv4">
+                            <h1 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" class="collapsed" aria-expanded="false"><span class="fa fa-angle-down fa-lg"></span> ອັດຕາດອກເບ້ຍເງິນຝາກ</a>         
+                            </h1>
+                        </div>
+                        <div id="collapse3" class="panel-collapse collapse ">
+                            <div class="panel-body scrollY">
+                                <div class="table-responsive">
+                                    <table class="table table-striped" id="tb_int_rate">
+                                    <tbody>
+                                        <tr>
+                                            <th ></th>
+                                            <th>ກີບ</th>
+                                        	<th>ໂດລາ</th>
+                                        	<th>ບາດ</th>
+                                        	<th>ຢວນ</th>
+                                        </tr>
+                                        
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກກະແສລາຍວັນ</td>
+                                              
+	                                                
+		                                                <td class="xred">-</td>
+	                                                
+	                                                
+                                                
+                                                   
+	                                                
+		                                                <td class="xred">-</td>
+	                                                
+	                                          
+                                               
+                                                 
+	                                                
+		                                                <td class="xred">-</td>
+	                                                
+	                                               
+	                                               
+                                             
+                                                
+	                                                
+		                                                <td class="xred">-</td>
+	                                                
+	                                               
+	                                               
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກປະຢັດ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">1.60%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">1.00%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">0.55%</td>
+		                                          
+                                             
+                                                
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">0.20%</td>
+		                                          
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກມີກຳນົດ 3 ເດືອນ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">3.16%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">1.50%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">1.10%</td>
+		                                          
+                                             
+                                                
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">1.00%</td>
+		                                          
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກມີກຳນົດ 6 ເດືອນ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">3.95%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">2.25%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">1.85%</td>
+		                                          
+                                             
+                                                
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">1.10%</td>
+		                                          
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກມີກຳນົດ 9 ເດືອນ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">4.77%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">2.75%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">2.35%</td>
+		                                          
+                                             
+                                                
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">1.20%</td>
+		                                          
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກມີກຳນົດ 12 ເດືອນ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">5.59%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">3.25%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">2.85%</td>
+		                                          
+                                             
+                                                
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">1.30%</td>
+		                                          
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກມີກຳນົດ 15 ເດືອນ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">5.87%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">3.78%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">3.10%</td>
+		                                          
+                                             
+                                                
+	                                                
+		                                                <td class="xred">-</td>
+	                                                
+	                                               
+	                                               
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກມີກຳນົດ 18 ເດືອນ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">6.15%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">4.15%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">3.35%</td>
+		                                          
+                                             
+                                                
+	                                                
+		                                                <td class="xred">-</td>
+	                                                
+	                                               
+	                                               
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກມີກຳນົດ 21 ເດືອນ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">6.43%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">4.53%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">3.60%</td>
+		                                          
+                                             
+                                                
+	                                                
+		                                                <td class="xred">-</td>
+	                                                
+	                                               
+	                                               
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກມີກຳນົດ 24 ເດືອນ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">6.71%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">4.90%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">3.85%</td>
+		                                          
+                                             
+                                                
+	                                                
+		                                                <td class="xred">-</td>
+	                                                
+	                                               
+	                                               
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກມີກຳນົດ 30 ເດືອນ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">6.74%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">5.40%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">4.60%</td>
+		                                          
+                                             
+                                                
+	                                                
+		                                                <td class="xred">-</td>
+	                                                
+	                                               
+	                                               
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກມີກຳນົດ 36 ເດືອນ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">6.77%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">5.90%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">5.35%</td>
+		                                          
+                                             
+                                                
+	                                                
+		                                                <td class="xred">-</td>
+	                                                
+	                                               
+	                                               
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກມີກຳນົດ 42 ເດືອນ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">6.80%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">6.03%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">5.48%</td>
+		                                          
+                                             
+                                                
+	                                                
+		                                                <td class="xred">-</td>
+	                                                
+	                                               
+	                                               
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກມີກຳນົດ 48 ເດືອນ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">6.83%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">6.15%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">5.60%</td>
+		                                          
+                                             
+                                                
+	                                                
+		                                                <td class="xred">-</td>
+	                                                
+	                                               
+	                                               
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກມີກຳນົດ 54 ເດືອນ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">6.87%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">6.40%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">5.85%</td>
+		                                          
+                                             
+                                                
+	                                                
+		                                                <td class="xred">-</td>
+	                                                
+	                                               
+	                                               
+                                             
+                                            </tr>
+                                        
+                                            <tr>
+                                            <td class="">ເງິນຝາກມີກຳນົດ 60 ເດືອນ</td>
+                                              
+	                                                
+	                                                
+		                                               <td class="xred">6.90%</td>
+		                                          
+                                                
+                                                   
+	                                                
+	                                          
+		                                               <td class="xred">6.65%</td>
+		                                          
+                                               
+                                                 
+	                                                
+	                                               
+	                                               
+		                                               <td class="xred">6.10%</td>
+		                                          
+                                             
+                                                
+	                                                
+		                                                <td class="xred">-</td>
+	                                                
+	                                               
+	                                               
+                                             
+                                            </tr>
+                                        
+                                        <tr  id="tr_int_rate">
+                                            <td colspan="3"><b>ເລີ່ມນໍາໃຊ້ວັນທີ :</b> <span id="date_int"></span>2021-10-18</td>
+                                            <td colspan="2" class="xred " ><a href="interest.html?fid=deposit-interest" >ລາຍລະອຽດ...</a></td>
+                                        </tr>
+									</tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    
+                    <div class="panel panel-white">
+                     <div class="panel-heading grey-lv6">
+                            <h1 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse4"><span class="fa fa-angle-down fa-lg"></span>ອັດຕາດອກເບ້ຍເງິນກູ້</a>
+                            </h1>
+                        </div>
+
+                        <div id="collapse4" class="panel-collapse collapse bd-red" aria-expanded="false">
+                            <div class="panel-body scrollY">
+                                <div class="table-responsive">
+                                    <table class="table table-striped" id="tb_loan_rate">
+                                    <tbody>
+                                        <tr>
+                                            <th></th>
+                                            <th>ກີບ</th>
+                                        	<th>ໂດລາ</th>
+                                        	<th>ບາດ</th>
+                                        </tr>
+
+                                        
+                                        
+                                            <tr>
+                                                <td class="">ປະເພດ AAA ໄລຍະສັ້ນ (ບໍ່ເກີນ 12 ເດືອນ)</td>
+                                                <td class="xred">7.85%</td>
+                                            	<td class="xred">9.21%</td>
+                                            	<td class="xred">6.82%</td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td class="">ປະເພດ AA ໄລຍະສັ້ນ (ບໍ່ເກີນ 12 ເດືອນ)</td>
+                                                <td class="xred">8.35%</td>
+                                            	<td class="xred">9.71%</td>
+                                            	<td class="xred">7.32%</td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td class="">ປະເພດ A ໄລຍະສັ້ນ (ບໍ່ເກີນ 12 ເດືອນ)</td>
+                                                <td class="xred">8.85%</td>
+                                            	<td class="xred">10.21%</td>
+                                            	<td class="xred">7.82%</td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td class="">ປະເພດ AAA ໄລຍະກາງ (ເກີນ 12 ເດືອນ ແຕ່ບໍ່ເກີນ 60 ເດືອນ)</td>
+                                                <td class="xred">8.35%</td>
+                                            	<td class="xred">9.71%</td>
+                                            	<td class="xred">7.32%</td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td class="">ປະເພດ AA ໄລຍະກາງ (ເກີນ 12 ເດືອນ ແຕ່ບໍ່ເກີນ 60 ເດືອນ)</td>
+                                                <td class="xred">8.85%</td>
+                                            	<td class="xred">10.21%</td>
+                                            	<td class="xred">7.82%</td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td class="">ປະເພດ A ໄລຍະກາງ (ເກີນ 12 ເດືອນ ແຕ່ບໍ່ເກີນ 60 ເດືອນ)</td>
+                                                <td class="xred">9.35%</td>
+                                            	<td class="xred">10.71%</td>
+                                            	<td class="xred">8.32%</td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td class="">ປະເພດ AAA ໄລຍະຍາວ (ເກີນ 60 ເດືອນຂຶ້ນໄປ)</td>
+                                                <td class="xred">8.85%</td>
+                                            	<td class="xred">10.21%</td>
+                                            	<td class="xred">7.82%</td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td class="">ປະເພດ AA ໄລຍະຍາວ (ເກີນ 60 ເດືອນຂຶ້ນໄປ)	</td>
+                                                <td class="xred">9.35%</td>
+                                            	<td class="xred">10.71%</td>
+                                            	<td class="xred">8.32%</td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td class="">ປະເພດ A ໄລຍະຍາວ (ເກີນ 60 ເດືອນຂຶ້ນໄປ)</td>
+                                                <td class="xred">9.85%</td>
+                                            	<td class="xred">11.21%</td>
+                                            	<td class="xred">8.82%</td>
+                                            </tr>
+                                        
+                                        	<tr id="tr_loan_rate">
+                                            <td colspan="2"><b>ເລີ່ມນໍາໃຊ້ວັນທີ :</b> 2026-07-13, ອັດຕາດອກເບ້ຍ ຄິດໄລ່ຕໍ່ປີ</td>
+                                        	<td colspan="2" class="xred "><a href="interest.html?fid=loan-interest" >ລາຍລະອຽດ...</a></td>
+                                        </tr>
+									</tbody>
+                                    </table>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+     
+    
+        <div class="container-bcel">
+            <div class="row">
+                <div class="col-xs-6 mt-1 mb-4">
+                    <br>
+                  <div>
+                    <a  href="https://www.bcel.com.la:8083/index.php?lang=0" target="_blank">
+                        <img class ="ibank-logo pull-right"  src="/bcel/resources/imgs/bcelone.png" alt="bcelone"/>
+                    </a>
+                    <div class="vl pull-right xs-hide"></div>
+                          <a  href="https://www.bcel.com.la/bcelibank/index.jsp" target="_blank">
+        					<img class ="ibank-logo pull-right" src="/bcel/resources/imgs/ibankM.jpg"  alt="ibank"/>
+       				     </a>
+       		    </div>
+                </div>
+                <div class="col-xs-6 mt-1 mb-4">
+                    <h3 class="title"> ແອັບພຣີເຄຊັນ</h3>
+                    <h3 class="yellow">BCEL APPLICATION</h3>
+                    <p  class=""> ດາວໂຫລດໄດ້ທີ່ນີ້</p>
+                    <a  href="https://itunes.apple.com/th/app/bcel-one/id654946527?mt=8" target="_blank"><img src="/bcel/resources/imgs/apple_store.png" class="imgpad" alt="apple_store"/> </a>
+                    <a  href="https://play.google.com/store/apps/details?id=com.bcel.bcelone&hl=en" target="_blank"><img src="/bcel/resources/imgs/google_play.png" class="imgpad" alt="google_play"/></a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>   
+    
+        <script>
+  		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ 				 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  					})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  			ga('create', 'UA-66067779-1', 'auto');
+  			ga('send', 'pageview');
+</script>
+        </div>
+       
+     
+        
+        
+
+
+
+
+ 
+        <div class="marketing-cen bgred">
+            <div class="container-bcel"> 
+                <div class="row pt-4 pb-5">
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center">
+                        <a href="interest.html?fid=other-fee" ><span class="glyphicons glyphicons-circle-info whitebig top10"></span>
+                            <span class="whitetop ">  ເບິ່ງລາຍລະອຽດເພີ່ມເຕີມ </span>
+                        </a>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center">
+                        <a href="https://www.youtube.com/channel/UChYtViKbPLrgwXetxse3xFw" target="_blank" >
+                            <span class="glyphicons glyphicons-play-button whitebig top10"></span>
+                            <span class="whitetop "> ວີດີໂອໂຄສະນາຕ່າງໆ</span>
+                        </a>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 text-center">
+                        <span id="calculatorMenu" >
+                            <a  href="calculator.html">
+                                <span class="glyphicons glyphicons-calculator whitebig top10"></span>
+                                <span class="whitetop "> ເຄື່ອງຄຳນວນອັດຕາຕ່າງໆ </span>
+                            </a></span>
+                    </div>
+                </div>
+       		</div>
+       </div>
+            
+  <div class="marketing-cen bggrey">
+		<div class="container-bcel">
+			<div class="row margin-partner pt-4 pb-2">
+				     <section class="partner-logos slider">
+									    <div class="slide padding-partner">
+									    	
+										    <a href="http://lsc.gov.la/" target="_blank">
+												<img src="/bcel/resources/imgs/links/lsc-en.jpg"   class="pull-right" alt="lsc-en"/>
+											</a>		        
+									    </div>
+									    <div class="slide padding-partner">
+									     	
+									    	<a href="http://www.lsx.com.la/" target="_blank">
+												<img src="/bcel/resources/imgs/links/lsx.jpg"   class="pull-right" alt="lsx"/>
+											</a>			        
+									    </div>
+									    <div class="slide padding-partner">
+									        
+									    	<a href="https://www.bcel-kt.com/" target="_blank">
+												<img src="/bcel/resources/imgs/links/bcel-kt.jpg"  class="pull-right" alt="bcel-kt"/>
+											</a>		         
+									    </div>
+									    <div class="slide padding-partner">
+									     	
+									    	<a href="https://www.bfl-bred.com/" target="_blank">
+												<img src="/bcel/resources/imgs/links/bfl.jpg"   class="pull-right" alt="bfl"/>
+											</a>
+										</div>		    
+									    <div class="slide padding-partner">
+									    	
+									    	<a href="http://www.laovietbank.com.la/vi/" target="_blank">
+													<img src="/bcel/resources/imgs/links/laoviet.jpg" class="pull-right" alt="laoviet"/>
+											</a>
+									    </div>
+									    <div class="slide padding-partner">
+									     	
+									   		<a href="http://www.lcnb.la" target="_blank">
+												<img src="/bcel/resources/imgs/links/lcnb.jpg" class="pull-right" alt="lcnb"/>
+											</a>			         
+									    </div>
+									    <div class="slide padding-partner">
+									     	
+									    	<a href="http://www.laovietinsurance.com/" target="_blank">
+												<img src="/bcel/resources/imgs/links/lvi.jpg"  class="pull-right" alt="lvi"/>
+											</a>
+									    </div>
+									  </section>
+						   <br>
+				     </div>
+            
+        </div> 
+       </div>
+        
+        <footer>
+            
+            
+
+            <div class="marketing left100">
+                <div class="container-bcel">
+                    <div class="row text-center">
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                            <p class=""><strong>ກ່ຽວກັບ ທຄຕລ </strong></p>
+                            <p class=""><a href="history.html">ປະຫວັດຄວາມເປັນມາ</a></p>
+                            <p class=""><a href="organize-chart.html">ໂຄງຮ່າງການຈັດຕັ້ງ</a></p>
+                            <p class=""><a href="bcel-ceo.html">ຄະນະບໍລິຫານ</a></p>
+                            <p class=""><a href="bcel-award.html">ຜົນສຳເລັດ</a></p>
+                            <p class=""><a href="bcel-activity.html">ກິດຈະກໍາຕ່າງໆ</a></p>
+                            <p class=""><a href="bcel-slogan.html">ຄຳຂວັນ ແລະ ເຄື່ອງໝາຍການຄ້າ</a> </p>
+                            <p class=""><a href="https://www.bcel.com.la:8443/" target="_blank">ອີເມວ </a></p>
+                            <p class=""><a href="https://www.bcel.com.la/bcelnotifications/migration_guide_eng.html" target="_blank">ຍ້າຍໄປລະບົບ BCEL i-Bank V.3 </a></p>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                            <p class=""><strong>ຜະລິດຕະພັນ</strong></p>
+                            <p class=""><a href="product.html?prid=deposits">ເງິນຝາກ</a></p>
+                            <p class=""><a href="product.html?prid=credits">ສິນເຊື່ອ</a></p>
+                            <p class=""><a href="product.html?prid=cards">ບັດ</a></p>
+                            <p class=""><a href="product.html?prid=e-banking">ບໍລິການ ເອເລັກໂທຣນິກ</a></p> 
+                            <p class=""><a href="product.html?prid=atm">ເອທີເອັມ</a></p>
+                            <p class=""><a href="product.html?prid=ft">ໂອນເງິນ</a></p>
+                            <p class=""><a href="product.html?prid=tf">ການຄ້າດ້ານການເງິນ</a></p>
+                            <p class=""><a href="product.html?prid=other-service">ບໍລິການອື່ນໆ</a></p>
+                        </div>
+                        
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                            <p class=""><strong>ຄົ້ນຫາ</strong></p>
+                            <p class=""><a href="interest.html?fid=other-fee">ອັດຕາຄ່າທຳນຽມຕ່າງໆແລະອື່ນໆ</a> </p>
+                            <p class=""><a href="calculator.html">ເຄື່ອງຄຳນວນ</a> </p>
+                            <p class=""><a href="faq.html">ຄໍາຖາມທີ່ຖາມເລື້ອຍໆ</a> </p>
+                             &nbsp;
+                            <p class=""><strong>ຕິດຕໍ່ </strong></p>
+                            <p class=""><a href="contact-corporate.html">ສໍານັກງານໃຫຍ່</a></p>
+                            <p class=""><a href="list-branch.html">ສາຂາ ແລະ ໜ່ວຍບໍລິການ</a></p>
+                            
+                            <p class=""><a href="form-download.html?Id=forms">ດາວໂຫລດແບບຟອມຕ່າງໆ</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="pull-right"><a href="#top"><span class="glyphicons glyphicons-circle-arrow-top whitetop xlarge"></span></a></p>
+
+            <hr>
+
+
+ 			<div class="container-bcel">
+                <div class="row text-center">
+                      <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 marg-top">
+                        <h3  class="fontB">
+                         
+                      	    
+                      	    	67.35M
+                      	    
+                          	
+                         
+                        </h3> 
+                        <p class=""> ຜູ້ເຂົ້າຊົມ </p>
+                    </div>
+  
+
+                    <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2"> 
+                        <span class="glyphicons glyphicons-earphone mlarge"></span>
+                        <span class="fontB  c1555 ">1555</span>
+                        <p class=""> ໂທ:(+856-21) 213200 </p>
+
+                    </div>
+                    
+                    <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 ">
+                        <span class=" glyphicons glyphicons-fax xlarge "></span>
+                        <p class=""> ແຟັກ:(+856-21) 213202 </p>
+
+                    </div>
+                    
+                    <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 ">
+                        <a href="emailto:bcelhqv<!--@-->@<!--@-->bcel.com.la">
+                            <span class="glyphicons glyphicons-envelope xlarge"></span><br>
+                        	<span class="">ອີເມວ ຫາ:<!--@-->bcelhqv<!--@-->@<!--@-->bcel.com.la</span>
+                        </a>
+                      
+                    </div>
+                    
+                    
+                     <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1">
+                        <span id="commentMenu" >
+                            <a class="" href="https://www.facebook.com/BCEL.Bank/" target="_blank"> 
+                            <span class="fa fa-facebook-square xlarge"></span><br>
+                                Facebook
+                            </a>
+                        </span>
+                    </div>
+                    <div class="col-xs-12 col-sm-3 col-md-2 col-lg-1 ">
+                        <span id="commentMenu" >
+                            <a class="" href="https://www.youtube.com/channel/UChYtViKbPLrgwXetxse3xFw" target="_blank"> 
+                            <span class="fa fa-youtube-play xlarge"></span><br>
+                                Youtube
+                            </a>
+                        </span>
+                    </div>
+                      <div class="col-xs-12 col-sm-3 col-md-1 col-lg-1 ">
+                        <span id="commentMenu" >
+                            <a class="" href="feedback.html" > 
+                            <span class="glyphicons glyphicons-comments xlarge"></span><br>
+                                ຄຳຄິດເຫັນ
+                            </a>
+                        </span>
+                    </div>
+                    
+                    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2 marg-cpr">
+                        <p class="small " >Copyright &copy; 2015<br/> ​ທະນາຄານ ການຄ້າຕ່າງປະເທດລາວ ມະຫາຊົນ.	<br/>​ສະ​ຫງວນ​ລິ​ຂະ​ສິດ</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+		
+	   
+	  
+
+
+
+
+
+
+
+
+<div class="calendar">
+	<div class="round hollow">
+		<a href="bcel-calendar.html?y=2026&m=7" id="addClass"><span class="glyphicons glyphicons-calendar large"> </span> <span class="xs-hide"> ປະຕິທິນ ທຄຕລ 2026</span></a>
+	</div>
+</div>
+
+
+     
+
+    
+
+        <div class="modal  fade" id="div_popupModel1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        
+                    </div>
+                    <div class="modal-body">
+                        <img id="imgPopUp1" src="/bcel/bcelweb-datas/popup/imgs/bcel_web_file_1015_87954cec5b6cca5ca4f8b795b04832e8.jpg" class="img-resp"  alt="ແຈ້ງການ: ປິດບໍລິການວັນແມ່ຍິງລາວ 20 ກໍລະກົດ 2026"/>
+                          
+                    </div>
+             
+					<div class="modal-footer">
+                      	 <span id='popupShow'>
+                    		<a href ="#" rel='339'>
+                				<button type="button" class="btnclose-popup btn btn-primary" data-dismiss="modal">ບໍ່ຕ້ອງການສະແດງອີກ</button>
+                           </a>
+                        </span>
+                   </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $(window).load(function() {
+                if ($('#imgPopUp1').val() != null || $('#contPopUp1').val() != null) {
+                    $('#div_popupModel1').modal('show');
+                }
+            });
+            
+            function check_q(q_text) {
+            	q_text.value = q_text.value.replace(/&/g, '').replace(/</g, '').replace(/>/g, '').replace(/"/g, '').replace(/'/g, '').replace(/!/g, '');
+            }
+
+        </script>
+
+    
+
+    
+    
+
+    <script>
+            $('#dd1').on('click', function() {
+                $('.chevron_toggleable1').toggleClass('fa-angle-down fa-angle-up');
+            });
+            $('#dd2').on('click', function() {
+                $('.chevron_toggleable2').toggleClass('fa-angle-down fa-angle-up');
+            });
+            $('#dd3').on('click', function() {
+                $('.chevron_toggleable3').toggleClass('fa-angle-down fa-angle-up');
+            });
+            $('#dd4').on('click', function() {
+                $('.chevron_toggleable4').toggleClass('fa-angle-down fa-angle-up');
+            });
+            $('#dd5').on('click', function() {
+                $('.chevron_toggleable5').toggleClass('fa-angle-down fa-angle-up');
+            });
+    </script>
+
+    <script type="text/javscript">
+        $(document).ready(function() {
+        	var isIE = navigator.userAgent.indexOf(' MSIE ') > -1;
+        	if(isIE) {
+       			 $('.modal').removeClass('fade');
+        	}
+        });
+    </script>
+
+<!--[if lt IE 9]>
+<script type="text/javascript">
+	$('button').click(function(){
+    	document.location = $(this).parents('a').first().prop('href');
+	});
+</script>
+
+<![endif]-->
+</body>
+</html>
