@@ -66,6 +66,7 @@ export default function CheckoutPage() {
     setLoading(true)
     const { data: { user } } = await supabase.auth.getUser()
     const { error } = await supabase.from('orders').insert({
+      id: crypto.randomUUID(),
       user_id: user?.id ?? null,
       customer_email: user?.email ?? null,
       address: `${form.name} · ${form.phone} · ${form.address}`,
