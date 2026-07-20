@@ -65,18 +65,17 @@ export default function CheckoutPage() {
     }
     setLoading(true)
     const { data: { user } } = await supabase.auth.getUser()
-    await supabase.from('orders').insert({
+    const { error } = await supabase.from('orders').insert({
       user_id: user?.id ?? null,
       customer_email: user?.email ?? null,
-      customer_name: form.name,
-      customer_phone: form.phone,
-      address: form.address,
+      address: `${form.name} · ${form.phone} · ${form.address}`,
       payment_method: method,
-      receipt_url: receiptUrl,
-      items: items.map(i => ({ id: i.product.id, name: i.product.name, qty: i.quantity, price: i.product.discount_price ?? i.product.price })),
-      total: grand,
+      receipt_url: receiptUrl ?? '',
+      items: items.map(i => ({ product_id: i.product.id, product_name: i.product.name, quantity: i.quantity, price: i.product.discount_price ?? i.product.price })),
+      total_amount: grand,
       status: 'pending',
     })
+    if (error) { console.error('Order error:', error); setLoading(false); alert('ສັ່ງຊື້ລົ້ມເຫລວ: ' + error.message); return }
     setLoading(false)
     setDone(true)
     clear()
