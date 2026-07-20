@@ -131,11 +131,39 @@ export default function OrdersPage() {
                     </div>
                   </div>
 
-                  <div className="mt-2">
+                  <div className="mt-3">
                     <span className={`text-xs font-bold px-3 py-1 rounded-full ${STATUS_COLOR[o.status] ?? 'bg-gray-100 text-gray-500'}`}>
                       {STATUS_ICON[o.status]} {STATUS_LAO[o.status] ?? o.status}
                     </span>
                   </div>
+
+                  {/* Status Stepper */}
+                  {o.status !== 'cancelled' && (() => {
+                    const steps = ['pending','confirmed','processing','shipping','delivered']
+                    const cur = steps.indexOf(o.status)
+                    return (
+                      <div className="mt-4 flex items-center">
+                        {steps.map((s, i) => (
+                          <div key={s} className="flex items-center flex-1 last:flex-none">
+                            <div className="flex flex-col items-center">
+                              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-black border-2 transition-all
+                                ${i < cur ? 'bg-[#1247D8] border-[#1247D8] text-white'
+                                  : i === cur ? 'bg-white border-[#1247D8] text-[#1247D8]'
+                                  : 'bg-gray-100 border-gray-200 text-gray-300'}`}>
+                                {i < cur ? '✓' : STATUS_ICON[s]}
+                              </div>
+                              <p className={`text-[9px] mt-1 font-medium ${i <= cur ? 'text-[#1247D8]' : 'text-gray-300'}`}>
+                                {STATUS_LAO[s]}
+                              </p>
+                            </div>
+                            {i < steps.length - 1 && (
+                              <div className={`flex-1 h-0.5 mb-4 mx-1 ${i < cur ? 'bg-[#1247D8]' : 'bg-gray-200'}`} />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )
+                  })()}
 
                   {o.address && (
                     <p className="mt-2 text-xs text-gray-400 flex items-center gap-1">

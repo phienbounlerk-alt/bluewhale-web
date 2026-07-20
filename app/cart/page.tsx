@@ -1,18 +1,50 @@
 'use client'
 import { useCart } from '@/store/cart'
-import { fmt } from '@/lib/supabase'
+import { fmt, supabase } from '@/lib/supabase'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react'
+import { Trash2, Plus, Minus, ShoppingBag, Tag, X } from 'lucide-react'
+import { useState } from 'react'
 
 const FREE_SHIPPING = 200000
 const SHIPPING = 20000
 
 export default function CartPage() {
   const { items, remove, update, total, clear } = useCart()
+  const [voucherCode, setVoucherCode] = useState('')
+  const [voucher, setVoucher] = useState<any>(null)
+  const [voucherErr, setVoucherErr] = useState('')
+  const [checking, setChecking] = useState(false)
+
   const subtotal = total()
   const shipping = subtotal >= FREE_SHIPPING ? 0 : SHIPPING
-  const grand = subtotal + shipping
+
+  // Voucher discount
+  let discount = 0
+  if (voucher) {
+    if (voucher.discount_type === 'percent') {
+      discount = Math.round(subtotal * voucher.discount_value / 100)
+      if (voucher.max_discount) discount = Math.min(discount, voucher.max_discount)
+    } else {
+      discount = voucher.discount_value
+    }
+  }
+  const grand = Math.max(0, subtotal - discount) + shipping
+
+  const applyVoucher = async () => {
+    if (!voucherCode.trim()) return
+    setChecking(true); setVoucherErr('')
+    const { data, error } = await supabase.from('vouchers')
+      .select('*').eq('code', voucherCode.trim().toUpperCase()).eq('is_active', true).single()
+    if (!data || error) { setVoucherErr('ໂຄດບໍ່ຖືກຕ້ອງ ຫຼື ໝົດອາຍຸແລ້ວ'); setChecking(false); return }
+    if (data.uses_left <= 0) { setVoucherErr('ໂຄດນີ້ໃຊ້ຄົບແລ້ວ'); setChecking(false); return }
+    if (data.expires_at && new Date(data.expires_at) < new Date()) { setVoucherErr('ໂຄດໝົດອາຍຸແລ້ວ'); setChecking(false); return }
+    if (subtotal < data.min_order) { setVoucherErr(`ຕ້ອງຊື້ຂັ້ນຕ່ຳ ${fmt(data.min_order)}`); setChecking(false); return }
+    setVoucher(data)
+    setChecking(false)
+  }
+
+  const removeVoucher = () => { setVoucher(null); setVoucherCode(''); setVoucherErr('') }
 
   if (items.length === 0) return (
     <div className="max-w-lg mx-auto px-4 py-20 text-center">
@@ -31,7 +63,6 @@ export default function CartPage() {
         <ShoppingBag className="text-[#1247D8]" /> ກະຕ່າສິນຄ້າ
       </h1>
 
-      {/* Free shipping progress */}
       {subtotal < FREE_SHIPPING && (
         <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 mb-4">
           <p className="text-sm text-[#1247D8] font-medium mb-2">
@@ -73,12 +104,47 @@ export default function CartPage() {
         </div>
 
         {/* Summary */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 h-fit sticky top-24">
-          <h2 className="font-black text-gray-800 mb-4">ສະຫຼຸບລາຄາ</h2>
-          <div className="space-y-2 text-sm">
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 h-fit sticky top-24 space-y-4">
+          <h2 className="font-black text-gray-800">ສະຫຼຸບລາຄາ</h2>
+
+          {/* Voucher input */}
+          <div>
+            <p className="text-xs font-bold text-gray-600 mb-2 flex items-center gap-1"><Tag size={12} /> ໂຄດສ່ວນຫຼຸດ</p>
+            {voucher ? (
+              <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-xl px-3 py-2">
+                <div>
+                  <p className="text-green-700 font-black text-sm">{voucher.code}</p>
+                  <p className="text-green-600 text-xs">
+                    {voucher.discount_type === 'percent' ? `-${voucher.discount_value}%` : `-${fmt(voucher.discount_value)}`}
+                  </p>
+                </div>
+                <button onClick={removeVoucher} className="text-gray-400 hover:text-gray-600"><X size={16} /></button>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <input value={voucherCode} onChange={e => setVoucherCode(e.target.value.toUpperCase())}
+                  onKeyDown={e => e.key === 'Enter' && applyVoucher()}
+                  placeholder="ໃສ່ໂຄດ..."
+                  className="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-[#1247D8] uppercase" />
+                <button onClick={applyVoucher} disabled={checking}
+                  className="px-3 bg-[#1247D8] text-white rounded-xl text-xs font-bold hover:bg-[#0d35b0] disabled:opacity-60 transition-colors">
+                  {checking ? '...' : 'ໃຊ້'}
+                </button>
+              </div>
+            )}
+            {voucherErr && <p className="text-red-500 text-xs mt-1">{voucherErr}</p>}
+          </div>
+
+          {/* Price breakdown */}
+          <div className="space-y-2 text-sm border-t pt-3">
             <div className="flex justify-between text-gray-600">
               <span>ລາຄາສິນຄ້າ</span><span>{fmt(subtotal)}</span>
             </div>
+            {discount > 0 && (
+              <div className="flex justify-between text-green-600 font-bold">
+                <span>ສ່ວນຫຼຸດ ({voucher.code})</span><span>-{fmt(discount)}</span>
+              </div>
+            )}
             <div className="flex justify-between text-gray-600">
               <span>ຄ່າສົ່ງ</span>
               <span className={shipping === 0 ? 'text-green-500 font-bold' : ''}>{shipping === 0 ? 'ຟຣີ 🎉' : fmt(shipping)}</span>
@@ -87,10 +153,12 @@ export default function CartPage() {
               <span>ລວມທັງໝົດ</span><span className="text-[#1247D8]">{fmt(grand)}</span>
             </div>
           </div>
-          <Link href="/checkout" className="block mt-5 bg-[#1247D8] text-white text-center font-black py-4 rounded-2xl hover:bg-[#0d35b0] transition-colors">
+
+          <Link href={`/checkout${voucher ? `?voucher=${voucher.code}&discount=${discount}` : ''}`}
+            className="block bg-[#1247D8] text-white text-center font-black py-4 rounded-2xl hover:bg-[#0d35b0] transition-colors">
             ດຳເນີນການຊຳລະ →
           </Link>
-          <button onClick={clear} className="block w-full mt-2 text-red-400 text-sm text-center hover:underline">
+          <button onClick={clear} className="block w-full text-red-400 text-sm text-center hover:underline">
             ລ້າງກະຕ່າ
           </button>
         </div>
