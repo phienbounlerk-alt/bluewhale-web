@@ -2,15 +2,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { supabase, getProducts, fmt, type Product } from '@/lib/supabase'
 import Image from 'next/image'
-import { Plus, Pencil, Trash2, Search, X, Upload, Link as LinkIcon, Video } from 'lucide-react'
-
-function getYoutubeId(url: string) {
-  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&?/]+)/)
-  return m ? m[1] : null
-}
-function getTiktokEmbed(url: string) {
-  return url.includes('tiktok.com') ? url : null
-}
+import { Plus, Pencil, Trash2, Search, X, Upload, Link as LinkIcon } from 'lucide-react'
 
 export default function AdminProducts() {
   const [products, setProducts] = useState<Product[]>([])
@@ -26,7 +18,7 @@ export default function AdminProducts() {
   const filtered = products.filter(p =>
     !q || p.name.toLowerCase().includes(q.toLowerCase()) || p.category.includes(q))
 
-  const openNew = () => setEditing({ name: '', description: '', price: 0, category: 'ເສື້ອຜ້າ', stock: 0, image_url: '', images: [], video_url: '' })
+  const openNew = () => setEditing({ name: '', description: '', price: 0, category: 'ເສື້ອຜ້າ', stock: 0, image_url: '', images: [] })
   const openEdit = (p: Product) => setEditing({ ...p, images: p.images ?? [] })
 
   const save = async () => {
@@ -38,7 +30,6 @@ export default function AdminProducts() {
       category: editing.category, stock: editing.stock,
       image_url: editing.image_url || (editing.images?.[0] ?? null),
       images: editing.images ?? [],
-      video_url: editing.video_url || null,
     }
     if (editing.id && !editing.id.startsWith('s')) {
       await supabase.from('products').update(payload).eq('id', editing.id)
@@ -121,11 +112,6 @@ export default function AdminProducts() {
               {(p.images?.length ?? 0) > 1 && (
                 <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded-lg">
                   +{(p.images?.length ?? 1) - 1} ຮູບ
-                </div>
-              )}
-              {p.video_url && (
-                <div className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-lg flex items-center gap-1">
-                  <Video size={10} /> VDO
                 </div>
               )}
             </div>
@@ -237,23 +223,6 @@ export default function AdminProducts() {
                 </div>
               </div>
 
-              {/* ======== VIDEO ======== */}
-              <div>
-                <label className="text-xs font-bold text-gray-600 mb-1 block">🎬 ວີດີໂອ (YouTube / TikTok URL)</label>
-                <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#1247D8] transition-colors">
-                  <Video size={14} className="mx-2 text-gray-400 shrink-0" />
-                  <input value={editing.video_url ?? ''} onChange={e => set('video_url', e.target.value)}
-                    placeholder="https://youtube.com/watch?v=... ຫຼື TikTok link"
-                    className="flex-1 py-2.5 pr-3 text-sm outline-none" />
-                </div>
-                {editing.video_url && getYoutubeId(editing.video_url) && (
-                  <div className="mt-2 rounded-xl overflow-hidden aspect-video">
-                    <iframe
-                      src={`https://www.youtube.com/embed/${getYoutubeId(editing.video_url)}`}
-                      className="w-full h-full" allowFullScreen />
-                  </div>
-                )}
-              </div>
 
             </div>
             <div className="flex gap-3 p-5 border-t sticky bottom-0 bg-white">

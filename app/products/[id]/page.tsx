@@ -4,15 +4,10 @@ import { getProduct, fmt, discountPct, type Product } from '@/lib/supabase'
 import { useCart } from '@/store/cart'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ShoppingCart, Star, Shield, Truck, ArrowLeft, Play } from 'lucide-react'
+import { ShoppingCart, Star, Shield, Truck, ArrowLeft } from 'lucide-react'
 import { use } from 'react'
 import { useRouter } from 'next/navigation'
 
-function getYoutubeId(url: string) {
-  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&?/]+)/)
-  return m ? m[1] : null
-}
-function isTiktok(url: string) { return url.includes('tiktok.com') }
 
 export default function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
@@ -20,7 +15,6 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
   const [activeImg, setActiveImg] = useState(0)
-  const [showVideo, setShowVideo] = useState(false)
   const add = useCart(s => s.add)
   const router = useRouter()
 
@@ -38,9 +32,6 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
     setTimeout(() => setAdded(false), 2000)
   }
 
-  const ytId = p.video_url ? getYoutubeId(p.video_url) : null
-  const hasTiktok = p.video_url ? isTiktok(p.video_url) : false
-
   return (
     <div className="max-w-5xl mx-auto px-4 py-6">
       <Link href="/products" className="flex items-center gap-2 text-[#1247D8] mb-4 hover:underline text-sm">
@@ -50,64 +41,25 @@ export default function ProductDetail({ params }: { params: Promise<{ id: string
       <div className="grid md:grid-cols-2 gap-8">
         {/* Image Gallery */}
         <div>
-          {/* Main image / video */}
+          {/* Main image */}
           <div className="relative aspect-square rounded-2xl overflow-hidden bg-white shadow-sm">
-            {showVideo && p.video_url ? (
-              ytId ? (
-                <iframe
-                  src={`https://www.youtube.com/embed/${ytId}?autoplay=1`}
-                  className="w-full h-full"
-                  allowFullScreen
-                  allow="autoplay" />
-              ) : hasTiktok ? (
-                <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-black text-white p-6 text-center">
-                  <Play size={40} className="text-white/70" />
-                  <p className="text-sm">ເປີດ TikTok ເພື່ອເບິ່ງວີດີໂອ</p>
-                  <a href={p.video_url} target="_blank" rel="noopener noreferrer"
-                    className="bg-white text-black font-bold px-4 py-2 rounded-xl text-sm">
-                    ເບິ່ງໃນ TikTok →
-                  </a>
-                </div>
-              ) : null
-            ) : (
-              <>
-                {allImages[activeImg]
-                  ? <Image src={allImages[activeImg]} alt={p.name} fill className="object-cover" unoptimized />
-                  : <div className="w-full h-full flex items-center justify-center text-6xl">📦</div>}
-                {pct > 0 && (
-                  <div className="absolute top-4 left-4 bg-[#EE4D2D] text-white font-black px-3 py-1 rounded-xl text-sm">-{pct}%</div>
-                )}
-                {p.video_url && (
-                  <button onClick={() => setShowVideo(true)}
-                    className="absolute bottom-4 right-4 flex items-center gap-2 bg-black/70 hover:bg-black text-white text-sm font-bold px-3 py-2 rounded-xl transition-colors">
-                    <Play size={14} fill="white" /> ເບິ່ງວີດີໂອ
-                  </button>
-                )}
-              </>
-            )}
-            {showVideo && (
-              <button onClick={() => setShowVideo(false)}
-                className="absolute top-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded-lg hover:bg-black">
-                ✕ ປິດ
-              </button>
+            {allImages[activeImg]
+              ? <Image src={allImages[activeImg]} alt={p.name} fill className="object-cover" unoptimized />
+              : <div className="w-full h-full flex items-center justify-center text-6xl">📦</div>}
+            {pct > 0 && (
+              <div className="absolute top-4 left-4 bg-[#EE4D2D] text-white font-black px-3 py-1 rounded-xl text-sm">-{pct}%</div>
             )}
           </div>
 
           {/* Thumbnails row */}
-          {(allImages.length > 1 || p.video_url) && (
+          {allImages.length > 1 && (
             <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
               {allImages.map((img, i) => (
-                <button key={i} onClick={() => { setActiveImg(i); setShowVideo(false) }}
-                  className={`relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-colors ${activeImg === i && !showVideo ? 'border-[#1247D8]' : 'border-gray-200'}`}>
+                <button key={i} onClick={() => setActiveImg(i)}
+                  className={`relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-colors ${activeImg === i ? 'border-[#1247D8]' : 'border-gray-200'}`}>
                   <Image src={img} alt="" fill className="object-cover" unoptimized />
                 </button>
               ))}
-              {p.video_url && (
-                <button onClick={() => setShowVideo(true)}
-                  className={`relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-colors flex items-center justify-center ${showVideo ? 'border-[#1247D8] bg-black' : 'border-gray-200 bg-gray-800'}`}>
-                  <Play size={20} fill="white" className="text-white" />
-                </button>
-              )}
             </div>
           )}
         </div>
