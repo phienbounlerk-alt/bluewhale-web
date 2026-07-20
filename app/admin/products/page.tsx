@@ -56,9 +56,9 @@ export default function AdminProducts() {
     setUploading(true)
     const ext = file.name.split('.').pop()
     const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-    const { data, error } = await supabase.storage.from('product-images').upload(path, file, { upsert: true })
+    const { data, error } = await supabase.storage.from('products').upload(path, file, { upsert: true })
     if (error) { alert('Upload error: ' + error.message); setUploading(false); return }
-    const { data: { publicUrl } } = supabase.storage.from('product-images').getPublicUrl(path)
+    const { data: { publicUrl } } = supabase.storage.from('products').getPublicUrl(path)
     addImage(publicUrl)
     setUploading(false)
   }
