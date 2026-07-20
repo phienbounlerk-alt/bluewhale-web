@@ -1,8 +1,25 @@
 'use client'
 import { useEffect, useState, useRef } from 'react'
-import { supabase, getProducts, fmt, type Product } from '@/lib/supabase'
+import { supabase, getProducts, fmt, type Product, type ProductVariant } from '@/lib/supabase'
 import Image from 'next/image'
 import { Plus, Pencil, Trash2, Search, X, Upload, Link as LinkIcon } from 'lucide-react'
+
+type VariantRow = { options: Record<string, string>; stock: number; price?: number }
+
+function cartesian(opts: Record<string, string[]>): Record<string, string>[] {
+  const keys = Object.keys(opts)
+  if (!keys.length) return []
+  return keys.reduce((acc: Record<string, string>[], key) => {
+    const vals = opts[key]
+    if (!acc.length) return vals.map(v => ({ [key]: v }))
+    return acc.flatMap(combo => vals.map(v => ({ ...combo, [key]: v })))
+  }, [])
+}
+
+function totalVariants(vo: Record<string, string[]> | undefined) {
+  if (!vo || !Object.keys(vo).length) return 0
+  return Object.values(vo).reduce((a, v) => a * v.length, 1)
+}
 
 export default function AdminProducts() {
   const [products, setProducts] = useState<Product[]>([])
@@ -11,6 +28,9 @@ export default function AdminProducts() {
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [newImageUrl, setNewImageUrl] = useState('')
+  const [variants, setVariants] = useState<VariantRow[]>([])
+  const [newOptName, setNewOptName] = useState('')
+  const [newOptValues, setNewOptValues] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => { getProducts().then(setProducts) }, [])
@@ -18,8 +38,18 @@ export default function AdminProducts() {
   const filtered = products.filter(p =>
     !q || p.name.toLowerCase().includes(q.toLowerCase()) || p.category.includes(q))
 
-  const openNew = () => setEditing({ name: '', description: '', price: 0, category: 'ເສື້ອຜ້າ', stock: 0, image_url: '', images: [] })
-  const openEdit = (p: Product) => setEditing({ ...p, images: p.images ?? [] })
+  const openNew = () => {
+    setEditing({ name: '', description: '', price: 0, category: 'ເສື້ອຜ້າ', stock: 0, image_url: '', images: [], variant_options: {} })
+    setVariants([])
+    setNewOptName(''); setNewOptValues('')
+  }
+
+  const openEdit = async (p: Product) => {
+    setEditing({ ...p, images: p.images ?? [], variant_options: p.variant_options ?? {} })
+    const { data } = await supabase.from('product_variants').select('*').eq('product_id', p.id).order('created_at')
+    setVariants((data ?? []).map((v: ProductVariant) => ({ options: v.options, stock: v.stock, price: v.price })))
+    setNewOptName(''); setNewOptValues('')
+  }
 
   const save = async () => {
     if (!editing?.name || !editing.price) return
@@ -30,33 +60,46 @@ export default function AdminProducts() {
       category: editing.category, stock: editing.stock,
       image_url: editing.image_url || (editing.images?.[0] ?? null),
       images: editing.images ?? [],
+      variant_options: editing.variant_options ?? {},
     }
-    if (editing.id && !editing.id.startsWith('s')) {
+
+    let productId = editing.id
+    if (editing.id) {
       await supabase.from('products').update(payload).eq('id', editing.id)
     } else {
-      await supabase.from('products').insert({ ...payload, rating: 4.5, review_count: 0 })
+      const { data } = await supabase.from('products').insert({ ...payload, rating: 4.5, review_count: 0 }).select().single()
+      productId = data?.id
     }
+
+    if (productId && variants.length > 0) {
+      await supabase.from('product_variants').delete().eq('product_id', productId)
+      await supabase.from('product_variants').insert(
+        variants.map(v => ({ product_id: productId, options: v.options, stock: v.stock, price: v.price ?? null }))
+      )
+    }
+
     const fresh = await getProducts()
     setProducts(fresh)
     setEditing(null)
+    setVariants([])
     setSaving(false)
     setNewImageUrl('')
   }
 
   const del = async (id: string) => {
     if (!confirm('ລຶບສິນຄ້ານີ້?')) return
-    if (!id.startsWith('s')) await supabase.from('products').delete().eq('id', id)
+    await supabase.from('product_variants').delete().eq('product_id', id)
+    await supabase.from('products').delete().eq('id', id)
     setProducts(ps => ps.filter(p => p.id !== id))
   }
 
-  const set = (k: keyof Product, v: any) => setEditing(e => ({ ...e, [k]: v }))
+  const setField = (k: keyof Product, v: any) => setEditing(e => ({ ...e, [k]: v }))
 
-  // Upload file to Supabase Storage
   const uploadFile = async (file: File) => {
     setUploading(true)
     const ext = file.name.split('.').pop()
     const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-    const { data, error } = await supabase.storage.from('products').upload(path, file, { upsert: true })
+    const { error } = await supabase.storage.from('products').upload(path, file, { upsert: true })
     if (error) { alert('Upload error: ' + error.message); setUploading(false); return }
     const { data: { publicUrl } } = supabase.storage.from('products').getPublicUrl(path)
     addImage(publicUrl)
@@ -77,6 +120,28 @@ export default function AdminProducts() {
       const imgs = (e?.images ?? []).filter((_, i) => i !== idx)
       return { ...e, images: imgs, image_url: imgs[0] ?? '' }
     })
+  }
+
+  const addOptionGroup = () => {
+    if (!newOptName.trim() || !newOptValues.trim()) return
+    const values = newOptValues.split(',').map(v => v.trim()).filter(Boolean)
+    setEditing(e => ({ ...e, variant_options: { ...(e?.variant_options ?? {}), [newOptName.trim()]: values } }))
+    setNewOptName(''); setNewOptValues('')
+  }
+
+  const removeOptionGroup = (key: string) => {
+    setEditing(e => {
+      const vo = { ...(e?.variant_options ?? {}) }
+      delete vo[key]
+      return { ...e, variant_options: vo }
+    })
+    setVariants([])
+  }
+
+  const generateVariants = () => {
+    const vo = editing?.variant_options ?? {}
+    const combos = cartesian(vo)
+    setVariants(combos.map(options => ({ options, stock: 10, price: undefined })))
   }
 
   const cats = ['ເສື້ອຜ້າ', 'ອີເລັກໂທຣນິກ', 'ອາຫານ & ເຄື່ອງດື່ມ', 'ຄວາມງາມ', 'ຂອງໃຊ້ໃນບ້ານ', 'ອື່ນໆ']
@@ -114,6 +179,11 @@ export default function AdminProducts() {
                   +{(p.images?.length ?? 1) - 1} ຮູບ
                 </div>
               )}
+              {p.variant_options && Object.keys(p.variant_options).length > 0 && (
+                <div className="absolute top-2 right-2 bg-purple-500 text-white text-xs px-2 py-0.5 rounded-lg">
+                  {Object.keys(p.variant_options).join('/')}
+                </div>
+              )}
             </div>
             <div className="p-3">
               <p className="font-bold text-sm text-gray-800 line-clamp-1">{p.name}</p>
@@ -149,19 +219,19 @@ export default function AdminProducts() {
                 { label: 'ຊື່ສິນຄ້າ *', key: 'name', type: 'text' },
                 { label: 'ລາຄາ (₭) *', key: 'price', type: 'number' },
                 { label: 'ລາຄາຫຼຸດ (₭)', key: 'discount_price', type: 'number' },
-                { label: 'ສາງ', key: 'stock', type: 'number' },
+                { label: 'ສາງລວມ (ຖ້າບໍ່ມີ variants)', key: 'stock', type: 'number' },
               ] as const).map(f => (
                 <div key={f.key}>
                   <label className="text-xs font-bold text-gray-600 mb-1 block">{f.label}</label>
                   <input type={f.type} value={(editing as any)[f.key] ?? ''}
-                    onChange={e => set(f.key as keyof Product, f.type === 'number' ? Number(e.target.value) : e.target.value)}
+                    onChange={e => setField(f.key as keyof Product, f.type === 'number' ? Number(e.target.value) : e.target.value)}
                     className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#1247D8] transition-colors" />
                 </div>
               ))}
 
               <div>
                 <label className="text-xs font-bold text-gray-600 mb-1 block">ໝວດ</label>
-                <select value={editing.category ?? ''} onChange={e => set('category', e.target.value)}
+                <select value={editing.category ?? ''} onChange={e => setField('category', e.target.value)}
                   className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#1247D8]">
                   {cats.map(c => <option key={c}>{c}</option>)}
                 </select>
@@ -170,15 +240,13 @@ export default function AdminProducts() {
               <div>
                 <label className="text-xs font-bold text-gray-600 mb-1 block">ລາຍລະອຽດ</label>
                 <textarea rows={3} value={editing.description ?? ''}
-                  onChange={e => set('description', e.target.value)}
+                  onChange={e => setField('description', e.target.value)}
                   className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#1247D8] resize-none" />
               </div>
 
-              {/* ======== IMAGES ======== */}
+              {/* IMAGES */}
               <div>
                 <label className="text-xs font-bold text-gray-600 mb-2 block">📷 ຮູບສິນຄ້າ ({editing.images?.length ?? 0} ຮູບ)</label>
-
-                {/* Thumbnails */}
                 {(editing.images?.length ?? 0) > 0 && (
                   <div className="flex flex-wrap gap-2 mb-3">
                     {editing.images!.map((img, i) => (
@@ -193,8 +261,6 @@ export default function AdminProducts() {
                     ))}
                   </div>
                 )}
-
-                {/* Upload file */}
                 <input ref={fileRef} type="file" accept="image/*" multiple className="hidden"
                   onChange={async e => {
                     const files = Array.from(e.target.files ?? [])
@@ -206,8 +272,6 @@ export default function AdminProducts() {
                   <Upload size={16} />
                   {uploading ? 'ກຳລັງ upload...' : 'Upload ຮູບຈາກໂທລະສັບ/PC'}
                 </button>
-
-                {/* URL input */}
                 <div className="flex gap-2">
                   <div className="flex-1 flex items-center border border-gray-200 rounded-xl overflow-hidden focus-within:border-[#1247D8] transition-colors">
                     <LinkIcon size={14} className="mx-2 text-gray-400 shrink-0" />
@@ -223,6 +287,74 @@ export default function AdminProducts() {
                 </div>
               </div>
 
+              {/* VARIANTS */}
+              <div className="border-t pt-4">
+                <label className="text-xs font-bold text-gray-600 mb-3 block">🎛️ ຕົວເລືອກສິນຄ້າ (Variants)</label>
+
+                {/* Existing option groups */}
+                {Object.entries(editing.variant_options ?? {}).map(([key, vals]) => (
+                  <div key={key} className="flex items-center gap-2 mb-2 bg-purple-50 rounded-xl px-3 py-2">
+                    <span className="font-bold text-sm text-purple-700 w-12 shrink-0">{key}:</span>
+                    <div className="flex flex-wrap gap-1 flex-1">
+                      {(vals as string[]).map(v => (
+                        <span key={v} className="bg-white border border-purple-200 text-purple-700 text-xs px-2 py-0.5 rounded-lg font-bold">{v}</span>
+                      ))}
+                    </div>
+                    <button onClick={() => removeOptionGroup(key)} className="text-red-400 hover:text-red-600 shrink-0"><X size={14} /></button>
+                  </div>
+                ))}
+
+                {/* Add new option */}
+                <div className="flex gap-2 mb-3">
+                  <input value={newOptName} onChange={e => setNewOptName(e.target.value)}
+                    placeholder="ຊື່ (ເບີ, ສີ...)"
+                    onKeyDown={e => e.key === 'Enter' && addOptionGroup()}
+                    className="w-20 border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-[#1247D8]" />
+                  <input value={newOptValues} onChange={e => setNewOptValues(e.target.value)}
+                    placeholder="ຄ່າ: 38,39,40,41"
+                    onKeyDown={e => e.key === 'Enter' && addOptionGroup()}
+                    className="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-[#1247D8]" />
+                  <button onClick={addOptionGroup}
+                    className="px-3 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-bold transition-colors">
+                    ເພີ່ມ
+                  </button>
+                </div>
+
+                {/* Generate button */}
+                {Object.keys(editing.variant_options ?? {}).length > 0 && (
+                  <button onClick={generateVariants}
+                    className="w-full py-2.5 bg-purple-50 text-purple-700 font-bold text-sm rounded-xl hover:bg-purple-100 transition-colors mb-3">
+                    ⚡ ສ້າງ {totalVariants(editing.variant_options)} variants ອັດຕະໂນມັດ
+                  </button>
+                )}
+
+                {/* Variants table */}
+                {variants.length > 0 && (
+                  <div className="border border-gray-200 rounded-xl overflow-hidden">
+                    <div className="bg-gray-50 px-3 py-2 flex text-xs font-bold text-gray-500">
+                      <span className="flex-1">ຕົວເລືອກ</span>
+                      <span className="w-16 text-center">ສາງ</span>
+                      <span className="w-24 text-center">ລາຄາ (₭)</span>
+                    </div>
+                    {variants.map((v, i) => (
+                      <div key={i} className="flex items-center gap-2 px-3 py-2 border-t border-gray-100">
+                        <div className="flex-1 text-xs text-gray-700">
+                          {Object.entries(v.options).map(([k, val]) => (
+                            <span key={k} className="inline-block bg-gray-100 rounded px-1.5 py-0.5 mr-1 font-medium">{k}: {val}</span>
+                          ))}
+                        </div>
+                        <input type="number" value={v.stock}
+                          onChange={e => setVariants(vs => vs.map((x, j) => j === i ? { ...x, stock: Number(e.target.value) } : x))}
+                          className="w-16 border border-gray-200 rounded-lg px-2 py-1.5 text-xs text-center outline-none focus:border-[#1247D8]" />
+                        <input type="number" value={v.price ?? ''}
+                          placeholder="ຄືກັນ"
+                          onChange={e => setVariants(vs => vs.map((x, j) => j === i ? { ...x, price: e.target.value ? Number(e.target.value) : undefined } : x))}
+                          className="w-24 border border-gray-200 rounded-lg px-2 py-1.5 text-xs text-center outline-none focus:border-[#1247D8]" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
 
             </div>
             <div className="flex gap-3 p-5 border-t sticky bottom-0 bg-white">

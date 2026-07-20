@@ -13,12 +13,22 @@ export type Product = {
   discount_price?: number
   image_url?: string
   images?: string[]
+  video_url?: string
   category: string
   stock: number
   rating?: number
   review_count?: number
   is_cod?: boolean
   is_free_shipping?: boolean
+  variant_options?: Record<string, string[]>
+}
+
+export type ProductVariant = {
+  id: string
+  product_id: string
+  options: Record<string, string>
+  price?: number
+  stock: number
 }
 
 export type CartItem = {
