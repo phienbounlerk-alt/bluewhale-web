@@ -15,6 +15,7 @@ export default function CheckoutPage() {
   const shipping = subtotal >= FREE ? 0 : SHIP
   const grand = subtotal + shipping
   const [method, setMethod] = useState('')
+  const [courier, setCourier] = useState('')
   const [done, setDone] = useState(false)
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -58,7 +59,10 @@ export default function CheckoutPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!form.name || !form.phone || !form.address || !method) return
+    if (!form.name || !form.phone || !form.address || !method || !courier) {
+      if (!courier) { alert('ກະລຸນາເລືອກບໍລິສັດຂົນສົ່ງ'); return }
+      return
+    }
     if (method === 'qr' && !receiptUrl) {
       alert('ກະລຸນາ upload ສະລິບໂອນເງິນກ່ອນ')
       return
@@ -71,6 +75,7 @@ export default function CheckoutPage() {
       customer_email: user?.email ?? null,
       address: `${form.name} · ${form.phone} · ${form.address}`,
       payment_method: method,
+      courier: courier,
       receipt_url: receiptUrl ?? '',
       items: items.map(i => ({ product_id: i.product.id, product_name: i.product.name, quantity: i.quantity, price: i.product.discount_price ?? i.product.price })),
       total_amount: grand,
@@ -130,6 +135,25 @@ export default function CheckoutPage() {
               <textarea value={form.address} onChange={e => set('address', e.target.value)} required
                 placeholder="ທີ່ຢູ່ລະອຽດ (ບ້ານ, ເມືອງ, ແຂວງ)" rows={3}
                 className="w-full border border-gray-200 rounded-xl p-3 outline-none text-sm resize-none" />
+            </div>
+          </div>
+
+          {/* Courier selection */}
+          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+            <h2 className="font-black text-gray-800 mb-4">🚚 ເລືອກບໍລິສັດຂົນສົ່ງ</h2>
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { id: 'ອານຸສິດ', img: '/anousith.jpeg' },
+                { id: 'ຮຸ່ງອາລຸນ', img: '/houngaloun.jpeg' },
+                { id: 'ມີໄຊ', img: '/mixay.jpeg' },
+              ].map(c => (
+                <button key={c.id} type="button" onClick={() => setCourier(c.id)}
+                  className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${courier === c.id ? 'border-[#1247D8] bg-blue-50 shadow-md' : 'border-gray-200 hover:border-gray-300'}`}>
+                  <img src={c.img} alt={c.id} className="w-16 h-16 object-contain rounded-lg" />
+                  <span className="text-xs font-bold text-gray-700 text-center">{c.id}</span>
+                  {courier === c.id && <span className="text-[10px] text-[#1247D8] font-black">✓ ເລືອກແລ້ວ</span>}
+                </button>
+              ))}
             </div>
           </div>
 
