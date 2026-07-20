@@ -67,7 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <p className="font-black text-sm mb-4 text-white">ຕິດຕໍ່ພວກເຮົາ</p>
                 <ul className="space-y-2 text-sm text-white/60">
                   <li>📍 ວຽງຈັນ, ລາວ</li>
-                  <li>📞 020 xxxx xxxx</li>
+                  <li>📞 020 9269 9612</li>
                   <li>✉️ hello@bluewhalelao.com</li>
                 </ul>
                 {/* Social icons */}
@@ -98,9 +98,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="max-w-7xl mx-auto px-4 py-5 flex flex-wrap items-center gap-4">
               <p className="text-xs text-white/50 shrink-0">ຮັບຊຳລະ:</p>
               <div className="flex flex-wrap items-center gap-3">
-                {/* BCEL One - real logo */}
-                <div className="bg-white rounded-lg px-2 py-1 h-9 flex items-center">
-                  <img src="/bcel-one.png" alt="BCEL One" className="h-7 w-auto object-contain" />
+                {/* BCEL One - badge (logo blocked by bank server) */}
+                <div className="bg-[#003087] rounded-lg px-3 h-9 flex items-center gap-1.5">
+                  <span className="text-white font-black text-xs">BCEL One</span>
                 </div>
                 {/* JDB - real logo */}
                 <div className="bg-white rounded-lg px-2 py-1 h-9 flex items-center">
@@ -110,13 +110,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <div className="bg-white rounded-lg px-2 py-1 h-9 flex items-center">
                   <img src="/ldb.jpg" alt="LDB" className="h-7 w-auto object-contain" />
                 </div>
-                {/* COD */}
-                <div className="bg-[#EE4D2D] rounded-lg px-3 h-9 flex items-center">
-                  <span className="text-white font-black text-xs">COD<br className="hidden"/><span className="text-[10px] font-normal ml-1">ຈ່າຍປາຍທາງ</span></span>
-                </div>
-                {/* ໂອນເງິນ */}
-                <div className="bg-white/10 rounded-lg px-3 h-9 flex items-center">
-                  <span className="text-white text-xs font-bold">💸 ໂອນເງິນ</span>
+                {/* COD - ສີຂຽວ */}
+                <div className="bg-green-600 rounded-lg px-3 h-9 flex items-center">
+                  <span className="text-white font-black text-xs">COD <span className="text-[10px] font-normal">ຈ່າຍປາຍທາງ</span></span>
                 </div>
               </div>
               <p className="text-xs text-white/30 ml-auto hidden md:block">ສົ່ງຟຣີ ເມື່ອຊື້ຄົບ ₭200,000</p>
