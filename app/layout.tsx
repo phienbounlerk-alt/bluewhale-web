@@ -98,9 +98,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="max-w-7xl mx-auto px-4 py-5 flex flex-wrap items-center gap-4">
               <p className="text-xs text-white/50 shrink-0">ຮັບຊຳລະ:</p>
               <div className="flex flex-wrap items-center gap-3">
-                {/* BCEL One - badge (logo blocked by bank server) */}
-                <div className="bg-[#003087] rounded-lg px-3 h-9 flex items-center gap-1.5">
-                  <span className="text-white font-black text-xs">BCEL One</span>
+                {/* BCEL One - real logo */}
+                <div className="bg-white rounded-lg px-2 py-1 h-9 flex items-center">
+                  <img src="/bcel-one.webp" alt="BCEL One" className="h-7 w-auto object-contain" />
                 </div>
                 {/* JDB - real logo */}
                 <div className="bg-white rounded-lg px-2 py-1 h-9 flex items-center">
