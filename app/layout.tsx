@@ -10,6 +10,14 @@ const notoSansLao = Noto_Sans_Lao({ subsets: ['lao'], weight: ['400', '500', '70
 export const metadata: Metadata = {
   title: 'BlueWhale — ຕະຫຼາດດິຈິຕອລລາວ',
   description: 'ຊື້ສິນຄ້າ ລາຄາດີ ສົ່ງໄວ ທົ່ວລາວ',
+  icons: {
+    icon: [
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/logo.png', sizes: '1024x1024', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
+    shortcut: '/favicon-32.png',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
