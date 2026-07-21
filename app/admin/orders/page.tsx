@@ -139,11 +139,32 @@ export default function AdminOrders() {
                   </div>
 
                   {/* Customer */}
-                  <div className="mt-3 space-y-1">
-                    {o.customer_name && <p className="text-sm font-bold text-gray-700">👤 {o.customer_name}</p>}
-                    {o.customer_phone && <p className="text-sm text-gray-500 flex items-center gap-1"><Phone size={12} />{o.customer_phone}</p>}
-                    {o.address && <p className="text-sm text-gray-500 flex items-start gap-1"><MapPin size={12} className="mt-0.5 shrink-0" />{o.address}</p>}
-                  </div>
+                  {(() => {
+                    const parts = (o.address ?? '').split(' · ')
+                    const name = parts[0] || o.customer_name || ''
+                    const phone = parts[1] || o.customer_phone || ''
+                    const branch = parts[2] || ''
+                    const city = parts[3] || ''
+                    const province = parts[4] || ''
+                    return (
+                      <div className="mt-3 space-y-1">
+                        {name && <p className="text-sm font-bold text-gray-700">👤 {name}</p>}
+                        {phone && <p className="text-sm text-gray-500 flex items-center gap-1"><Phone size={12} />{phone}</p>}
+                        {(branch || city || province) ? (
+                          <div className="text-sm text-gray-500 flex items-start gap-1">
+                            <MapPin size={12} className="mt-0.5 shrink-0" />
+                            <div className="space-y-0.5">
+                              {branch && <p><span className="text-gray-400 text-xs">ສາຂາ:</span> {branch}</p>}
+                              {city && <p><span className="text-gray-400 text-xs">ເມືອງ:</span> {city}</p>}
+                              {province && <p><span className="text-gray-400 text-xs">ແຂວງ:</span> {province}</p>}
+                            </div>
+                          </div>
+                        ) : o.address ? (
+                          <p className="text-sm text-gray-500 flex items-start gap-1"><MapPin size={12} className="mt-0.5 shrink-0" />{o.address}</p>
+                        ) : null}
+                      </div>
+                    )
+                  })()}
 
                   {/* Status */}
                   <div className="flex items-center gap-2 mt-3 flex-wrap">
