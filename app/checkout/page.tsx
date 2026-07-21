@@ -4,7 +4,7 @@ import { fmt, supabase } from '@/lib/supabase'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { CheckCircle, MapPin, Phone, User, Upload, Image } from 'lucide-react'
+import { CheckCircle, MapPin, Phone, User, Upload, Building2, Navigation, Map } from 'lucide-react'
 
 const FREE = 200000, SHIP = 20000
 
@@ -20,7 +20,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [authChecked, setAuthChecked] = useState(false)
-  const [form, setForm] = useState({ name: '', phone: '', address: '' })
+  const [form, setForm] = useState({ name: '', phone: '', branch: '', city: '', province: '' })
   const [settings, setSettings] = useState({ cod_enabled: true, qr_enabled: false, qr_image_url: null as string | null })
   const [receiptUrl, setReceiptUrl] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
@@ -59,7 +59,7 @@ export default function CheckoutPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!form.name || !form.phone || !form.address || !method || !courier) {
+    if (!form.name || !form.phone || !form.branch || !form.city || !form.province || !method || !courier) {
       if (!courier) { alert('ກະລຸນາເລືອກບໍລິສັດຂົນສົ່ງ'); return }
       return
     }
@@ -73,7 +73,7 @@ export default function CheckoutPage() {
       id: crypto.randomUUID(),
       user_id: user?.id ?? null,
       customer_email: user?.email ?? null,
-      address: `${form.name} · ${form.phone} · ${form.address}`,
+      address: `${form.name} · ${form.phone} · ${form.branch} · ${form.city} · ${form.province}`,
       payment_method: method,
       courier: courier,
       receipt_url: receiptUrl ?? '',
@@ -132,9 +132,21 @@ export default function CheckoutPage() {
                 <input value={form.phone} onChange={e => set('phone', e.target.value)} required
                   placeholder="ເບີໂທ" type="tel" className="flex-1 py-3 pr-4 outline-none text-sm" />
               </div>
-              <textarea value={form.address} onChange={e => set('address', e.target.value)} required
-                placeholder="ທີ່ຢູ່ລະອຽດ (ບ້ານ, ເມືອງ, ແຂວງ)" rows={3}
-                className="w-full border border-gray-200 rounded-xl p-3 outline-none text-sm resize-none" />
+              <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
+                <Building2 size={16} className="mx-3 text-gray-400 shrink-0" />
+                <input value={form.branch} onChange={e => set('branch', e.target.value)} required
+                  placeholder="ສາຂາ" className="flex-1 py-3 pr-4 outline-none text-sm" />
+              </div>
+              <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
+                <Navigation size={16} className="mx-3 text-gray-400 shrink-0" />
+                <input value={form.city} onChange={e => set('city', e.target.value)} required
+                  placeholder="ເມືອງ" className="flex-1 py-3 pr-4 outline-none text-sm" />
+              </div>
+              <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
+                <Map size={16} className="mx-3 text-gray-400 shrink-0" />
+                <input value={form.province} onChange={e => set('province', e.target.value)} required
+                  placeholder="ແຂວງ" className="flex-1 py-3 pr-4 outline-none text-sm" />
+              </div>
             </div>
           </div>
 
