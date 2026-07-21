@@ -134,11 +134,6 @@ export default function CheckoutPage() {
                 <input value={form.phone} onChange={e => set('phone', e.target.value)} required
                   placeholder="ເບີໂທ" type="tel" className="flex-1 py-3 pr-4 outline-none text-sm" />
               </div>
-              <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
-                <Building2 size={16} className="mx-3 text-gray-400 shrink-0" />
-                <input value={form.branch} onChange={e => set('branch', e.target.value)} required
-                  placeholder="ສາຂາ / ບ້ານ" className="flex-1 py-3 pr-4 outline-none text-sm" />
-              </div>
               <SelectDropdown
                 value={form.province}
                 onChange={v => { set('province', v); set('city', '') }}
@@ -154,6 +149,11 @@ export default function CheckoutPage() {
                 disabled={!form.province}
                 icon={<MapPin size={16} />}
               />
+              <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
+                <Building2 size={16} className="mx-3 text-gray-400 shrink-0" />
+                <input value={form.branch} onChange={e => set('branch', e.target.value)} required
+                  placeholder="ສາຂາ / ບ້ານ" className="flex-1 py-3 pr-4 outline-none text-sm" />
+              </div>
             </div>
           </div>
 
