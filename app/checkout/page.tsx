@@ -180,7 +180,7 @@ export default function CheckoutPage() {
               {/* Other courier */}
               <button type="button" onClick={() => setCourier('other')}
                 className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${courier === 'other' ? 'border-[#1247D8] bg-blue-50 shadow-md' : 'border-gray-200 hover:border-gray-300'}`}>
-                <div className="w-16 h-16 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center text-2xl">✏️</div>
+                <div className="w-16 h-16 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400 font-bold">ອື່ນໆ</div>
                 <span className="text-xs font-bold text-gray-700 text-center">ອື່ນໆ</span>
                 {courier === 'other' && <span className="text-[10px] text-[#1247D8] font-black">✓ ເລືອກແລ້ວ</span>}
               </button>
