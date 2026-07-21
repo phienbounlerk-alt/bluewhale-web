@@ -4,7 +4,8 @@ import { fmt, supabase } from '@/lib/supabase'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { CheckCircle, MapPin, Phone, User, Upload, Building2, Navigation, Map } from 'lucide-react'
+import { CheckCircle, MapPin, Phone, User, Upload, Building2, ChevronDown } from 'lucide-react'
+import { PROVINCES, PROVINCE_LIST } from '@/lib/laos-locations'
 
 const FREE = 200000, SHIP = 20000
 
@@ -135,17 +136,28 @@ export default function CheckoutPage() {
               <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
                 <Building2 size={16} className="mx-3 text-gray-400 shrink-0" />
                 <input value={form.branch} onChange={e => set('branch', e.target.value)} required
-                  placeholder="ສາຂາ" className="flex-1 py-3 pr-4 outline-none text-sm" />
+                  placeholder="ສາຂາ / ບ້ານ" className="flex-1 py-3 pr-4 outline-none text-sm" />
               </div>
+              {/* Province dropdown */}
               <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
-                <Navigation size={16} className="mx-3 text-gray-400 shrink-0" />
-                <input value={form.city} onChange={e => set('city', e.target.value)} required
-                  placeholder="ເມືອງ" className="flex-1 py-3 pr-4 outline-none text-sm" />
+                <MapPin size={16} className="mx-3 text-gray-400 shrink-0" />
+                <select value={form.province} onChange={e => { set('province', e.target.value); set('city', '') }} required
+                  className="flex-1 py-3 pr-4 outline-none text-sm bg-transparent appearance-none">
+                  <option value="">ເລືອກແຂວງ</option>
+                  {PROVINCE_LIST.map(p => <option key={p} value={p}>{p}</option>)}
+                </select>
+                <ChevronDown size={14} className="mr-3 text-gray-400 shrink-0" />
               </div>
+              {/* City dropdown */}
               <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden">
-                <Map size={16} className="mx-3 text-gray-400 shrink-0" />
-                <input value={form.province} onChange={e => set('province', e.target.value)} required
-                  placeholder="ແຂວງ" className="flex-1 py-3 pr-4 outline-none text-sm" />
+                <MapPin size={16} className="mx-3 text-gray-400 shrink-0" />
+                <select value={form.city} onChange={e => set('city', e.target.value)} required
+                  disabled={!form.province}
+                  className="flex-1 py-3 pr-4 outline-none text-sm bg-transparent appearance-none disabled:text-gray-400">
+                  <option value="">{form.province ? 'ເລືອກເມືອງ' : 'ເລືອກແຂວງກ່ອນ'}</option>
+                  {(PROVINCES[form.province] ?? []).map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+                <ChevronDown size={14} className="mr-3 text-gray-400 shrink-0" />
               </div>
             </div>
           </div>
