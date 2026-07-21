@@ -126,17 +126,18 @@ export default function ProductCard({ p }: { p: Product }) {
         )}
 
         {/* Price + Add to cart */}
-        <div className="flex items-end justify-between gap-2 mt-auto pt-1">
-          <div className="min-w-0">
-            <div className="text-[#1247D8] font-black text-base leading-tight">{fmt(display)}</div>
-            {pct > 0 && <div className="text-gray-400 text-xs line-through">{fmt(p.price)}</div>}
+        <div className="flex items-end justify-between gap-1.5 mt-auto pt-1">
+          <div className="min-w-0 flex-1">
+            <div className="text-[#1247D8] font-black text-sm leading-tight truncate">{fmt(display)}</div>
+            {pct > 0 && <div className="text-gray-400 text-[11px] line-through truncate">{fmt(p.price)}</div>}
           </div>
           <button
             onClick={handleAdd}
-            className={`btn-press shrink-0 flex items-center gap-1.5 px-3 h-8 rounded-xl text-white text-xs font-bold shadow-sm transition-colors ${added ? 'bg-green-500' : 'bg-[#1247D8] hover:bg-[#0d35b0]'}`}>
+            className={`btn-press shrink-0 w-8 h-8 rounded-xl flex items-center justify-center text-white shadow-sm transition-colors ${added ? 'bg-green-500' : 'bg-[#1247D8] hover:bg-[#0d35b0]'}`}
+            title="ໃສ່ກະຕ່າ">
             {added
-              ? <><span className="animate-pop-in">✓</span><span>ເພີ່ມແລ້ວ</span></>
-              : <><ShoppingCart size={13} /><span>ໃສ່ກະຕ່າ</span></>
+              ? <span className="text-xs font-bold animate-pop-in">✓</span>
+              : <ShoppingCart size={15} />
             }
           </button>
         </div>
