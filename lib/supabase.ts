@@ -20,6 +20,7 @@ export type Product = {
   review_count?: number
   is_cod?: boolean
   is_free_shipping?: boolean
+  sold_count?: number
   variant_options?: Record<string, string[]>
 }
 
