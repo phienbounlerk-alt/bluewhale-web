@@ -180,7 +180,9 @@ export default function CheckoutPage() {
               {/* Other courier */}
               <button type="button" onClick={() => setCourier('other')}
                 className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${courier === 'other' ? 'border-[#1247D8] bg-blue-50 shadow-md' : 'border-gray-200 hover:border-gray-300'}`}>
-                <div className="w-16 h-16 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400 font-bold">ອື່ນໆ</div>
+                <div className="w-16 h-16 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center text-gray-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                </div>
                 <span className="text-xs font-bold text-gray-700 text-center">ອື່ນໆ</span>
                 {courier === 'other' && <span className="text-[10px] text-[#1247D8] font-black">✓ ເລືອກແລ້ວ</span>}
               </button>
