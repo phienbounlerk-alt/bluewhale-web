@@ -560,10 +560,10 @@ export default function OrdersPage() {
                   </div>
 
                   {/* ── Custom tracking logs ── */}
-                  {logs.filter(l => l.note).length > 0 && (
+                  {logs.filter((l: any) => l.note).length > 0 && (
                     <div className="mb-4 bg-blue-50 rounded-xl p-3 space-y-2">
                       <p className="text-[10px] font-black text-blue-600 mb-2">📋 ອັບເດດຈາກຮ້ານ</p>
-                      {[...logs].reverse().filter(l => l.note).map((log, i) => (
+                      {[...logs].reverse().filter((l: any) => l.note).map((log, i) => (
                         <div key={i} className="flex gap-2.5 items-start">
                           <div className={`w-2 h-2 rounded-full shrink-0 mt-1 ${i === 0 ? 'bg-[#1247D8]' : 'bg-blue-200'}`} />
                           <div>
