@@ -57,8 +57,6 @@ export default function BottomNav() {
           )
         })}
       </div>
-      {/* Safe area spacing for iOS */}
-      <div className="h-safe-area-inset-bottom" />
     </nav>
   )
 }
