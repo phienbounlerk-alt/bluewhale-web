@@ -18,6 +18,7 @@ export default function CheckoutPage() {
   const grand = subtotal + shipping
   const [method, setMethod] = useState('')
   const [courier, setCourier] = useState('')
+  const [customCourier, setCustomCourier] = useState('')
   const [done, setDone] = useState(false)
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -65,6 +66,9 @@ export default function CheckoutPage() {
       if (!courier) { alert('ກະລຸນາເລືອກບໍລິສັດຂົນສົ່ງ'); return }
       return
     }
+    if (courier === 'other' && !customCourier.trim()) {
+      alert('ກະລຸນາພິມຊື່ບໍລິສັດຂົນສົ່ງ'); return
+    }
     if (method === 'qr' && !receiptUrl) {
       alert('ກະລຸນາ upload ສະລິບໂອນເງິນກ່ອນ')
       return
@@ -77,7 +81,7 @@ export default function CheckoutPage() {
       customer_email: user?.email ?? null,
       address: `${form.name} · ${form.phone} · ${form.branch} · ${form.city} · ${form.province}`,
       payment_method: method,
-      courier: courier,
+      courier: courier === 'other' ? customCourier : courier,
       receipt_url: receiptUrl ?? '',
       items: items.map(i => ({ product_id: i.product.id, product_name: i.product.name, quantity: i.quantity, price: i.product.discount_price ?? i.product.price })),
       total_amount: grand,
@@ -160,7 +164,7 @@ export default function CheckoutPage() {
           {/* Courier selection */}
           <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
             <h2 className="font-black text-gray-800 mb-4">🚚 ເລືອກບໍລິສັດຂົນສົ່ງ</h2>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-4 gap-3">
               {[
                 { id: 'ອານຸສິດ', img: '/anousith.jpeg' },
                 { id: 'ຮຸ່ງອາລຸນ', img: '/houngaloun.jpeg' },
@@ -173,7 +177,23 @@ export default function CheckoutPage() {
                   {courier === c.id && <span className="text-[10px] text-[#1247D8] font-black">✓ ເລືອກແລ້ວ</span>}
                 </button>
               ))}
+              {/* Other courier */}
+              <button type="button" onClick={() => setCourier('other')}
+                className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all ${courier === 'other' ? 'border-[#1247D8] bg-blue-50 shadow-md' : 'border-gray-200 hover:border-gray-300'}`}>
+                <div className="w-16 h-16 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center text-2xl">✏️</div>
+                <span className="text-xs font-bold text-gray-700 text-center">ອື່ນໆ</span>
+                {courier === 'other' && <span className="text-[10px] text-[#1247D8] font-black">✓ ເລືອກແລ້ວ</span>}
+              </button>
             </div>
+            {courier === 'other' && (
+              <input
+                value={customCourier}
+                onChange={e => setCustomCourier(e.target.value)}
+                placeholder="ພິມຊື່ບໍລິສັດຂົນສົ່ງ..."
+                className="mt-3 w-full border border-[#1247D8] rounded-xl px-4 py-3 text-sm outline-none"
+                autoFocus
+              />
+            )}
           </div>
 
           {/* Payment method */}
