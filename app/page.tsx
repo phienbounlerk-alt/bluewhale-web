@@ -33,7 +33,7 @@ export default async function Home() {
   const recommended = products.slice(0, 12)
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen animate-fade-in">
 
       {/* Announcement strip */}
       <div className="bg-gradient-to-r from-[#1247D8] to-[#0d35b0] px-4 py-2">
@@ -49,28 +49,32 @@ export default async function Home() {
         <BannerSlider />
 
         {/* Categories */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
+        <div className="bg-white rounded-2xl p-4 shadow-[var(--shadow-card)]">
           <div className="flex items-center justify-between mb-3">
             <h2 className="font-black text-gray-800 text-sm">ໝວດໝູ່ສິນຄ້າ</h2>
-            <Link href="/products" className="text-[#1247D8] text-xs font-bold">ເບິ່ງທັງໝົດ →</Link>
+            <Link href="/products" className="text-[#1247D8] text-xs font-bold hover:underline">ເບິ່ງທັງໝົດ →</Link>
           </div>
           <div className="grid grid-cols-6 gap-2">
-            {categories.map(c => (
-              <Link key={c.label} href={c.href} className="flex flex-col items-center gap-1.5 group">
-                <div className={`w-11 h-11 ${c.color} rounded-2xl flex items-center justify-center text-xl group-hover:scale-110 transition-transform duration-200`}>
+            {categories.map((c, i) => (
+              <Link key={c.label} href={c.href}
+                className="flex flex-col items-center gap-1.5 group animate-slide-up"
+                style={{ animationDelay: `${i * 50}ms` }}>
+                <div className={`w-11 h-11 ${c.color} rounded-2xl flex items-center justify-center text-xl transition-all duration-200 group-hover:scale-110 group-hover:shadow-md group-active:scale-95`}>
                   {c.icon}
                 </div>
-                <span className="text-[10px] text-gray-600 font-medium text-center leading-tight">{c.label}</span>
+                <span className="text-[10px] text-gray-600 font-medium text-center leading-tight group-hover:text-[#1247D8] transition-colors">{c.label}</span>
               </Link>
             ))}
           </div>
         </div>
 
         {/* Services */}
-        <div className="bg-white rounded-2xl px-4 py-3 shadow-sm">
+        <div className="bg-white rounded-2xl px-4 py-3 shadow-[var(--shadow-card)]">
           <div className="flex justify-around">
-            {services.map(s => (
-              <div key={s.label} className="flex flex-col items-center gap-0.5">
+            {services.map((s, i) => (
+              <div key={s.label}
+                className="flex flex-col items-center gap-0.5 animate-slide-up"
+                style={{ animationDelay: `${i * 60}ms` }}>
                 <span className="text-xl">{s.icon}</span>
                 <span className="text-[10px] text-gray-700 font-bold">{s.label}</span>
                 <span className="text-[9px] text-gray-400">{s.sub}</span>
@@ -109,7 +113,7 @@ export default async function Home() {
         <RecentlyViewedSection products={products} />
 
         {/* Recommended */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
+        <div className="bg-white rounded-2xl p-4 shadow-[var(--shadow-card)]">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <div className="w-1 h-5 bg-[#1247D8] rounded-full" />

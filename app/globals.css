@@ -1,4 +1,145 @@
 @import "tailwindcss";
 
-:root { --primary: #1247D8; --red: #EE4D2D; }
-body { background: #F4F5F8; font-family: 'Noto Sans Lao', sans-serif; }
+/* ── Design tokens ───────────────────────────────────────────────────── */
+:root {
+  --primary:      #1247D8;
+  --primary-dark: #0d35b0;
+  --red:          #EE4D2D;
+  --red-dark:     #d63d1e;
+
+  /* shadows */
+  --shadow-card:  0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-lift:  0 8px 24px rgba(18,71,216,.12), 0 2px 8px rgba(0,0,0,.06);
+  --shadow-btn:   0 2px 8px rgba(18,71,216,.30);
+  --shadow-float: 0 16px 48px rgba(0,0,0,.14), 0 4px 12px rgba(0,0,0,.08);
+
+  /* radii */
+  --r-sm:  10px;
+  --r-md:  16px;
+  --r-lg:  20px;
+  --r-xl:  24px;
+  --r-2xl: 32px;
+
+  /* transitions */
+  --t-fast:   120ms cubic-bezier(.4,0,.2,1);
+  --t-normal: 220ms cubic-bezier(.4,0,.2,1);
+  --t-spring: 320ms cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ── Base ────────────────────────────────────────────────────────────── */
+body {
+  background: #F4F5F8;
+  font-family: 'Noto Sans Lao', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* { -webkit-tap-highlight-color: transparent; }
+
+/* ── Keyframes ───────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position:  200% center; }
+}
+
+@keyframes popIn {
+  0%   { transform: scale(0.8); opacity: 0; }
+  60%  { transform: scale(1.08); }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+@keyframes bounceY {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-4px); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .6; }
+}
+
+@keyframes ping-dot {
+  75%, 100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* ── Animation utilities ─────────────────────────────────────────────── */
+.animate-fade-in  { animation: fadeIn  .28s ease both; }
+.animate-slide-up { animation: slideUp .32s ease both; }
+.animate-scale-in { animation: scaleIn .24s ease both; }
+.animate-pop-in   { animation: popIn   .32s ease both; }
+.animate-bounce-y { animation: bounceY .5s ease infinite; }
+.animate-pulse-soft { animation: pulse-soft 2s ease infinite; }
+
+/* stagger helpers */
+.delay-50  { animation-delay: 50ms;  }
+.delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+
+/* ── Skeleton shimmer ─────────────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #e8eaf0 25%,
+    #f3f4f7 50%,
+    #e8eaf0 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: var(--r-md);
+}
+
+/* ── Card hover (GPU-accelerated) ────────────────────────────────────── */
+.card-hover {
+  transition: transform var(--t-normal), box-shadow var(--t-normal), border-color var(--t-normal);
+  will-change: transform;
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+  border-color: rgba(18,71,216,.15) !important;
+}
+.card-hover:active {
+  transform: translateY(-1px);
+  transition-duration: 80ms;
+}
+
+/* ── Button press ─────────────────────────────────────────────────────── */
+.btn-press {
+  transition: transform var(--t-fast), filter var(--t-fast), box-shadow var(--t-fast);
+  will-change: transform;
+}
+.btn-press:active {
+  transform: scale(.95);
+  filter: brightness(.92);
+}
+
+/* ── Scrollbar hide ───────────────────────────────────────────────────── */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Smooth scroll ────────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+/* ── Focus ring ───────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}

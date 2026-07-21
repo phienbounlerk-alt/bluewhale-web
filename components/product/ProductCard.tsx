@@ -11,6 +11,23 @@ function fmtSold(n: number) {
   return String(n)
 }
 
+export function ProductCardSkeleton() {
+  return (
+    <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 flex flex-col">
+      <div className="skeleton aspect-square" />
+      <div className="p-3 flex flex-col gap-2">
+        <div className="skeleton h-3 rounded-lg w-full" />
+        <div className="skeleton h-3 rounded-lg w-3/4" />
+        <div className="skeleton h-3 rounded-lg w-1/2" />
+        <div className="flex items-end justify-between mt-1">
+          <div className="skeleton h-5 rounded-lg w-24" />
+          <div className="skeleton h-8 rounded-xl w-20" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function ProductCard({ p }: { p: Product }) {
   const add = useCart(s => s.add)
   const [added, setAdded] = useState(false)
@@ -49,33 +66,39 @@ export default function ProductCard({ p }: { p: Product }) {
 
   return (
     <Link href={`/products/${p.id}`}
-      className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow group border border-gray-100 flex flex-col">
+      className="card-hover bg-white rounded-2xl overflow-hidden shadow-[var(--shadow-card)] border border-gray-100/80 flex flex-col group">
 
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-gray-50">
         {p.image_url ? (
-          <Image src={p.image_url} alt={p.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" unoptimized />
+          <Image
+            src={p.image_url} alt={p.name} fill
+            className="object-cover group-hover:scale-[1.07] transition-transform duration-500 ease-out"
+            unoptimized
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-4xl">📦</div>
         )}
 
         {/* Discount badge */}
         {pct > 0 && (
-          <div className="absolute top-2 left-2 bg-[#EE4D2D] text-white text-[11px] font-black px-2 py-0.5 rounded-full shadow-sm">
+          <div className="absolute top-2 left-2 bg-[#EE4D2D] text-white text-[11px] font-black px-2 py-0.5 rounded-full shadow-sm animate-pop-in">
             -{pct}%
           </div>
         )}
 
-        {/* Wishlist — 15% larger: size 14 → 16, button 8→9 */}
+        {/* Wishlist button */}
         <button onClick={toggleWish}
-          className="absolute top-2 right-2 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center transition-transform active:scale-90">
-          <Heart size={16} className={wished ? 'fill-red-500 text-red-500' : 'text-gray-400'} />
+          className="absolute top-2 right-2 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center btn-press">
+          <Heart
+            size={16}
+            className={`transition-all duration-200 ${wished ? 'fill-red-500 text-red-500 scale-110' : 'text-gray-400 hover:text-red-400'}`}
+          />
         </button>
       </div>
 
       {/* Info */}
       <div className="p-3 flex flex-col flex-1 gap-1.5">
-        {/* Name */}
         <p className="text-gray-800 text-sm font-medium line-clamp-2 leading-snug flex-1">{p.name}</p>
 
         {/* Rating + sold */}
@@ -108,10 +131,11 @@ export default function ProductCard({ p }: { p: Product }) {
             <div className="text-[#1247D8] font-black text-base leading-tight">{fmt(display)}</div>
             {pct > 0 && <div className="text-gray-400 text-xs line-through">{fmt(p.price)}</div>}
           </div>
-          <button onClick={handleAdd}
-            className={`shrink-0 flex items-center gap-1.5 px-3 h-8 rounded-xl text-white text-xs font-bold transition-all shadow-sm ${added ? 'bg-green-500' : 'bg-[#1247D8] hover:bg-[#0d35b0] active:scale-95'}`}>
+          <button
+            onClick={handleAdd}
+            className={`btn-press shrink-0 flex items-center gap-1.5 px-3 h-8 rounded-xl text-white text-xs font-bold shadow-sm transition-colors ${added ? 'bg-green-500' : 'bg-[#1247D8] hover:bg-[#0d35b0]'}`}>
             {added
-              ? <><span>✓</span><span>ເພີ່ມແລ້ວ</span></>
+              ? <><span className="animate-pop-in">✓</span><span>ເພີ່ມແລ້ວ</span></>
               : <><ShoppingCart size={13} /><span>ໃສ່ກະຕ່າ</span></>
             }
           </button>

@@ -26,7 +26,7 @@ export default function ProductRowSection({ title, icon, products, href = '/prod
   }
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-sm">
+    <div className="bg-white rounded-2xl overflow-hidden shadow-[var(--shadow-card)]">
       {/* Header */}
       <div className="flex items-center justify-between px-4 pt-4 pb-3 border-b border-gray-50">
         <div className="flex items-center gap-2">
@@ -34,26 +34,42 @@ export default function ProductRowSection({ title, icon, products, href = '/prod
           <span className="text-lg">{icon}</span>
           <h2 className="font-black text-gray-800 text-base">{title}</h2>
         </div>
-        <Link href={href} className="text-xs font-bold px-3 py-1 rounded-full border transition-colors hover:text-white"
+        <Link href={href}
+          className="text-xs font-bold px-3 py-1.5 rounded-full border-2 transition-all duration-200 btn-press"
           style={{ color: accent, borderColor: accent + '40' }}
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = accent }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '' }}>
+          onMouseEnter={e => {
+            const el = e.currentTarget as HTMLElement
+            el.style.background = accent
+            el.style.color = '#fff'
+            el.style.borderColor = accent
+          }}
+          onMouseLeave={e => {
+            const el = e.currentTarget as HTMLElement
+            el.style.background = ''
+            el.style.color = accent
+            el.style.borderColor = accent + '40'
+          }}>
           ທັງໝົດ →
         </Link>
       </div>
 
       {/* Horizontal scroll */}
       <div className="flex gap-3 overflow-x-auto px-4 py-3 pb-4 scrollbar-hide snap-x snap-mandatory">
-        {products.map(p => {
+        {products.map((p, idx) => {
           const pct = discountPct(p)
           const display = p.discount_price ?? p.price
           return (
             <Link key={p.id} href={`/products/${p.id}`}
-              className="shrink-0 w-36 snap-start group">
+              className="card-hover shrink-0 w-36 snap-start group animate-fade-in"
+              style={{ animationDelay: `${idx * 30}ms` }}>
               {/* Image */}
-              <div className="relative w-36 h-36 bg-gray-50 rounded-xl overflow-hidden mb-2">
+              <div className="relative w-36 h-36 bg-gray-50 rounded-xl overflow-hidden mb-2 shadow-[var(--shadow-card)]">
                 {p.image_url
-                  ? <Image src={p.image_url} alt={p.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" unoptimized />
+                  ? <Image
+                      src={p.image_url} alt={p.name} fill
+                      className="object-cover group-hover:scale-[1.07] transition-transform duration-500 ease-out"
+                      unoptimized
+                    />
                   : <div className="w-full h-full flex items-center justify-center text-3xl">📦</div>
                 }
                 {pct > 0 && (
@@ -64,17 +80,18 @@ export default function ProductRowSection({ title, icon, products, href = '/prod
                 )}
               </div>
               {/* Info */}
-              <p className="text-gray-800 text-xs font-medium line-clamp-2 leading-snug mb-1">{p.name}</p>
+              <p className="text-gray-800 text-xs font-medium line-clamp-2 leading-snug mb-1.5">{p.name}</p>
               <div className="flex items-center justify-between gap-1">
                 <div>
                   <div className="font-black text-sm" style={{ color: accent }}>{fmt(display)}</div>
                   {pct > 0 && <div className="text-gray-400 text-[10px] line-through">{fmt(p.price)}</div>}
                 </div>
-                <button onClick={e => handleAdd(e, p)}
-                  className="w-7 h-7 rounded-lg flex items-center justify-center transition-all active:scale-90 shrink-0"
+                <button
+                  onClick={e => handleAdd(e, p)}
+                  className="btn-press w-7 h-7 rounded-lg flex items-center justify-center shrink-0 shadow-sm transition-colors"
                   style={{ background: added === p.id ? '#22c55e' : accent }}>
                   {added === p.id
-                    ? <span className="text-white text-xs">✓</span>
+                    ? <span className="text-white text-xs animate-pop-in">✓</span>
                     : <ShoppingCart size={13} className="text-white" />
                   }
                 </button>
