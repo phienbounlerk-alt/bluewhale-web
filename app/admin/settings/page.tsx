@@ -9,59 +9,98 @@ const DELIVERY_APPS = [
   { key: 'mixay',     label: 'ມີໄຊ Express',      img: '/mixay.jpeg',      price: '₭10k–28k' },
 ]
 
+const QR_BANKS = [
+  { key: 'bcel', label: 'BCEL One', img: '/bcel-one.webp' },
+  { key: 'jdb',  label: 'JDB',      img: '/jdb.png' },
+  { key: 'ldb',  label: 'LDB',      img: '/ldb.jpg' },
+]
+
 type DeliveryMap = Record<string, boolean>
+type QrMap = Record<string, { enabled: boolean; url: string | null }>
 
 export default function AdminSettings() {
   const [codEnabled, setCodEnabled] = useState(true)
-  const [qrEnabled, setQrEnabled] = useState(false)
-  const [qrImageUrl, setQrImageUrl] = useState<string | null>(null)
+  const [qrBanks, setQrBanks] = useState<QrMap>({
+    bcel: { enabled: false, url: null },
+    jdb:  { enabled: false, url: null },
+    ldb:  { enabled: false, url: null },
+  })
   const [delivery, setDelivery] = useState<DeliveryMap>({ anousith: true, rungaloun: false, mixay: false })
   const [saving, setSaving] = useState(false)
-  const [uploading, setUploading] = useState(false)
+  const [uploading, setUploading] = useState<string | null>(null)
   const [msg, setMsg] = useState('')
-  const fileRef = useRef<HTMLInputElement>(null)
+  const fileRefs = useRef<Record<string, HTMLInputElement | null>>({})
 
   useEffect(() => {
     supabase.from('payment_settings').select('*').eq('id', 1).single()
       .then(({ data }) => {
         if (data) {
-          setCodEnabled(data.cod_enabled)
-          setQrEnabled(data.qr_enabled)
-          setQrImageUrl(data.qr_image_url)
-          if (data.delivery_apps) setDelivery(data.delivery_apps)
+          setCodEnabled(data.cod_enabled ?? true)
+          // migrate old single QR → bcel slot
+          if (data.qr_image_url) {
+            setQrBanks(b => ({ ...b, bcel: { enabled: data.qr_enabled ?? false, url: data.qr_image_url } }))
+          }
         }
       })
+    // load local overrides for new fields not yet in DB
+    try {
+      const saved = localStorage.getItem('bw_settings')
+      if (saved) {
+        const j = JSON.parse(saved)
+        if (j.qr_banks) setQrBanks(j.qr_banks)
+        if (j.delivery) setDelivery(j.delivery)
+      }
+    } catch {}
   }, [])
 
-  const uploadQr = async (file: File) => {
-    setUploading(true)
+  const uploadQr = async (bankKey: string, file: File) => {
+    setUploading(bankKey)
     const ext = file.name.split('.').pop()
-    const path = `qr/payment-qr.${ext}`
+    const path = `qr/${bankKey}-qr.${ext}`
     const { error } = await supabase.storage.from('products').upload(path, file, { upsert: true })
-    if (error) { setMsg('ອັບໂຫລດບໍ່ສຳເລັດ: ' + error.message); setUploading(false); return }
+    if (error) { setMsg('ອັບໂຫລດບໍ່ສຳເລັດ'); setUploading(null); return }
     const { data } = supabase.storage.from('products').getPublicUrl(path)
-    setQrImageUrl(data.publicUrl)
-    setQrEnabled(true)
-    setUploading(false)
+    setQrBanks(b => ({ ...b, [bankKey]: { enabled: true, url: data.publicUrl } }))
+    setUploading(null)
     setMsg('ອັບໂຫລດ QR ສຳເລັດ!')
+    setTimeout(() => setMsg(''), 3000)
   }
 
   const save = async () => {
     setSaving(true)
-    const { error } = await supabase.from('payment_settings')
-      .update({ cod_enabled: codEnabled, qr_enabled: qrEnabled, qr_image_url: qrImageUrl, delivery_apps: delivery })
-      .eq('id', 1)
+    try {
+      // save only columns that exist in DB
+      const bcelBank = qrBanks['bcel']
+      const { error } = await supabase.from('payment_settings')
+        .update({
+          cod_enabled: codEnabled,
+          qr_enabled: bcelBank.enabled,
+          qr_image_url: bcelBank.url,
+        })
+        .eq('id', 1)
+      // save new fields to localStorage until DB columns are added
+      localStorage.setItem('bw_settings', JSON.stringify({ qr_banks: qrBanks, delivery }))
+      setMsg(error ? 'ບັນທຶກບໍ່ສຳເລັດ' : 'ບັນທຶກສຳເລັດ ✅')
+    } catch {
+      setMsg('ບັນທຶກບໍ່ສຳເລັດ')
+    }
     setSaving(false)
-    setMsg(error ? 'ບັນທຶກບໍ່ສຳເລັດ' : 'ບັນທຶກສຳເລັດ ✅')
     setTimeout(() => setMsg(''), 3000)
   }
+
+  const Toggle = ({ on, onClick, disabled }: { on: boolean; onClick: () => void; disabled?: boolean }) => (
+    <button onClick={onClick} disabled={disabled}
+      className={`relative w-12 h-6 rounded-full transition-colors shrink-0 ${on ? 'bg-[#1247D8]' : 'bg-gray-300'} disabled:opacity-40`}>
+      <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${on ? 'translate-x-6' : 'translate-x-0.5'}`} />
+    </button>
+  )
 
   return (
     <div className="space-y-6 max-w-lg">
       <h1 className="text-xl font-black text-gray-800">⚙️ ຕັ້ງຄ່າການຊຳລະ</h1>
 
       {msg && (
-        <div className="bg-green-50 border border-green-200 text-green-700 rounded-xl px-4 py-3 text-sm">{msg}</div>
+        <div className={`rounded-xl px-4 py-3 text-sm border ${msg.includes('ບໍ່') ? 'bg-red-50 border-red-200 text-red-600' : 'bg-green-50 border-green-200 text-green-700'}`}>{msg}</div>
       )}
 
       {/* COD */}
@@ -71,49 +110,57 @@ export default function AdminSettings() {
             <p className="font-bold text-gray-800">💵 COD — ຈ່າຍປາຍທາງ</p>
             <p className="text-sm text-gray-500 mt-0.5">ລູກຄ້າຈ່າຍເງີນເມື່ອໄດ້ຮັບສິນຄ້າ</p>
           </div>
-          <button onClick={() => setCodEnabled(!codEnabled)}
-            className={`relative w-12 h-6 rounded-full transition-colors ${codEnabled ? 'bg-[#1247D8]' : 'bg-gray-300'}`}>
-            <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${codEnabled ? 'translate-x-6' : 'translate-x-0.5'}`} />
-          </button>
+          <Toggle on={codEnabled} onClick={() => setCodEnabled(v => !v)} />
         </div>
         <p className={`text-xs mt-3 font-bold ${codEnabled ? 'text-green-600' : 'text-gray-400'}`}>
           {codEnabled ? '✅ ເປີດໃຊ້ງານ' : '⛔ ປິດໃຊ້ງານ'}
         </p>
       </div>
 
-      {/* QR */}
+      {/* QR Banks */}
       <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="font-bold text-gray-800">📷 QR Code ຊຳລະ</p>
-            <p className="text-sm text-gray-500 mt-0.5">ອັບໂຫລດ QR ເງີນໂອນຂອງທ່ານ</p>
-          </div>
-          <button onClick={() => setQrEnabled(!qrEnabled)} disabled={!qrImageUrl}
-            className={`relative w-12 h-6 rounded-full transition-colors ${qrEnabled && qrImageUrl ? 'bg-[#1247D8]' : 'bg-gray-300'}`}>
-            <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${qrEnabled && qrImageUrl ? 'translate-x-6' : 'translate-x-0.5'}`} />
-          </button>
+        <div>
+          <p className="font-bold text-gray-800">📷 QR Code ຊຳລະ</p>
+          <p className="text-sm text-gray-500 mt-0.5">ອັບໂຫລດ QR ແຕ່ລະທະນາຄານ</p>
         </div>
 
-        {/* QR Preview */}
-        {qrImageUrl ? (
-          <div className="flex items-start gap-4">
-            <img src={qrImageUrl} alt="QR" className="w-32 h-32 object-contain border border-gray-200 rounded-xl" />
-            <button onClick={() => fileRef.current?.click()}
-              className="text-sm text-[#1247D8] hover:underline mt-2">ປ່ຽນ QR</button>
-          </div>
-        ) : (
-          <button onClick={() => fileRef.current?.click()}
-            className="w-full border-2 border-dashed border-gray-300 rounded-xl py-8 flex flex-col items-center gap-2 hover:border-[#1247D8] transition-colors">
-            <Upload size={24} className="text-gray-400" />
-            <span className="text-sm text-gray-500">{uploading ? 'ກຳລັງອັບໂຫລດ...' : 'ກົດເພື່ອອັບໂຫລດ QR Code'}</span>
-          </button>
-        )}
-        <input ref={fileRef} type="file" accept="image/*" className="hidden"
-          onChange={e => { const f = e.target.files?.[0]; if (f) uploadQr(f) }} />
+        {QR_BANKS.map(({ key, label, img }) => {
+          const bank = qrBanks[key]
+          return (
+            <div key={key} className="border border-gray-100 rounded-xl p-4 space-y-3">
+              {/* Header row */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white border border-gray-100 rounded-xl flex items-center justify-center p-1 shadow-sm">
+                    <img src={img} alt={label} className="w-full h-full object-contain" />
+                  </div>
+                  <p className="font-semibold text-gray-700 text-sm">{label}</p>
+                </div>
+                <Toggle on={bank.enabled} onClick={() => setQrBanks(b => ({ ...b, [key]: { ...b[key], enabled: !b[key].enabled } }))} disabled={!bank.url} />
+              </div>
 
-        <p className={`text-xs font-bold ${qrEnabled && qrImageUrl ? 'text-green-600' : 'text-gray-400'}`}>
-          {!qrImageUrl ? '⚠️ ຍັງບໍ່ມີ QR — ອັບໂຫລດກ່ອນ' : qrEnabled ? '✅ ເປີດໃຊ້ງານ' : '⛔ ປິດໃຊ້ງານ'}
-        </p>
+              {/* QR upload area */}
+              {bank.url ? (
+                <div className="flex items-center gap-3">
+                  <img src={bank.url} alt="QR" className="w-20 h-20 object-contain border border-gray-200 rounded-lg" />
+                  <button onClick={() => fileRefs.current[key]?.click()} className="text-xs text-[#1247D8] hover:underline">ປ່ຽນ QR</button>
+                </div>
+              ) : (
+                <button onClick={() => fileRefs.current[key]?.click()}
+                  className="w-full border-2 border-dashed border-gray-200 rounded-xl py-5 flex flex-col items-center gap-1.5 hover:border-[#1247D8] transition-colors">
+                  <Upload size={18} className="text-gray-400" />
+                  <span className="text-xs text-gray-400">{uploading === key ? 'ກຳລັງອັບໂຫລດ...' : `ອັບໂຫລດ QR ${label}`}</span>
+                </button>
+              )}
+              <input ref={el => { fileRefs.current[key] = el }} type="file" accept="image/*" className="hidden"
+                onChange={e => { const f = e.target.files?.[0]; if (f) uploadQr(key, f) }} />
+
+              <p className={`text-xs font-bold ${bank.enabled && bank.url ? 'text-green-600' : 'text-gray-400'}`}>
+                {!bank.url ? '⚠️ ຍັງບໍ່ມີ QR' : bank.enabled ? '✅ ເປີດໃຊ້ງານ' : '⛔ ປິດໃຊ້ງານ'}
+              </p>
+            </div>
+          )
+        })}
       </div>
 
       {/* Delivery Apps */}
@@ -129,10 +176,7 @@ export default function AdminSettings() {
                 <p className="text-xs text-gray-400">{price}</p>
               </div>
             </div>
-            <button onClick={() => setDelivery(d => ({ ...d, [key]: !d[key] }))}
-              className={`relative w-12 h-6 rounded-full transition-colors ${delivery[key] ? 'bg-[#1247D8]' : 'bg-gray-300'}`}>
-              <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${delivery[key] ? 'translate-x-6' : 'translate-x-0.5'}`} />
-            </button>
+            <Toggle on={!!delivery[key]} onClick={() => setDelivery(d => ({ ...d, [key]: !d[key] }))} />
           </div>
         ))}
       </div>

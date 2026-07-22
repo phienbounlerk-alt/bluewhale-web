@@ -37,8 +37,8 @@ export const viewport: Viewport = {
   maximumScale: 1,
 }
 
-const AppFooter = (
-  <footer className="bg-[#0a1a3e] text-white mt-8 mb-16 md:mb-0">
+function AppFooter() {
+  return <footer className="bg-[#0a1a3e] text-white mt-8 mb-16 md:mb-0">
     <div className="max-w-7xl mx-auto px-4 py-6">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-5">
         <div>
@@ -117,7 +117,7 @@ const AppFooter = (
       </div>
     </div>
   </footer>
-)
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -127,7 +127,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
         <SplashScreen />
         <PwaRegister />
-        <MainShell footer={AppFooter}>
+        <MainShell footer={<AppFooter />}>
           {children}
         </MainShell>
         </AuthProvider>
