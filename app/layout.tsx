@@ -1,23 +1,39 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import Navbar from '@/components/layout/Navbar'
 import BottomNav from '@/components/layout/BottomNav'
 import { AuthProvider } from '@/lib/auth-context'
 import { Noto_Sans_Lao } from 'next/font/google'
+import PwaRegister from '@/components/PwaRegister'
 
 const notoSansLao = Noto_Sans_Lao({ subsets: ['lao'], weight: ['400', '500', '700', '900'], display: 'swap' })
 
 export const metadata: Metadata = {
   title: 'BlueWhale — ຕະຫຼາດດິຈິຕອລລາວ',
   description: 'ຊື້ສິນຄ້າ ລາຄາດີ ສົ່ງໄວ ທົ່ວລາວ',
+  manifest: '/manifest.webmanifest',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'BlueWhale',
+    startupImage: '/apple-touch-icon.png',
+  },
   icons: {
     icon: [
       { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
-      { url: '/logo.png', sizes: '1024x1024', type: 'image/png' },
+      { url: '/icon-192.png',   sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png',   sizes: '512x512', type: 'image/png' },
     ],
     apple: '/apple-touch-icon.png',
     shortcut: '/favicon-32.png',
   },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#1247D8',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -25,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="lo">
       <body className={notoSansLao.className}>
         <AuthProvider>
+        <PwaRegister />
         <Navbar />
         <main className="min-h-screen pb-20 md:pb-0">{children}</main>
         <BottomNav />

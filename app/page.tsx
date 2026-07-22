@@ -35,18 +35,10 @@ export default async function Home() {
   return (
     <div className="bg-gray-100 min-h-screen animate-fade-in">
 
-      {/* Announcement strip */}
-      <div className="bg-gradient-to-r from-[#1247D8] to-[#0d35b0] px-4 py-2">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <p className="text-white/80 text-xs font-medium">🐋 ຕະຫຼາດດິຈິຕອລ ອັນດັບ 1 ລາວ</p>
-          <p className="text-white/60 text-xs">ສົ່ງທົ່ວລາວ 🇱🇦</p>
-        </div>
-      </div>
+      {/* Banner Slider — full width, no padding */}
+      <BannerSlider />
 
       <div className="max-w-7xl mx-auto px-3 py-3 space-y-3">
-
-        {/* Banner Slider */}
-        <BannerSlider />
 
         {/* Categories */}
         <div className="bg-white rounded-2xl p-4 shadow-[var(--shadow-card)]">

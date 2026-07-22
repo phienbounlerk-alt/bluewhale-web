@@ -265,33 +265,94 @@ function ProductsContent() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-4">
 
-      {/* ── Search bar ── */}
-      <form onSubmit={e => { e.preventDefault(); handleSearch(q) }} className="mb-4">
-        <SearchDropdown
-          value={q}
-          onChange={setQ}
-          onSearch={handleSearch}
-          productNames={productNames}
-          placeholder="ຄົ້ນຫາສິນຄ້າ..."
-        />
-      </form>
+      {/* Search bar hidden on mobile — navbar already has it */}
 
-      {/* ── Category chips ── */}
-      <div className="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide">
-        {CATS.map(c => (
-          <button key={c} onClick={() => handleCat(c)}
-            className={`shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${cat === c ? 'bg-[#1247D8] text-white shadow-md shadow-blue-200' : 'bg-white text-gray-600 border border-gray-200 hover:border-[#1247D8]/50 hover:text-[#1247D8]'}`}>
-            <span>{CAT_ICONS[c]}</span>
-            {c}
-          </button>
-        ))}
-      </div>
+      <div className="md:flex md:gap-6 md:items-start">
+
+        {/* ══ Desktop filter sidebar ══ */}
+        <aside className="hidden md:block w-52 shrink-0 sticky top-20">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+
+            {/* Categories */}
+            <div className="p-4 pb-3">
+              <p className="text-[10px] font-black text-gray-400 mb-2 uppercase tracking-wider">ໝວດໝູ່</p>
+              <div className="space-y-0.5">
+                {CATS.map(c => (
+                  <button key={c} onClick={() => handleCat(c)}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-left transition-all ${cat === c ? 'bg-[#1247D8] text-white' : 'text-gray-600 hover:bg-gray-50'}`}>
+                    <span>{CAT_ICONS[c]}</span>{c}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="h-px bg-gray-100 mx-4" />
+
+            {/* Price */}
+            <div className="p-4 pb-3">
+              <p className="text-[10px] font-black text-gray-400 mb-2 uppercase tracking-wider">ລາຄາ</p>
+              <div className="space-y-0.5">
+                {PRICE_PRESETS.map((p, i) => (
+                  <button key={p.label} onClick={() => setFilter(f => ({ ...f, pricePreset: i, priceMin: p.min, priceMax: p.max }))}
+                    className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition-all ${filter.pricePreset === i ? 'bg-blue-50 text-[#1247D8]' : 'text-gray-600 hover:bg-gray-50'}`}>
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="h-px bg-gray-100 mx-4" />
+
+            {/* Rating */}
+            <div className="p-4 pb-3">
+              <p className="text-[10px] font-black text-gray-400 mb-2 uppercase tracking-wider">ຄະແນນ</p>
+              <div className="space-y-0.5">
+                {[0, 3, 4, 4.5].map(r => (
+                  <button key={r} onClick={() => setFilter(f => ({ ...f, minRating: r }))}
+                    className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition-all ${filter.minRating === r ? 'bg-blue-50 text-[#1247D8]' : 'text-gray-600 hover:bg-gray-50'}`}>
+                    {r === 0 ? 'ທັງໝົດ' : `${r}★ ຂຶ້ນໄປ`}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="h-px bg-gray-100 mx-4" />
+
+            {/* Toggles */}
+            <div className="p-4 space-y-3">
+              {[
+                { key: 'hasDiscount',  label: 'ສ່ວນຫຼຸດ', icon: '🏷' },
+                { key: 'freeShipping', label: 'ສົ່ງຟຣີ',  icon: '🚚' },
+              ].map(({ key, label, icon }) => (
+                <div key={key} className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-gray-700">{icon} {label}</span>
+                  <button onClick={() => setFilter(f => ({ ...f, [key]: !f[key as keyof FilterState] }))}
+                    className={`w-9 h-5 rounded-full transition-all relative ${filter[key as keyof FilterState] ? 'bg-[#1247D8]' : 'bg-gray-200'}`}>
+                    <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${filter[key as keyof FilterState] ? 'left-4' : 'left-0.5'}`} />
+                  </button>
+                </div>
+              ))}
+
+              {activeFilterCount > 0 && (
+                <button onClick={() => { setFilter(DEFAULT_FILTER); setCat('ທັງໝົດ') }}
+                  className="w-full py-1.5 rounded-xl text-xs font-bold text-red-500 border border-red-200 hover:bg-red-50 transition-colors flex items-center justify-center gap-1 mt-1">
+                  <RotateCcw size={10} /> ລ້າງ ({activeFilterCount})
+                </button>
+              )}
+            </div>
+          </div>
+        </aside>
+
+        {/* ══ Main content ══ */}
+        <div className="flex-1 min-w-0">
+
+      {/* Category chips removed on mobile — accessible via filter drawer */}
 
       {/* ── Filter + Sort toolbar ── */}
       <div className="flex items-center gap-2 mb-4">
-        {/* Filter button */}
+        {/* Filter button — mobile only */}
         <button onClick={() => setDrawerOpen(true)}
-          className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-bold transition-all ${activeFilterCount > 0 ? 'bg-[#1247D8] text-white border-[#1247D8] shadow-md shadow-blue-200' : 'bg-white text-gray-600 border-gray-200 hover:border-[#1247D8]/50'}`}>
+          className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-bold transition-all md:hidden ${activeFilterCount > 0 ? 'bg-[#1247D8] text-white border-[#1247D8] shadow-md shadow-blue-200' : 'bg-white text-gray-600 border-gray-200 hover:border-[#1247D8]/50'}`}>
           <SlidersHorizontal size={13} />
           ຕົວກອງ
           {activeFilterCount > 0 && (
@@ -384,12 +445,15 @@ function ProductsContent() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {filtered.map(p => <ProductCard key={p.id} p={p} />)}
         </div>
       )}
 
-      {/* Filter drawer */}
+        </div>{/* /main content */}
+      </div>{/* /flex wrapper */}
+
+      {/* Filter drawer — mobile only */}
       <FilterDrawer
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}

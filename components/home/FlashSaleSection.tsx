@@ -60,7 +60,8 @@ export default function FlashSaleSection({ products }: { products: Product[] }) 
       <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
         {products.map((p, idx) => {
           const pct = discountPct(p)
-          const sold = Math.floor(Math.random() * 60) + 20
+          // Deterministic "sold %" derived from product id — avoids SSR/client mismatch
+          const sold = (p.id.charCodeAt(0) + p.id.charCodeAt(p.id.length - 1)) % 60 + 20
           return (
             <Link key={p.id} href={`/products/${p.id}`}
               className="card-hover shrink-0 w-36 bg-[#1A2540] rounded-xl overflow-hidden group animate-slide-up"

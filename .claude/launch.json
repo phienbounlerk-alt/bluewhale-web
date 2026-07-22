@@ -2,7 +2,8 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "bluewhale-web",
+      "name": "bluewhale-dev",
+      "autoPort": true,
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 3000

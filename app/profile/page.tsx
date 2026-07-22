@@ -196,55 +196,87 @@ export default function ProfilePage() {
   // ── NOT LOGGED IN ─────────────────────────────────────────────────────────
   if (!user) return (
     <div className="max-w-2xl mx-auto pb-8">
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-[#1247D8] to-[#0d35b0] px-6 pt-10 pb-20 text-white text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-4 left-4 w-32 h-32 rounded-full bg-white/20" />
-          <div className="absolute bottom-4 right-4 w-48 h-48 rounded-full bg-white/10" />
-        </div>
+      {/* Hero — compact */}
+      <div className="bg-gradient-to-br from-[#1247D8] to-[#0d35b0] px-6 pt-8 pb-10 text-white text-center relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-40 h-40 rounded-full bg-white/5 -translate-y-10 translate-x-10" />
+        <div className="absolute bottom-0 left-0 w-28 h-28 rounded-full bg-white/5 translate-y-8 -translate-x-8" />
         <div className="relative">
-          <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-white/30">
-            <User size={40} className="text-white" />
+          <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 ring-4 ring-white/30 backdrop-blur-sm">
+            <User size={32} className="text-white" />
           </div>
-          <p className="font-black text-xl">ຍິນດີຕ້ອນຮັບ!</p>
-          <p className="text-white/70 text-sm mt-1 mb-5">ເຂົ້າສູ່ລະບົບເພື່ອຕິດຕາມການສັ່ງຊື້</p>
-          <Link href="/login"
-            className="inline-flex items-center gap-2 bg-white text-[#1247D8] font-black px-6 py-2.5 rounded-2xl hover:bg-gray-100 transition-colors shadow-lg">
-            ເຂົ້າສູ່ລະບົບ / ສ້າງບັນຊີ →
-          </Link>
+          <p className="font-black text-lg">ຍິນດີຕ້ອນຮັບ!</p>
+          <p className="text-white/70 text-xs mt-1 mb-4">ເຂົ້າສູ່ລະບົບເພື່ອຈັດການບັນຊີ ແລະ ຕິດຕາມການສັ່ງຊື້</p>
+          <div className="flex gap-2 justify-center">
+            <Link href="/login"
+              className="inline-flex items-center gap-2 bg-white text-[#1247D8] font-black px-5 py-2.5 rounded-2xl hover:bg-gray-100 transition-colors shadow-lg text-sm">
+              ເຂົ້າສູ່ລະບົບ
+            </Link>
+            <Link href="/login"
+              className="inline-flex items-center gap-2 bg-white/15 text-white font-bold px-5 py-2.5 rounded-2xl hover:bg-white/25 transition-colors text-sm border border-white/20">
+              ສ້າງບັນຊີ
+            </Link>
+          </div>
         </div>
       </div>
 
-      <div className="-mt-10 px-4 space-y-3">
-        {/* Stats placeholder */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm grid grid-cols-4 gap-2">
+      <div className="-mt-4 px-4 space-y-3">
+        {/* Benefits */}
+        <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(18,71,216,0.10)] border border-blue-50 p-4">
+          <p className="text-[10px] font-black text-gray-400 mb-3">ສິ່ງທີ່ຈະໄດ້ຮັບ</p>
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { icon: <Package size={16} className="text-[#1247D8]" />, color: 'bg-blue-50', title: 'ຕິດຕາມຄຳສັ່ງ', desc: 'ຮູ້ທຸກຂັ້ນຕອນການສົ່ງ' },
+              { icon: <Heart size={16} className="text-red-500" />,    color: 'bg-red-50',  title: 'Wishlist',     desc: 'ບັນທຶກສິນຄ້າທີ່ຖືກໃຈ' },
+              { icon: <Tag size={16} className="text-green-600" />,    color: 'bg-green-50', title: 'ໂຄດສ່ວນຫຼຸດ', desc: 'ໃຊ້ coupon ຫຼຸດລາຄາ' },
+              { icon: <Award size={16} className="text-amber-500" />,  color: 'bg-amber-50', title: 'ສະສົມຄະແນນ',  desc: 'ຂຶ້ນ level ຮັບສິດ' },
+            ].map(b => (
+              <div key={b.title} className="flex items-center gap-2.5 bg-gray-50/80 rounded-xl p-2.5">
+                <div className={`w-9 h-9 ${b.color} rounded-xl flex items-center justify-center shrink-0`}>{b.icon}</div>
+                <div>
+                  <p className="text-xs font-black text-gray-700">{b.title}</p>
+                  <p className="text-[10px] text-gray-400 leading-tight">{b.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Quick links */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-50 overflow-hidden">
           {[
-            { icon: <Package size={18} className="text-[#1247D8]" />, label: 'ການສັ່ງ', color: 'bg-blue-50' },
-            { icon: <Truck size={18} className="text-orange-500" />,   label: 'ສົ່ງຢູ່',  color: 'bg-orange-50' },
-            { icon: <Heart size={18} className="text-red-500" />,      label: 'Wishlist', color: 'bg-red-50' },
-            { icon: <Star size={18} className="text-yellow-500" />,    label: 'ລີວິວ',   color: 'bg-yellow-50' },
-          ].map(s => (
-            <div key={s.label} className="flex flex-col items-center gap-1.5">
-              <div className={`w-10 h-10 ${s.color} rounded-2xl flex items-center justify-center`}>{s.icon}</div>
-              <span className="font-black text-gray-300 text-xl">—</span>
-              <span className="text-gray-400 text-[10px]">{s.label}</span>
-            </div>
+            { icon: <Package size={16} className="text-[#1247D8]" />, color: 'bg-blue-50',   label: 'ສິນຄ້າທັງໝົດ',  href: '/products' },
+            { icon: <Tag size={16} className="text-green-600" />,     color: 'bg-green-50',  label: 'ໂປໂມຊັ່ນ',     href: '/products' },
+            { icon: <Store size={16} className="text-indigo-600" />,  color: 'bg-indigo-50', label: 'ຮ້ານຄ້າ',       href: '/products' },
+          ].map(({ icon, color, label, href }) => (
+            <Link key={label} href={href}
+              className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors">
+              <div className={`w-9 h-9 ${color} rounded-xl flex items-center justify-center`}>{icon}</div>
+              <span className="font-bold text-gray-700 flex-1 text-sm">{label}</span>
+              <ChevronRight size={14} className="text-gray-300" />
+            </Link>
           ))}
         </div>
-        <p className="text-center text-xs text-gray-400 pt-2">BlueWhale v1.0 🐋</p>
+
+        <p className="text-center text-xs text-gray-300 pt-1">BlueWhale v1.0 🐋</p>
       </div>
     </div>
   )
 
   // ── LOGGED IN ─────────────────────────────────────────────────────────────
   return (
-    <div className="max-w-2xl mx-auto pb-10">
+    <div className="max-w-5xl mx-auto pb-10">
 
       {/* ── Hero header ── */}
-      <div className="bg-gradient-to-br from-[#1247D8] via-[#1555e8] to-[#0d35b0] px-5 pt-8 pb-20 text-white relative overflow-hidden">
-        {/* Background blobs */}
-        <div className="absolute top-0 right-0 w-40 h-40 rounded-full bg-white/5 -translate-y-10 translate-x-10" />
-        <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full bg-white/5 translate-y-8 -translate-x-8" />
+      <div className="bg-gradient-to-br from-[#1247D8] via-[#1555e8] to-[#0d35b0] px-5 pt-8 pb-16 lg:pb-8 text-white relative overflow-hidden lg:mx-6 lg:mt-4 lg:rounded-3xl">
+        {/* Background decoration */}
+        <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-white/5 -translate-y-12 translate-x-12" />
+        <div className="absolute top-8 right-16 w-24 h-24 rounded-full bg-white/5" />
+        <div className="absolute bottom-0 left-0 w-36 h-36 rounded-full bg-white/5 translate-y-10 -translate-x-10" />
+        {/* Wave at bottom */}
+        <svg className="absolute bottom-0 left-0 right-0 w-full" viewBox="0 0 375 32" preserveAspectRatio="none" style={{height:32}}>
+          <path d="M0 32 Q93.75 8 187.5 20 Q281.25 32 375 10 L375 32 Z" fill="rgba(255,255,255,0.07)" />
+          <path d="M0 32 Q93.75 16 187.5 26 Q281.25 36 375 18 L375 32 Z" fill="rgba(255,255,255,0.05)" />
+        </svg>
 
         {/* Settings icon top-right */}
         <div className="absolute top-4 right-4 flex gap-2">
@@ -268,10 +300,10 @@ export default function ProfilePage() {
         <div className="flex items-center gap-4 relative">
           <div className="relative shrink-0">
             {avatarUrl ? (
-              <Image src={avatarUrl} alt={displayName} width={72} height={72} className="rounded-full ring-4 ring-white/30 object-cover" unoptimized />
+              <Image src={avatarUrl} alt={displayName} width={72} height={72} className="rounded-full ring-4 ring-white/40 shadow-xl object-cover" unoptimized />
             ) : (
-              <div className="w-18 h-18 w-[72px] h-[72px] bg-white/20 rounded-full flex items-center justify-center ring-4 ring-white/30">
-                <span className="text-3xl font-black">{initial}</span>
+              <div className="w-[72px] h-[72px] bg-gradient-to-br from-white/35 to-white/10 rounded-full flex items-center justify-center ring-4 ring-white/40 shadow-xl backdrop-blur-sm">
+                <span className="text-3xl font-black drop-shadow-sm">{initial}</span>
               </div>
             )}
             <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br ${level.color} flex items-center justify-center text-[10px] border-2 border-white`}>
@@ -316,10 +348,15 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <div className="-mt-10 px-4 space-y-3">
+      {/* ── Desktop 2-col / Mobile stacked ── */}
+      <div className="lg:grid lg:grid-cols-[260px_1fr] lg:gap-5 lg:px-6 lg:pt-4">
 
-        {/* ── Stats cards ── */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-50">
+        {/* ═══ LEFT COLUMN ═══ */}
+        <div className="lg:sticky lg:top-4 lg:self-start lg:space-y-3">
+
+          {/* Stats cards */}
+          <div className="-mt-8 px-4 lg:mt-0 lg:px-0">
+            <div className="bg-white rounded-2xl p-4 shadow-[0_4px_20px_rgba(18,71,216,0.12)] border border-blue-50">
           {loading ? (
             <div className="grid grid-cols-4 gap-2 animate-pulse">
               {[0,1,2,3].map(i => (
@@ -358,7 +395,61 @@ export default function ProfilePage() {
               />
             </div>
           )}
-        </div>
+          </div>
+          </div>{/* /stats wrapper */}
+
+          {/* Desktop sidebar nav — hidden on mobile */}
+          <div className="hidden lg:block bg-white rounded-2xl shadow-sm border border-gray-50 overflow-hidden">
+            <div className="p-4 pb-2">
+              <p className="text-[10px] font-black text-gray-400 mb-3">ທາງລັດ</p>
+              <div className="grid grid-cols-4 gap-3">
+                {[
+                  { icon: ClipboardList, label: 'ສັ່ງຊື້',    href: '/orders',   color: 'bg-blue-50 text-[#1247D8]' },
+                  { icon: Heart,         label: 'Wishlist',  href: '/wishlist', color: 'bg-red-50 text-red-500' },
+                  { icon: Star,          label: 'ລີວິວ',     href: '#reviews',  color: 'bg-yellow-50 text-yellow-500' },
+                  { icon: Tag,           label: 'ໂຄດ',       href: '#coupons',  color: 'bg-green-50 text-green-600' },
+                  { icon: Eye,           label: 'ລ່າສຸດ',    href: '#recent',   color: 'bg-purple-50 text-purple-600' },
+                  { icon: Store,         label: 'ຮ້ານ',       href: '#shops',    color: 'bg-indigo-50 text-indigo-600' },
+                  { icon: Award,         label: 'ຄະແນນ',     href: '#points',   color: 'bg-amber-50 text-amber-600' },
+                  { icon: Shield,        label: 'ຄວາມປອດ',   href: '#',         color: 'bg-gray-50 text-gray-500' },
+                ].map(({ icon: Icon, label, href, color }) => (
+                  <Link key={label} href={href} className="flex flex-col items-center gap-1.5 group">
+                    <div className={`w-11 h-11 ${color} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200`}>
+                      <Icon size={18} />
+                    </div>
+                    <span className="text-[10px] text-gray-600 font-medium text-center leading-tight">{label}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="h-px bg-gray-50 my-1" />
+            {[
+              { icon: ClipboardList, label: 'ປະຫວັດການສັ່ງຊື້', href: '/orders',    color: 'bg-blue-50 text-[#1247D8]',  badge: stats.orders > 0 ? stats.orders : undefined },
+              { icon: Heart,         label: 'Wishlist',          href: '/wishlist',  color: 'bg-red-50 text-red-500',      badge: stats.wishlist > 0 ? stats.wishlist : undefined },
+              { icon: MapPin,        label: 'ທີ່ຢູ່ຈັດສົ່ງ',     href: '/addresses', color: 'bg-green-50 text-green-600',  badge: undefined },
+            ].map(({ icon: Icon, label, href, color, badge }) => (
+              <Link key={label} href={href}
+                className="flex items-center gap-3 px-4 py-3 border-t border-gray-50 hover:bg-gray-50 transition-colors">
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${color}`}><Icon size={16} /></div>
+                <span className="font-bold text-gray-800 flex-1 text-sm">{label}</span>
+                {badge !== undefined && (
+                  <span className="bg-[#1247D8] text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">{badge}</span>
+                )}
+                <ChevronRight size={14} className="text-gray-300" />
+              </Link>
+            ))}
+            <button onClick={handleSignOut}
+              className="w-full flex items-center gap-3 px-4 py-3 border-t border-gray-50 hover:bg-red-50 transition-colors">
+              <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center">
+                <LogOut size={16} className="text-red-500" />
+              </div>
+              <span className="font-bold text-red-500 flex-1 text-left text-sm">ອອກຈາກລະບົບ</span>
+            </button>
+          </div>
+        </div>{/* /left column */}
+
+        {/* ═══ RIGHT COLUMN ═══ */}
+        <div className="px-4 lg:px-0 mt-3 lg:mt-0 space-y-3">
 
         {/* ── Tab switcher ── */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-50 overflow-hidden">
@@ -382,8 +473,16 @@ export default function ProfilePage() {
           {/* ── Home tab ── */}
           {activeTab === 'home' && (
             <div>
-              {/* Quick actions */}
-              <div className="p-4 pb-2">
+              {/* Desktop: welcome banner */}
+              <div className="hidden lg:flex items-center gap-3 px-5 py-4 border-b border-gray-50">
+                <div className={`w-10 h-10 rounded-2xl bg-gradient-to-br ${level.color} flex items-center justify-center text-xl shadow-sm shrink-0`}>{level.icon}</div>
+                <div>
+                  <p className="font-black text-gray-800 text-sm">{displayName}</p>
+                  <p className="text-xs text-gray-500">{level.label} · {points.toLocaleString()} pts · ສະມາຊິກ {memberSince}</p>
+                </div>
+              </div>
+              {/* Quick actions — mobile only */}
+              <div className="p-4 pb-2 lg:hidden">
                 <p className="text-[10px] font-black text-gray-400 mb-3">ທາງລັດ</p>
                 <div className="grid grid-cols-4 gap-3">
                   {[
@@ -407,10 +506,10 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              <div className="h-px bg-gray-50 my-1" />
+              <div className="h-px bg-gray-50 my-1 lg:hidden" />
 
-              {/* Menu links */}
-              <div>
+              {/* Menu links — mobile only (desktop uses sidebar) */}
+              <div className="lg:hidden">
                 {[
                   { icon: ClipboardList, label: 'ປະຫວັດການສັ່ງຊື້', href: '/orders',   color: 'bg-blue-50 text-[#1247D8]',   badge: stats.orders > 0 ? stats.orders : undefined },
                   { icon: Heart,         label: 'Wishlist',          href: '/wishlist', color: 'bg-red-50 text-red-500',       badge: stats.wishlist > 0 ? stats.wishlist : undefined },
@@ -623,8 +722,9 @@ export default function ProfilePage() {
           <p className="text-[10px] text-gray-400 text-center mt-2">ໄດ້ 1 pt ທຸກ ₭10,000 ທີ່ຊື້</p>
         </div>
 
-        <p className="text-center text-xs text-gray-300 pt-2">BlueWhale v1.0 🐋</p>
-      </div>
+          <p className="text-center text-xs text-gray-300 pt-2">BlueWhale v1.0 🐋</p>
+        </div>{/* /right column */}
+      </div>{/* /grid */}
     </div>
   )
 }
