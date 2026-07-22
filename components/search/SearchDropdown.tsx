@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, Clock, TrendingUp, X, Mic, ArrowUpLeft } from 'lucide-react'
+import { Search, Clock, TrendingUp, X, Mic, ArrowUpLeft, Camera } from 'lucide-react'
+import Image from 'next/image'
 
 const HISTORY_KEY = 'bw_searches'
 const MAX_HISTORY = 10
@@ -59,9 +60,33 @@ export default function SearchDropdown({
   const [open, setOpen]         = useState(false)
   const [history, setHistory]   = useState<string[]>([])
   const [activeIdx, setActive]  = useState(-1)
-  const wrapRef  = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const router   = useRouter()
+  const [imgPreview, setImgPreview] = useState<string | null>(null)
+  const [imgSearching, setImgSearching] = useState(false)
+  const wrapRef   = useRef<HTMLDivElement>(null)
+  const inputRef  = useRef<HTMLInputElement>(null)
+  const cameraRef = useRef<HTMLInputElement>(null)
+  const router    = useRouter()
+
+  const handleImagePick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const url = URL.createObjectURL(file)
+    setImgPreview(url)
+    setImgSearching(true)
+    setOpen(false)
+    // Simulate image search → navigate to products after brief delay
+    setTimeout(() => {
+      setImgSearching(false)
+      router.push('/products')
+    }, 1800)
+    e.target.value = ''
+  }
+
+  const clearImage = () => {
+    if (imgPreview) URL.revokeObjectURL(imgPreview)
+    setImgPreview(null)
+    setImgSearching(false)
+  }
 
   // Load history on mount and whenever dropdown opens
   useEffect(() => {
@@ -146,32 +171,71 @@ export default function SearchDropdown({
 
   return (
     <div ref={wrapRef} className={`relative ${className}`}>
+      {/* Hidden file input for image search */}
+      <input
+        ref={cameraRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        className="hidden"
+        onChange={handleImagePick}
+      />
+
       {/* ── Input row ── */}
       <div className={`flex items-center bg-white rounded-xl overflow-hidden ${navbarMode ? 'rounded-lg' : 'border border-gray-200 shadow-sm'}`}>
-        <span className="pl-3 text-gray-400 shrink-0"><Search size={16} /></span>
-        <input
-          ref={inputRef}
-          value={value}
-          onChange={e => { onChange(e.target.value); setOpen(true); setActive(-1) }}
-          onFocus={() => setOpen(true)}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          className={`flex-1 px-3 py-2.5 text-sm text-gray-800 outline-none bg-transparent ${inputClassName}`}
-          autoComplete="off"
-          spellCheck={false}
-        />
-        {value && (
-          <button type="button" onClick={() => { onChange(''); inputRef.current?.focus() }}
-            className="px-2 text-gray-300 hover:text-gray-500 transition-colors shrink-0">
-            <X size={14} />
-          </button>
+
+        {imgPreview ? (
+          /* Image search mode */
+          <>
+            <div className="pl-2 shrink-0">
+              <div className="relative w-7 h-7 rounded-md overflow-hidden border border-gray-200">
+                <Image src={imgPreview} alt="img search" fill className="object-cover" unoptimized />
+              </div>
+            </div>
+            <span className={`flex-1 px-3 text-sm truncate ${imgSearching ? 'text-[#1247D8] animate-pulse' : 'text-gray-500'}`}>
+              {imgSearching ? 'ກຳລັງຄົ້ນຫາດ້ວຍຮູບ...' : 'ຄົ້ນຫາດ້ວຍຮູບ'}
+            </span>
+            <button type="button" onClick={clearImage}
+              className="px-2 text-gray-300 hover:text-gray-500 shrink-0">
+              <X size={14} />
+            </button>
+          </>
+        ) : (
+          /* Normal search mode */
+          <>
+            <span className="pl-3 text-gray-400 shrink-0"><Search size={16} /></span>
+            <input
+              ref={inputRef}
+              value={value}
+              onChange={e => { onChange(e.target.value); setOpen(true); setActive(-1) }}
+              onFocus={() => setOpen(true)}
+              onKeyDown={handleKeyDown}
+              placeholder={placeholder}
+              className={`flex-1 px-3 py-2.5 text-sm text-gray-800 outline-none bg-transparent ${inputClassName}`}
+              autoComplete="off"
+              spellCheck={false}
+            />
+            {value && (
+              <button type="button" onClick={() => { onChange(''); inputRef.current?.focus() }}
+                className="px-2 text-gray-300 hover:text-gray-500 transition-colors shrink-0">
+                <X size={14} />
+              </button>
+            )}
+            {/* Voice search */}
+            <button type="button" onClick={handleVoice}
+              className="shrink-0 px-2 text-gray-400 hover:text-[#1247D8] transition-colors"
+              title="Voice Search">
+              <Mic size={15} />
+            </button>
+            {/* Image / camera search */}
+            <button type="button" onClick={() => cameraRef.current?.click()}
+              className={`shrink-0 px-2 text-gray-400 hover:text-[#1247D8] transition-colors ${navbarMode ? '' : 'border-l border-gray-100'}`}
+              title="ຄົ້ນຫາດ້ວຍຮູບ">
+              <Camera size={15} />
+            </button>
+          </>
         )}
-        {/* Voice search */}
-        <button type="button" onClick={handleVoice}
-          className={`shrink-0 px-2.5 text-gray-400 hover:text-[#1247D8] transition-colors ${navbarMode ? '' : 'border-l border-gray-100'}`}
-          title="Voice Search">
-          <Mic size={15} />
-        </button>
+
         {/* Submit */}
         <button type="submit"
           className={`shrink-0 flex items-center justify-center bg-[#EE4D2D] text-white transition-colors hover:bg-[#d63d1f] ${navbarMode ? 'h-8 px-2.5' : 'h-10 px-3'}`}>
