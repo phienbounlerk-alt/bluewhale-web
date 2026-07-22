@@ -74,7 +74,7 @@ export default function BannerSlider() {
   return (
     <div
       className="relative overflow-hidden select-none"
-      style={{ background: b.bg, transition: 'background 0.5s ease', height: 'min(72vw, 340px)' }}
+      style={{ background: b.bg, transition: 'background 0.5s ease', height: 'min(52vw, 220px)' }}
       onTouchStart={e => setTouchStart(e.touches[0].clientX)}
       onTouchEnd={e => {
         if (touchStart === null) return
@@ -112,7 +112,7 @@ export default function BannerSlider() {
         }}
       >
         {/* Top: tag */}
-        <div className="px-5 pt-4">
+        <div className="px-4 pt-3">
           <span
             className="inline-flex items-center gap-1 text-[11px] font-black px-3 py-1 rounded-full"
             style={{ background: 'rgba(255,255,255,0.22)', color: b.textColor, backdropFilter: 'blur(6px)' }}
@@ -125,9 +125,9 @@ export default function BannerSlider() {
         <div className="flex-1 flex items-center justify-center">
           <span
             style={{
-              fontSize: 'clamp(80px, 25vw, 130px)',
+              fontSize: 'clamp(48px, 16vw, 90px)',
               lineHeight: 1,
-              filter: 'drop-shadow(0 12px 32px rgba(0,0,0,0.25))',
+              filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.25))',
             }}
           >
             {b.emoji}
@@ -135,17 +135,17 @@ export default function BannerSlider() {
         </div>
 
         {/* Bottom: title + cta side by side */}
-        <div className="px-5 pb-5 flex items-end justify-between gap-3">
+        <div className="px-4 pb-3 flex items-end justify-between gap-3">
           <div>
             <p
               className="font-black leading-none whitespace-pre-line"
-              style={{ fontSize: 'clamp(22px, 7vw, 32px)', color: b.textColor, textShadow: '0 2px 8px rgba(0,0,0,0.12)' }}
+              style={{ fontSize: 'clamp(14px, 4.5vw, 20px)', color: b.textColor, textShadow: '0 2px 8px rgba(0,0,0,0.12)' }}
             >
               {b.title}
             </p>
             <p
               className="font-black"
-              style={{ fontSize: 'clamp(30px, 11vw, 52px)', color: b.textColor, lineHeight: 1, letterSpacing: '-1px' }}
+              style={{ fontSize: 'clamp(20px, 7vw, 34px)', color: b.textColor, lineHeight: 1, letterSpacing: '-1px' }}
             >
               {b.value}
             </p>
@@ -153,7 +153,7 @@ export default function BannerSlider() {
           </div>
           <Link
             href={b.href}
-            className="shrink-0 font-black text-sm px-4 py-2.5 rounded-2xl active:scale-95 transition-transform whitespace-nowrap"
+            className="shrink-0 font-black text-xs px-3 py-2 rounded-xl active:scale-95 transition-transform whitespace-nowrap"
             style={{ background: b.textColor === '#fff' ? '#fff' : '#1a1a1a', color: b.bg }}
           >
             {b.btn}

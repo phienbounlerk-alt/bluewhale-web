@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { ShoppingCart, User, Menu, X, Search } from 'lucide-react'
+import { ShoppingCart, User, Menu, X, Search, Camera } from 'lucide-react'
 import { useCart } from '@/store/cart'
 import { useAuth } from '@/lib/auth-context'
 import { useState, useEffect, useRef } from 'react'
@@ -34,7 +34,7 @@ export default function Navbar() {
     getProducts().then(p => setProducts(p))
   }, [])
 
-  if (pathname === '/profile' || pathname === '/cart' || pathname === '/notifications') return null
+  if (pathname === '/login' || pathname === '/register' || pathname === '/profile' || pathname === '/cart' || pathname === '/notifications') return null
 
   const productNames = products.map(p => p.name)
 
@@ -77,12 +77,21 @@ export default function Navbar() {
               BlueWhale
             </Link>
             {/* Long search pill */}
-            <button onClick={() => setSearchOpen(true)}
-              className="flex-1 flex items-center gap-2 bg-white/15 active:bg-white/25 transition-colors rounded-full px-4 py-2"
-              aria-label="ຄົ້ນຫາ">
-              <Search size={14} className="shrink-0 text-white/70" />
-              <span className="text-white/60 text-sm truncate">ຄົ້ນຫາສິນຄ້າ...</span>
-            </button>
+            <div className="flex-1 flex items-center bg-white/15 rounded-full overflow-hidden">
+              <button onClick={() => setSearchOpen(true)}
+                className="flex-1 flex items-center gap-2 px-4 py-2 active:bg-white/10 transition-colors"
+                aria-label="ຄົ້ນຫາ">
+                <Search size={14} className="shrink-0 text-white/70" />
+                <span className="text-white/60 text-sm truncate">ຄົ້ນຫາສິນຄ້າ...</span>
+              </button>
+              {/* Camera / image search button */}
+              <button
+                onClick={() => { setSearchOpen(true); }}
+                className="shrink-0 pr-3 pl-1 py-2 text-white/70 active:text-white transition-colors"
+                aria-label="ຄົ້ນຫາດ້ວຍຮູບ">
+                <Camera size={16} />
+              </button>
+            </div>
           </div>
         )}
 

@@ -89,29 +89,29 @@ function LoginForm() {
 
               {/* Facebook */}
               <button onClick={loginFacebook} disabled={loading}
-                className="w-full flex items-center gap-4 bg-[#1877F2] hover:bg-[#166FE5] rounded-2xl px-5 py-3.5 transition-colors disabled:opacity-60">
-                <svg className="w-6 h-6 fill-white shrink-0" viewBox="0 0 24 24">
+                className="w-full flex items-center gap-4 bg-white hover:bg-gray-50 border-2 border-gray-200 rounded-2xl px-5 py-3.5 transition-colors disabled:opacity-60">
+                <svg className="w-6 h-6 fill-[#1877F2] shrink-0" viewBox="0 0 24 24">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                 </svg>
-                <span className="font-bold text-white">{loading ? 'ກຳລັງໂຫຼດ...' : 'ເຂົ້າລະບົບດ້ວຍ Facebook'}</span>
+                <span className="font-bold text-gray-700">{loading ? 'ກຳລັງໂຫຼດ...' : 'ເຂົ້າລະບົບດ້ວຍ Facebook'}</span>
               </button>
 
               {/* Phone */}
               <button onClick={() => setMode('phone')} disabled={loading}
-                className="w-full flex items-center gap-4 bg-[#25D366] hover:bg-[#1ebe5d] rounded-2xl px-5 py-3.5 transition-colors disabled:opacity-60">
-                <svg className="w-6 h-6 fill-white shrink-0" viewBox="0 0 24 24">
+                className="w-full flex items-center gap-4 bg-white hover:bg-gray-50 border-2 border-gray-200 rounded-2xl px-5 py-3.5 transition-colors disabled:opacity-60">
+                <svg className="w-6 h-6 fill-[#25D366] shrink-0" viewBox="0 0 24 24">
                   <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
                 </svg>
-                <span className="font-bold text-white">ເຂົ້າລະບົບດ້ວຍ ເບີໂທ</span>
+                <span className="font-bold text-gray-700">ເຂົ້າລະບົບດ້ວຍ ເບີໂທ</span>
               </button>
 
               {/* Email */}
               <button onClick={() => setMode('email')} disabled={loading}
-                className="w-full flex items-center gap-4 bg-gray-700 hover:bg-gray-800 rounded-2xl px-5 py-3.5 transition-colors disabled:opacity-60">
-                <svg className="w-6 h-6 text-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                className="w-full flex items-center gap-4 bg-white hover:bg-gray-50 border-2 border-gray-200 rounded-2xl px-5 py-3.5 transition-colors disabled:opacity-60">
+                <svg className="w-6 h-6 text-gray-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span className="font-bold text-white">ເຂົ້າລະບົບດ້ວຍ ອີເມວ</span>
+                <span className="font-bold text-gray-700">ເຂົ້າລະບົບດ້ວຍ ອີເມວ</span>
               </button>
             </>
           )}

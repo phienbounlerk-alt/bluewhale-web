@@ -2,14 +2,15 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import {
   User, ClipboardList, Heart, MapPin, ChevronRight, LogOut,
   Star, Tag, Bell, Zap, Store, Eye, Gift, Award,
-  Package, Truck, CheckCircle, Clock, Settings, Shield
+  Package, Truck, CheckCircle, Clock, Settings, Shield, Camera, Sun, Moon
 } from 'lucide-react'
 import { useAuth } from '@/lib/auth-context'
 import { supabase, fmt, getProducts, discountPct, type Product } from '@/lib/supabase'
+import { useTheme } from '@/lib/theme-context'
 
 const RECENTLY_VIEWED_KEY = 'bw_recent'
 const SAVED_KEY           = 'bw_saved_items'
@@ -121,6 +122,7 @@ function CouponCard({ voucher, subtotal }: { voucher: any; subtotal: number }) {
 // ── Main component ────────────────────────────────────────────────────────────
 export default function ProfilePage() {
   const { user, signOut } = useAuth()
+  const { theme, toggle } = useTheme()
   const router = useRouter()
 
   const [stats, setStats]               = useState({ orders: 0, shipping: 0, wishlist: 0, reviews: 0, orderTotal: 0 })
@@ -130,10 +132,37 @@ export default function ProfilePage() {
   const [unreadCount, setUnreadCount]   = useState(2)
   const [loading, setLoading]           = useState(true)
   const [activeTab, setActiveTab]       = useState<'home' | 'reviews' | 'notifs'>('home')
+  const [uploading, setUploading]       = useState(false)
+  const avatarInputRef                  = useRef<HTMLInputElement>(null)
 
   const handleSignOut = async () => {
     await signOut()
     router.push('/')
+  }
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file || !user) return
+    setUploading(true)
+    try {
+      const ext = file.name.split('.').pop()
+      const path = `avatars/${user.id}.${ext}`
+      const { error: upErr } = await supabase.storage
+        .from('avatars')
+        .upload(path, file, { upsert: true, contentType: file.type })
+      if (upErr) throw upErr
+      const { data } = supabase.storage.from('avatars').getPublicUrl(path)
+      const publicUrl = data.publicUrl + '?t=' + Date.now()
+      await supabase.auth.updateUser({ data: { avatar_url: publicUrl } })
+      // force re-render by reloading auth session
+      await supabase.auth.refreshSession()
+      window.location.reload()
+    } catch (err) {
+      alert('ອັບໂຫລດຮູບບໍ່ສຳເລັດ ກະລຸນາລອງໃໝ່')
+    } finally {
+      setUploading(false)
+      e.target.value = ''
+    }
   }
 
   useEffect(() => {
@@ -195,34 +224,36 @@ export default function ProfilePage() {
 
   // ── NOT LOGGED IN ─────────────────────────────────────────────────────────
   if (!user) return (
-    <div className="max-w-2xl mx-auto pb-8">
-      {/* Hero — compact */}
-      <div className="bg-gradient-to-br from-[#1247D8] to-[#0d35b0] px-6 pt-8 pb-10 text-white text-center relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-40 h-40 rounded-full bg-white/5 -translate-y-10 translate-x-10" />
-        <div className="absolute bottom-0 left-0 w-28 h-28 rounded-full bg-white/5 translate-y-8 -translate-x-8" />
+    <div className="min-h-screen bg-[#1247D8]">
+      {/* Hero — tall blue section */}
+      <div className="px-6 pt-12 pb-36 text-white text-center relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-56 h-56 rounded-full bg-white/5 -translate-y-16 translate-x-16" />
+        <div className="absolute bottom-0 left-0 w-40 h-40 rounded-full bg-white/5 translate-y-12 -translate-x-12" />
+        <div className="absolute top-1/2 left-1/2 w-72 h-72 rounded-full bg-white/3 -translate-x-1/2 -translate-y-1/2" />
         <div className="relative">
-          <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 ring-4 ring-white/30 backdrop-blur-sm">
-            <User size={32} className="text-white" />
+          <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-white/30 backdrop-blur-sm shadow-2xl">
+            <User size={36} className="text-white" />
           </div>
-          <p className="font-black text-lg">ຍິນດີຕ້ອນຮັບ!</p>
-          <p className="text-white/70 text-xs mt-1 mb-4">ເຂົ້າສູ່ລະບົບເພື່ອຈັດການບັນຊີ ແລະ ຕິດຕາມການສັ່ງຊື້</p>
-          <div className="flex gap-2 justify-center">
+          <p className="font-black text-2xl">ຍິນດີຕ້ອນຮັບ!</p>
+          <p className="text-white/70 text-sm mt-2 mb-6">ເຂົ້າສູ່ລະບົບເພື່ອຈັດການບັນຊີ<br/>ແລະ ຕິດຕາມການສັ່ງຊື້</p>
+          <div className="flex gap-3 justify-center">
             <Link href="/login"
-              className="inline-flex items-center gap-2 bg-white text-[#1247D8] font-black px-5 py-2.5 rounded-2xl hover:bg-gray-100 transition-colors shadow-lg text-sm">
+              className="inline-flex items-center gap-2 bg-white text-[#1247D8] font-black px-6 py-3 rounded-2xl hover:bg-gray-100 transition-colors shadow-lg text-sm">
               ເຂົ້າສູ່ລະບົບ
             </Link>
             <Link href="/login"
-              className="inline-flex items-center gap-2 bg-white/15 text-white font-bold px-5 py-2.5 rounded-2xl hover:bg-white/25 transition-colors text-sm border border-white/20">
+              className="inline-flex items-center gap-2 bg-white/15 text-white font-bold px-6 py-3 rounded-2xl hover:bg-white/25 transition-colors text-sm border border-white/25">
               ສ້າງບັນຊີ
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="-mt-4 px-4 space-y-3">
+      {/* White sheet slides up from bottom */}
+      <div className="-mt-16 bg-white rounded-t-[32px] shadow-[0_-8px_40px_rgba(0,0,0,0.15)] px-4 pt-6 pb-32 space-y-3">
         {/* Benefits */}
-        <div className="bg-white rounded-2xl shadow-[0_4px_20px_rgba(18,71,216,0.10)] border border-blue-50 p-4">
-          <p className="text-[10px] font-black text-gray-400 mb-3">ສິ່ງທີ່ຈະໄດ້ຮັບ</p>
+        <div className="p-4 bg-gray-50 rounded-2xl">
+          <p className="text-[10px] font-black text-gray-400 mb-3 uppercase tracking-wider">ສິ່ງທີ່ຈະໄດ້ຮັບ</p>
           <div className="grid grid-cols-2 gap-2">
             {[
               { icon: <Package size={16} className="text-[#1247D8]" />, color: 'bg-blue-50', title: 'ຕິດຕາມຄຳສັ່ງ', desc: 'ຮູ້ທຸກຂັ້ນຕອນການສົ່ງ' },
@@ -230,7 +261,7 @@ export default function ProfilePage() {
               { icon: <Tag size={16} className="text-green-600" />,    color: 'bg-green-50', title: 'ໂຄດສ່ວນຫຼຸດ', desc: 'ໃຊ້ coupon ຫຼຸດລາຄາ' },
               { icon: <Award size={16} className="text-amber-500" />,  color: 'bg-amber-50', title: 'ສະສົມຄະແນນ',  desc: 'ຂຶ້ນ level ຮັບສິດ' },
             ].map(b => (
-              <div key={b.title} className="flex items-center gap-2.5 bg-gray-50/80 rounded-xl p-2.5">
+              <div key={b.title} className="flex items-center gap-2.5 bg-white rounded-xl p-2.5 shadow-sm">
                 <div className={`w-9 h-9 ${b.color} rounded-xl flex items-center justify-center shrink-0`}>{b.icon}</div>
                 <div>
                   <p className="text-xs font-black text-gray-700">{b.title}</p>
@@ -242,7 +273,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Quick links */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-50 overflow-hidden">
+        <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
           {[
             { icon: <Package size={16} className="text-[#1247D8]" />, color: 'bg-blue-50',   label: 'ສິນຄ້າທັງໝົດ',  href: '/products' },
             { icon: <Tag size={16} className="text-green-600" />,     color: 'bg-green-50',  label: 'ໂປໂມຊັ່ນ',     href: '/products' },
@@ -257,406 +288,203 @@ export default function ProfilePage() {
           ))}
         </div>
 
-        <p className="text-center text-xs text-gray-300 pt-1">BlueWhale v1.0 🐋</p>
+        <p className="text-center text-xs text-gray-300 pt-2">BlueWhale v1.0 🐋</p>
       </div>
     </div>
   )
 
   // ── LOGGED IN ─────────────────────────────────────────────────────────────
   return (
-    <div className="max-w-5xl mx-auto pb-10">
+    <div className="min-h-screen bg-gray-50">
 
-      {/* ── Hero header ── */}
-      <div className="bg-gradient-to-br from-[#1247D8] via-[#1555e8] to-[#0d35b0] px-5 pt-8 pb-16 lg:pb-8 text-white relative overflow-hidden lg:mx-6 lg:mt-4 lg:rounded-3xl">
-        {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-white/5 -translate-y-12 translate-x-12" />
-        <div className="absolute top-8 right-16 w-24 h-24 rounded-full bg-white/5" />
-        <div className="absolute bottom-0 left-0 w-36 h-36 rounded-full bg-white/5 translate-y-10 -translate-x-10" />
-        {/* Wave at bottom */}
-        <svg className="absolute bottom-0 left-0 right-0 w-full" viewBox="0 0 375 32" preserveAspectRatio="none" style={{height:32}}>
-          <path d="M0 32 Q93.75 8 187.5 20 Q281.25 32 375 10 L375 32 Z" fill="rgba(255,255,255,0.07)" />
-          <path d="M0 32 Q93.75 16 187.5 26 Q281.25 36 375 18 L375 32 Z" fill="rgba(255,255,255,0.05)" />
-        </svg>
+      {/* ── Hero ── */}
+      <div className="bg-gradient-to-b from-[#1247D8] to-[#0d35b0] px-5 pt-10 pb-20 relative overflow-hidden">
+        <div className="absolute -top-10 -right-10 w-56 h-56 rounded-full bg-white/5" />
+        <div className="absolute top-16 right-8 w-20 h-20 rounded-full bg-white/5" />
 
-        {/* Settings icon top-right */}
-        <div className="absolute top-4 right-4 flex gap-2">
+        {/* Top actions */}
+        <div className="absolute top-5 right-4 flex gap-2">
           <button onClick={() => setUnreadCount(0)}
-            className="relative w-9 h-9 bg-white/15 rounded-xl flex items-center justify-center hover:bg-white/25 transition-colors"
-            aria-label="Notifications">
-            <Bell size={16} />
+            className="relative w-9 h-9 bg-white/15 rounded-full flex items-center justify-center active:bg-white/25">
+            <Bell size={16} className="text-white" />
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[9px] font-black flex items-center justify-center border border-white">
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-[9px] font-black flex items-center justify-center border-2 border-[#1247D8] text-white">
                 {unreadCount}
               </span>
             )}
           </button>
           <Link href="/profile/settings"
-            className="w-9 h-9 bg-white/15 rounded-xl flex items-center justify-center hover:bg-white/25 transition-colors">
-            <Settings size={16} />
+            className="w-9 h-9 bg-white/15 rounded-full flex items-center justify-center active:bg-white/25">
+            <Settings size={16} className="text-white" />
           </Link>
         </div>
 
-        {/* Avatar + info */}
-        <div className="flex items-center gap-4 relative">
-          <div className="relative shrink-0">
-            {avatarUrl ? (
-              <Image src={avatarUrl} alt={displayName} width={72} height={72} className="rounded-full ring-4 ring-white/40 shadow-xl object-cover" unoptimized />
-            ) : (
-              <div className="w-[72px] h-[72px] bg-gradient-to-br from-white/35 to-white/10 rounded-full flex items-center justify-center ring-4 ring-white/40 shadow-xl backdrop-blur-sm">
-                <span className="text-3xl font-black drop-shadow-sm">{initial}</span>
+        {/* Hidden file input */}
+        <input ref={avatarInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
+
+        {/* Avatar + name */}
+        <div className="flex flex-col items-center text-center relative">
+          <div className="relative mb-3">
+            <button onClick={() => avatarInputRef.current?.click()} className="block relative group" disabled={uploading}>
+              {avatarUrl ? (
+                <Image src={avatarUrl} alt={displayName} width={80} height={80}
+                  className="rounded-full ring-4 ring-white/30 shadow-xl object-cover w-20 h-20" unoptimized />
+              ) : (
+                <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center ring-4 ring-white/30 shadow-xl backdrop-blur-sm">
+                  <span className="text-3xl font-black text-white">{uploading ? '⏳' : initial}</span>
+                </div>
+              )}
+              {/* Camera overlay */}
+              <div className="absolute inset-0 rounded-full bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity">
+                {uploading
+                  ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  : <Camera size={20} className="text-white" />}
               </div>
-            )}
-            <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gradient-to-br ${level.color} flex items-center justify-center text-[10px] border-2 border-white`}>
-              {level.icon}
+            </button>
+            <div className={`absolute -bottom-1 -right-1 px-2 py-0.5 rounded-full bg-gradient-to-r ${level.color} text-white text-[10px] font-black border-2 border-white shadow-sm`}>
+              {level.icon} {level.label}
             </div>
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="font-black text-lg leading-tight truncate">{displayName}</p>
-            <p className="text-white/70 text-xs mt-0.5 truncate">{user.email}</p>
-            <div className="flex items-center gap-2 mt-2">
-              <span className={`text-[10px] font-black px-2 py-0.5 rounded-full bg-gradient-to-r ${level.color} text-white shadow-sm`}>
-                {level.icon} {level.label}
-              </span>
-              <span className="text-[10px] text-white/60">ສະມາຊິກ {memberSince}</span>
-            </div>
-          </div>
+          <p className="font-black text-white text-xl leading-tight">{displayName}</p>
+          <p className="text-white/60 text-xs mt-0.5">{user.email}</p>
+          <p className="text-white/40 text-[10px] mt-1">ສະມາຊິກ {memberSince}</p>
         </div>
 
-        {/* Loyalty points bar */}
-        <div className="mt-4 bg-white/15 rounded-2xl p-3 relative">
+        {/* Points bar */}
+        <div className="mt-5 bg-white/10 rounded-2xl p-3.5 backdrop-blur-sm">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-1.5">
-              <Zap size={13} className="text-yellow-300" />
-              <span className="text-xs font-bold">ຄະແນນສະສົມ</span>
+              <Zap size={12} className="text-yellow-300" />
+              <span className="text-xs font-bold text-white">ຄະແນນສະສົມ</span>
             </div>
-            <span className="font-black text-yellow-300">{points.toLocaleString()} pts</span>
+            <span className="font-black text-yellow-300 text-sm">{points.toLocaleString()} pts</span>
           </div>
-          {level.next && (
-            <>
-              <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-yellow-300 to-yellow-400 rounded-full transition-all"
-                  style={{ width: `${Math.min(100, (points / level.nextPts) * 100)}%` }} />
-              </div>
-              <p className="text-[10px] text-white/60 mt-1">
-                ຂາດ {(level.nextPts - points).toLocaleString()} pts ຈຶ່ງຂຶ້ນ {level.next}
-              </p>
-            </>
-          )}
-          {!level.next && (
-            <p className="text-xs text-yellow-300 font-bold mt-1">🎉 ສູງສຸດ Diamond!</p>
-          )}
+          <div className="h-1.5 bg-white/15 rounded-full overflow-hidden">
+            <div className="h-full bg-gradient-to-r from-yellow-300 to-amber-400 rounded-full transition-all"
+              style={{ width: level.next ? `${Math.min(100, (points / level.nextPts) * 100)}%` : '100%' }} />
+          </div>
+          <p className="text-[10px] text-white/50 mt-1.5">
+            {level.next ? `ຂາດ ${(level.nextPts - points).toLocaleString()} pts ຈຶ່ງຂຶ້ນ ${level.next}` : '🎉 ສູງສຸດ Diamond!'}
+          </p>
         </div>
       </div>
 
-      {/* ── Desktop 2-col / Mobile stacked ── */}
-      <div className="lg:grid lg:grid-cols-[260px_1fr] lg:gap-5 lg:px-6 lg:pt-4">
-
-        {/* ═══ LEFT COLUMN ═══ */}
-        <div className="lg:sticky lg:top-4 lg:self-start lg:space-y-3">
-
-          {/* Stats cards */}
-          <div className="-mt-8 px-4 lg:mt-0 lg:px-0">
-            <div className="bg-white rounded-2xl p-4 shadow-[0_4px_20px_rgba(18,71,216,0.12)] border border-blue-50">
+      {/* ── Stats row ── */}
+      <div className="px-4 -mt-8 relative z-10">
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
           {loading ? (
-            <div className="grid grid-cols-4 gap-2 animate-pulse">
+            <div className="grid grid-cols-4 gap-0 divide-x divide-gray-100 animate-pulse">
               {[0,1,2,3].map(i => (
-                <div key={i} className="flex flex-col items-center gap-1.5">
-                  <div className="w-10 h-10 bg-gray-100 rounded-2xl" />
-                  <div className="w-8 h-5 bg-gray-100 rounded" />
+                <div key={i} className="flex flex-col items-center gap-1.5 py-4">
+                  <div className="w-6 h-6 bg-gray-100 rounded-full" />
+                  <div className="w-6 h-5 bg-gray-100 rounded" />
                   <div className="w-10 h-3 bg-gray-100 rounded" />
                 </div>
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-4 gap-1">
-              <StatCard
-                href="/orders"
-                icon={<Package size={18} className="text-[#1247D8]" />}
-                label="ການສັ່ງ" count={stats.orders}
-                color="bg-blue-50"
-              />
-              <StatCard
-                href="/orders"
-                icon={<Truck size={18} className="text-orange-500" />}
-                label="ສົ່ງຢູ່" count={stats.shipping}
-                color="bg-orange-50"
-                sub={stats.shipping > 0 ? 'ກຳລັງໄປ' : undefined}
-              />
-              <StatCard
-                href="/wishlist"
-                icon={<Heart size={18} className="text-red-500" />}
-                label="Wishlist" count={stats.wishlist}
-                color="bg-red-50"
-              />
-              <StatCard
-                icon={<Star size={18} className="text-yellow-500" />}
-                label="ລີວິວ" count={stats.reviews}
-                color="bg-yellow-50"
-              />
-            </div>
-          )}
-          </div>
-          </div>{/* /stats wrapper */}
-
-          {/* Desktop sidebar nav — hidden on mobile */}
-          <div className="hidden lg:block bg-white rounded-2xl shadow-sm border border-gray-50 overflow-hidden">
-            <div className="p-4 pb-2">
-              <p className="text-[10px] font-black text-gray-400 mb-3">ທາງລັດ</p>
-              <div className="grid grid-cols-4 gap-3">
-                {[
-                  { icon: ClipboardList, label: 'ສັ່ງຊື້',    href: '/orders',   color: 'bg-blue-50 text-[#1247D8]' },
-                  { icon: Heart,         label: 'Wishlist',  href: '/wishlist', color: 'bg-red-50 text-red-500' },
-                  { icon: Star,          label: 'ລີວິວ',     href: '#reviews',  color: 'bg-yellow-50 text-yellow-500' },
-                  { icon: Tag,           label: 'ໂຄດ',       href: '#coupons',  color: 'bg-green-50 text-green-600' },
-                  { icon: Eye,           label: 'ລ່າສຸດ',    href: '#recent',   color: 'bg-purple-50 text-purple-600' },
-                  { icon: Store,         label: 'ຮ້ານ',       href: '#shops',    color: 'bg-indigo-50 text-indigo-600' },
-                  { icon: Award,         label: 'ຄະແນນ',     href: '#points',   color: 'bg-amber-50 text-amber-600' },
-                  { icon: Shield,        label: 'ຄວາມປອດ',   href: '#',         color: 'bg-gray-50 text-gray-500' },
-                ].map(({ icon: Icon, label, href, color }) => (
-                  <Link key={label} href={href} className="flex flex-col items-center gap-1.5 group">
-                    <div className={`w-11 h-11 ${color} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200`}>
-                      <Icon size={18} />
-                    </div>
-                    <span className="text-[10px] text-gray-600 font-medium text-center leading-tight">{label}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-            <div className="h-px bg-gray-50 my-1" />
-            {[
-              { icon: ClipboardList, label: 'ປະຫວັດການສັ່ງຊື້', href: '/orders',    color: 'bg-blue-50 text-[#1247D8]',  badge: stats.orders > 0 ? stats.orders : undefined },
-              { icon: Heart,         label: 'Wishlist',          href: '/wishlist',  color: 'bg-red-50 text-red-500',      badge: stats.wishlist > 0 ? stats.wishlist : undefined },
-              { icon: MapPin,        label: 'ທີ່ຢູ່ຈັດສົ່ງ',     href: '/addresses', color: 'bg-green-50 text-green-600',  badge: undefined },
-            ].map(({ icon: Icon, label, href, color, badge }) => (
-              <Link key={label} href={href}
-                className="flex items-center gap-3 px-4 py-3 border-t border-gray-50 hover:bg-gray-50 transition-colors">
-                <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${color}`}><Icon size={16} /></div>
-                <span className="font-bold text-gray-800 flex-1 text-sm">{label}</span>
-                {badge !== undefined && (
-                  <span className="bg-[#1247D8] text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">{badge}</span>
-                )}
-                <ChevronRight size={14} className="text-gray-300" />
-              </Link>
-            ))}
-            <button onClick={handleSignOut}
-              className="w-full flex items-center gap-3 px-4 py-3 border-t border-gray-50 hover:bg-red-50 transition-colors">
-              <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center">
-                <LogOut size={16} className="text-red-500" />
-              </div>
-              <span className="font-bold text-red-500 flex-1 text-left text-sm">ອອກຈາກລະບົບ</span>
-            </button>
-          </div>
-        </div>{/* /left column */}
-
-        {/* ═══ RIGHT COLUMN ═══ */}
-        <div className="px-4 lg:px-0 mt-3 lg:mt-0 space-y-3">
-
-        {/* ── Tab switcher ── */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-50 overflow-hidden">
-          <div className="flex border-b border-gray-100">
-            {([
-              { key: 'home',    label: 'ໜ້າຫຼັກ',  icon: User },
-              { key: 'reviews', label: 'ລີວິວຂ້ອຍ', icon: Star },
-              { key: 'notifs',  label: 'ແຈ້ງເຕືອນ',  icon: Bell },
-            ] as const).map(({ key, label, icon: Icon }) => (
-              <button key={key} onClick={() => setActiveTab(key)}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-3 text-xs font-bold transition-colors ${activeTab === key ? 'text-[#1247D8] border-b-2 border-[#1247D8] bg-blue-50/50' : 'text-gray-500 hover:bg-gray-50'}`}>
-                <Icon size={13} />
-                {label}
-                {key === 'notifs' && unreadCount > 0 && (
-                  <span className="w-4 h-4 bg-red-500 text-white text-[9px] rounded-full flex items-center justify-center font-black">{unreadCount}</span>
-                )}
-              </button>
-            ))}
-          </div>
-
-          {/* ── Home tab ── */}
-          {activeTab === 'home' && (
-            <div>
-              {/* Desktop: welcome banner */}
-              <div className="hidden lg:flex items-center gap-3 px-5 py-4 border-b border-gray-50">
-                <div className={`w-10 h-10 rounded-2xl bg-gradient-to-br ${level.color} flex items-center justify-center text-xl shadow-sm shrink-0`}>{level.icon}</div>
-                <div>
-                  <p className="font-black text-gray-800 text-sm">{displayName}</p>
-                  <p className="text-xs text-gray-500">{level.label} · {points.toLocaleString()} pts · ສະມາຊິກ {memberSince}</p>
-                </div>
-              </div>
-              {/* Quick actions — mobile only */}
-              <div className="p-4 pb-2 lg:hidden">
-                <p className="text-[10px] font-black text-gray-400 mb-3">ທາງລັດ</p>
-                <div className="grid grid-cols-4 gap-3">
-                  {[
-                    { icon: ClipboardList, label: 'ສັ່ງຊື້',    href: '/orders',   color: 'bg-blue-50 text-[#1247D8]' },
-                    { icon: Heart,         label: 'Wishlist',  href: '/wishlist', color: 'bg-red-50 text-red-500'    },
-                    { icon: Star,          label: 'ລີວິວ',     href: '#reviews',  color: 'bg-yellow-50 text-yellow-500' },
-                    { icon: Tag,           label: 'ໂຄດ',       href: '#coupons',  color: 'bg-green-50 text-green-600' },
-                    { icon: Eye,           label: 'ເບິ່ງລ່າສຸດ', href: '#recent',  color: 'bg-purple-50 text-purple-600' },
-                    { icon: Store,         label: 'ຮ້ານ',       href: '#shops',    color: 'bg-indigo-50 text-indigo-600' },
-                    { icon: Award,         label: 'ຄະແນນ',     href: '#points',   color: 'bg-amber-50 text-amber-600' },
-                    { icon: Shield,        label: 'ຄວາມປອດໄພ', href: '#',         color: 'bg-gray-50 text-gray-500'   },
-                  ].map(({ icon: Icon, label, href, color }) => (
-                    <Link key={label} href={href}
-                      className="flex flex-col items-center gap-1.5 group">
-                      <div className={`w-11 h-11 ${color} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200`}>
-                        <Icon size={18} />
-                      </div>
-                      <span className="text-[10px] text-gray-600 font-medium text-center leading-tight">{label}</span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              <div className="h-px bg-gray-50 my-1 lg:hidden" />
-
-              {/* Menu links — mobile only (desktop uses sidebar) */}
-              <div className="lg:hidden">
-                {[
-                  { icon: ClipboardList, label: 'ປະຫວັດການສັ່ງຊື້', href: '/orders',   color: 'bg-blue-50 text-[#1247D8]',   badge: stats.orders > 0 ? stats.orders : undefined },
-                  { icon: Heart,         label: 'Wishlist',          href: '/wishlist', color: 'bg-red-50 text-red-500',       badge: stats.wishlist > 0 ? stats.wishlist : undefined },
-                  { icon: MapPin,        label: 'ທີ່ຢູ່ຈັດສົ່ງ',     href: '/addresses', color: 'bg-green-50 text-green-600',  badge: undefined },
-                ].map(({ icon: Icon, label, href, color, badge }) => (
-                  <Link key={label} href={href}
-                    className="flex items-center gap-3 px-4 py-3.5 border-t border-gray-50 hover:bg-gray-50 transition-colors">
-                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${color}`}>
-                      <Icon size={16} />
-                    </div>
-                    <span className="font-bold text-gray-800 flex-1 text-sm">{label}</span>
-                    {badge !== undefined && (
-                      <span className="bg-[#1247D8] text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">{badge}</span>
-                    )}
-                    <ChevronRight size={14} className="text-gray-300" />
-                  </Link>
-                ))}
-
-                {/* Sign out */}
-                <button onClick={handleSignOut}
-                  className="w-full flex items-center gap-3 px-4 py-3.5 border-t border-gray-50 hover:bg-red-50 transition-colors">
-                  <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center">
-                    <LogOut size={16} className="text-red-500" />
-                  </div>
-                  <span className="font-bold text-red-500 flex-1 text-left text-sm">ອອກຈາກລະບົບ</span>
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* ── Reviews tab ── */}
-          {activeTab === 'reviews' && (
-            <div className="p-4 space-y-3">
-              {loading ? (
-                <div className="py-8 text-center text-gray-400 text-sm">ກຳລັງໂຫຼດ...</div>
-              ) : myReviews.length === 0 ? (
-                <div className="py-10 text-center">
-                  <Star size={36} className="text-gray-200 mx-auto mb-3" />
-                  <p className="text-gray-400 text-sm font-bold">ຍັງບໍ່ມີລີວິວ</p>
-                  <p className="text-gray-300 text-xs mt-1">ຊື້ສິນຄ້າ ແລ້ວຂຽນລີວິວ</p>
-                  <Link href="/products" className="inline-block mt-3 bg-[#1247D8] text-white text-xs font-bold px-4 py-2 rounded-xl">
-                    ເລືອກສິນຄ້າ
-                  </Link>
-                </div>
-              ) : (
-                <>
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs font-black text-gray-500">{myReviews.length} ລີວິວ</p>
-                    <div className="flex items-center gap-1">
-                      <Star size={12} className="text-yellow-400 fill-yellow-400" />
-                      <span className="text-xs font-black text-gray-700">
-                        {(myReviews.reduce((s, r) => s + r.rating, 0) / myReviews.length).toFixed(1)} ສະເລ່ຍ
-                      </span>
-                    </div>
-                  </div>
-                  {myReviews.slice(0, 5).map(r => (
-                    <div key={r.id} className="bg-gray-50 rounded-2xl p-3">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <div className="flex gap-0.5">
-                          {[1,2,3,4,5].map(i => (
-                            <Star key={i} size={11} className={i <= r.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-200'} />
-                          ))}
-                        </div>
-                        <span className="text-[10px] text-gray-400">
-                          {new Date(r.created_at).toLocaleDateString('lo-LA', { day: 'numeric', month: 'short' })}
-                        </span>
-                      </div>
-                      {r.comment && <p className="text-xs text-gray-700 leading-relaxed">{r.comment}</p>}
-                    </div>
-                  ))}
-                </>
-              )}
-            </div>
-          )}
-
-          {/* ── Notifications tab ── */}
-          {activeTab === 'notifs' && (
-            <div>
-              <div className="flex items-center justify-between px-4 pt-3 pb-2">
-                <p className="text-xs font-black text-gray-500">{NOTIFS.length} ການແຈ້ງເຕືອນ</p>
-                <button onClick={() => setUnreadCount(0)} className="text-[10px] text-[#1247D8] font-bold hover:underline">
-                  ອ່ານທັງໝົດ
-                </button>
-              </div>
-              {NOTIFS.map(n => (
-                <div key={n.id} className={`flex items-start gap-3 px-4 py-3 border-t border-gray-50 ${n.unread ? 'bg-blue-50/40' : ''}`}>
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-lg ${n.unread ? 'bg-blue-100' : 'bg-gray-100'}`}>
-                    {n.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className={`text-xs font-bold ${n.unread ? 'text-gray-800' : 'text-gray-500'}`}>{n.title}</p>
-                    <p className="text-[10px] text-gray-400 mt-0.5 line-clamp-2">{n.desc}</p>
-                    <p className="text-[10px] text-gray-300 mt-1">{n.time}</p>
-                  </div>
-                  {n.unread && <div className="w-2 h-2 rounded-full bg-[#1247D8] shrink-0 mt-1" />}
-                </div>
+            <div className="grid grid-cols-4 divide-x divide-gray-100">
+              {[
+                { href: '/orders',   icon: <Package size={20} className="text-[#1247D8]" />,   label: 'ການສັ່ງ',  count: stats.orders },
+                { href: '/orders',   icon: <Truck size={20} className="text-orange-500" />,     label: 'ສົ່ງຢູ່',   count: stats.shipping },
+                { href: '/wishlist', icon: <Heart size={20} className="text-red-500" />,         label: 'Wishlist', count: stats.wishlist },
+                { href: '#',         icon: <Star size={20} className="text-yellow-500" />,       label: 'ລີວິວ',    count: stats.reviews },
+              ].map(({ href, icon, label, count }) => (
+                <Link key={label} href={href} className="flex flex-col items-center gap-0.5 py-4 active:bg-gray-50 transition-colors">
+                  {icon}
+                  <span className="font-black text-gray-800 text-lg leading-none mt-1">{count}</span>
+                  <span className="text-gray-400 text-[10px]">{label}</span>
+                </Link>
               ))}
             </div>
           )}
         </div>
+      </div>
 
-        {/* ── My Coupons ── */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-50 overflow-hidden" id="coupons">
-          <SectionHeader
-            icon={<Tag size={14} className="text-green-600" />}
-            title="ໂຄດສ່ວນຫຼຸດ"
-            count={vouchers.length}
-          />
+      {/* ── Shortcuts ── */}
+      <div className="px-4 mt-3">
+        <div className="bg-white rounded-2xl p-4">
+          <p className="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-3">ທາງລັດ</p>
+          <div className="grid grid-cols-4 gap-y-4">
+            {[
+              { icon: ClipboardList, label: 'ສັ່ງຊື້',    href: '/orders',   bg: 'bg-blue-50',   fg: 'text-[#1247D8]' },
+              { icon: Heart,         label: 'Wishlist',   href: '/wishlist', bg: 'bg-red-50',    fg: 'text-red-500'   },
+              { icon: Tag,           label: 'ໂຄດ',        href: '#coupons',  bg: 'bg-green-50',  fg: 'text-green-600' },
+              { icon: Store,         label: 'ຮ້ານ',        href: '#shops',    bg: 'bg-indigo-50', fg: 'text-indigo-600'},
+              { icon: Eye,           label: 'ລ່າສຸດ',     href: '#recent',   bg: 'bg-purple-50', fg: 'text-purple-600'},
+              { icon: Award,         label: 'ຄະແນນ',      href: '#points',   bg: 'bg-amber-50',  fg: 'text-amber-600' },
+              { icon: Star,          label: 'ລີວິວ',       href: '#',         bg: 'bg-yellow-50', fg: 'text-yellow-500'},
+              { icon: Shield,        label: 'ຄວາມປອດໄພ',  href: '#',         bg: 'bg-gray-50',   fg: 'text-gray-500'  },
+            ].map(({ icon: Icon, label, href, bg, fg }) => (
+              <Link key={label} href={href} className="flex flex-col items-center gap-1.5 group">
+                <div className={`w-12 h-12 ${bg} rounded-2xl flex items-center justify-center group-active:scale-95 transition-transform`}>
+                  <Icon size={20} className={fg} />
+                </div>
+                <span className="text-[10px] text-gray-500 font-medium text-center leading-tight">{label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Menu list ── */}
+      <div className="px-4 mt-3">
+        <div className="bg-white rounded-2xl overflow-hidden">
+          {[
+            { icon: ClipboardList, label: 'ປະຫວັດການສັ່ງຊື້', href: '/orders',    bg: 'bg-blue-50',  fg: 'text-[#1247D8]',  badge: stats.orders > 0 ? stats.orders : undefined },
+            { icon: Heart,         label: 'Wishlist',          href: '/wishlist',  bg: 'bg-red-50',   fg: 'text-red-500',    badge: stats.wishlist > 0 ? stats.wishlist : undefined },
+            { icon: MapPin,        label: 'ທີ່ຢູ່ຈັດສົ່ງ',     href: '/addresses', bg: 'bg-green-50', fg: 'text-green-600',  badge: undefined },
+          ].map(({ icon: Icon, label, href, bg, fg, badge }) => (
+            <Link key={label} href={href}
+              className="flex items-center gap-3.5 px-4 py-4 border-b border-gray-50 active:bg-gray-50 transition-colors last:border-0">
+              <div className={`w-10 h-10 ${bg} rounded-xl flex items-center justify-center shrink-0`}>
+                <Icon size={18} className={fg} />
+              </div>
+              <span className="font-bold text-gray-800 flex-1 text-sm">{label}</span>
+              {badge !== undefined && (
+                <span className="bg-[#1247D8] text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center">{badge}</span>
+              )}
+              <ChevronRight size={15} className="text-gray-300" />
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Coupons ── */}
+      <div className="px-4 mt-3" id="coupons">
+        <div className="bg-white rounded-2xl overflow-hidden">
+          <SectionHeader icon={<Tag size={14} className="text-green-600" />} title="ໂຄດສ່ວນຫຼຸດ" count={vouchers.length} />
           {loading ? (
-            <div className="px-4 pb-4 flex gap-3 overflow-x-auto">
-              {[0,1,2].map(i => <div key={i} className="shrink-0 w-52 h-20 bg-gray-100 rounded-2xl animate-pulse" />)}
+            <div className="flex gap-3 px-4 pb-4 overflow-x-auto">
+              {[0,1].map(i => <div key={i} className="shrink-0 w-52 h-20 bg-gray-100 rounded-2xl animate-pulse" />)}
             </div>
           ) : vouchers.length === 0 ? (
-            <div className="px-4 pb-4 text-center py-6">
+            <div className="px-4 pb-6 text-center">
               <Gift size={28} className="text-gray-200 mx-auto mb-2" />
               <p className="text-xs text-gray-400">ຍັງບໍ່ມີໂຄດສ່ວນຫຼຸດ</p>
             </div>
           ) : (
             <div className="flex gap-3 px-4 pb-4 overflow-x-auto scrollbar-hide">
-              {vouchers.map(v => (
-                <CouponCard key={v.id} voucher={v} subtotal={stats.orderTotal} />
-              ))}
+              {vouchers.map(v => <CouponCard key={v.id} voucher={v} subtotal={stats.orderTotal} />)}
             </div>
           )}
         </div>
+      </div>
 
-        {/* ── Recently Viewed ── */}
-        {recentProducts.length > 0 && (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-50 overflow-hidden" id="recent">
-            <SectionHeader
-              icon={<Eye size={14} className="text-purple-600" />}
-              title="ເບິ່ງລ່າສຸດ"
-              href="/products"
-              count={recentProducts.length}
-            />
+      {/* ── Recently Viewed ── */}
+      {recentProducts.length > 0 && (
+        <div className="px-4 mt-3" id="recent">
+          <div className="bg-white rounded-2xl overflow-hidden">
+            <SectionHeader icon={<Eye size={14} className="text-purple-600" />} title="ເບິ່ງລ່າສຸດ" href="/products" count={recentProducts.length} />
             <div className="flex gap-3 px-4 pb-4 overflow-x-auto scrollbar-hide snap-x">
               {recentProducts.map(p => (
-                <Link key={p.id} href={`/products/${p.id}`}
-                  className="shrink-0 w-28 snap-start group">
+                <Link key={p.id} href={`/products/${p.id}`} className="shrink-0 w-28 snap-start group">
                   <div className="relative w-28 h-28 bg-gray-50 rounded-xl overflow-hidden mb-2">
                     {p.image_url
                       ? <img src={p.image_url} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                       : <div className="w-full h-full flex items-center justify-center text-2xl">📦</div>}
                     {discountPct(p) > 0 && (
-                      <div className="absolute top-1.5 left-1.5 bg-[#EE4D2D] text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">
-                        -{discountPct(p)}%
-                      </div>
+                      <div className="absolute top-1.5 left-1.5 bg-[#EE4D2D] text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">-{discountPct(p)}%</div>
                     )}
                   </div>
                   <p className="text-[11px] text-gray-700 font-medium line-clamp-2 leading-snug">{p.name}</p>
@@ -665,66 +493,39 @@ export default function ProfilePage() {
               ))}
             </div>
           </div>
-        )}
-
-        {/* ── Followed Shops ── */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-50 overflow-hidden" id="shops">
-          <SectionHeader
-            icon={<Store size={14} className="text-indigo-600" />}
-            title="ຮ້ານທີ່ຕິດຕາມ"
-            count={FOLLOWED_SHOPS.length}
-          />
-          <div className="flex gap-3 px-4 pb-4 overflow-x-auto scrollbar-hide">
-            {FOLLOWED_SHOPS.map(shop => (
-              <Link key={shop.id} href="/products"
-                className="shrink-0 w-28 flex flex-col items-center gap-2 group">
-                <div className={`w-16 h-16 bg-gradient-to-br ${shop.color} rounded-2xl flex items-center justify-center text-3xl group-hover:scale-105 transition-transform duration-200 shadow-sm`}>
-                  {shop.emoji}
-                </div>
-                <div className="text-center">
-                  <p className="text-[11px] font-bold text-gray-800 line-clamp-1">{shop.name}</p>
-                  <p className="text-[9px] text-gray-400">{shop.cat}</p>
-                  <p className="text-[9px] text-[#1247D8] font-bold">👥 {shop.followers}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
         </div>
+      )}
 
-        {/* ── Loyalty Points detail ── */}
-        <div className="bg-gradient-to-br from-amber-50 to-yellow-50 rounded-2xl p-4 border border-amber-100" id="points">
-          <div className="flex items-center gap-2 mb-3">
-            <Award size={16} className="text-amber-500" />
-            <h3 className="font-black text-gray-800 text-sm">ຄະແນນສະສົມ</h3>
+      {/* ── Dark / Light mode toggle ── */}
+      <div className="px-4 mt-3">
+        <button onClick={toggle}
+          className="w-full flex items-center gap-3.5 bg-white px-4 py-4 rounded-2xl active:bg-gray-50 transition-colors">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${theme === 'dark' ? 'bg-yellow-50' : 'bg-slate-100'}`}>
+            {theme === 'dark'
+              ? <Sun size={18} className="text-yellow-500" />
+              : <Moon size={18} className="text-slate-500" />}
           </div>
-          <div className="flex items-center justify-between mb-3">
-            <div>
-              <p className="text-3xl font-black text-amber-600">{points.toLocaleString()}</p>
-              <p className="text-xs text-gray-500">pts ທັງໝົດ</p>
-            </div>
-            <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${level.color} flex items-center justify-center text-2xl shadow-md`}>
-              {level.icon}
-            </div>
+          <div className="flex-1 text-left">
+            <p className="font-bold text-gray-800 text-sm">{theme === 'dark' ? 'ໂໝດມືດ' : 'ໂໝດສະຫວ່າງ'}</p>
+            <p className="text-xs text-gray-400 mt-0.5">{theme === 'dark' ? 'ກົດເພື່ອປ່ຽນເປັນໂໝດສະຫວ່າງ' : 'ກົດເພື່ອປ່ຽນເປັນໂໝດມືດ'}</p>
           </div>
-          <div className="grid grid-cols-3 gap-2 text-center">
-            {[
-              { label: 'Bronze', icon: '🥉', req: '0', done: points >= 0 },
-              { label: 'Silver', icon: '🥈', req: '1k',  done: points >= 1000 },
-              { label: 'Gold',   icon: '🏆', req: '5k',  done: points >= 5000 },
-            ].map(tier => (
-              <div key={tier.label} className={`rounded-xl py-2 px-1 ${tier.done ? 'bg-amber-100' : 'bg-white/60'}`}>
-                <span className={`text-lg ${tier.done ? '' : 'grayscale opacity-40'}`}>{tier.icon}</span>
-                <p className={`text-[10px] font-bold mt-0.5 ${tier.done ? 'text-amber-700' : 'text-gray-400'}`}>{tier.label}</p>
-                <p className="text-[9px] text-gray-400">{tier.req} pts</p>
-              </div>
-            ))}
+          <div className={`w-12 h-6 rounded-full transition-colors relative ${theme === 'dark' ? 'bg-[#1247D8]' : 'bg-gray-200'}`}>
+            <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${theme === 'dark' ? 'translate-x-6' : 'translate-x-0.5'}`} />
           </div>
-          <p className="text-[10px] text-gray-400 text-center mt-2">ໄດ້ 1 pt ທຸກ ₭10,000 ທີ່ຊື້</p>
-        </div>
+        </button>
+      </div>
 
-          <p className="text-center text-xs text-gray-300 pt-2">BlueWhale v1.0 🐋</p>
-        </div>{/* /right column */}
-      </div>{/* /grid */}
+      {/* ── Sign out ── */}
+      <div className="px-4 mt-2 pb-28">
+        <button onClick={handleSignOut}
+          className="w-full flex items-center gap-3.5 bg-white px-4 py-4 rounded-2xl active:bg-red-50 transition-colors">
+          <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center shrink-0">
+            <LogOut size={18} className="text-red-500" />
+          </div>
+          <span className="font-bold text-red-500 text-sm">ອອກຈາກລະບົບ</span>
+        </button>
+        <p className="text-center text-[10px] text-gray-300 mt-4">BlueWhale v1.0 🐋</p>
+      </div>
     </div>
   )
 }

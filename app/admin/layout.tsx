@@ -3,13 +3,14 @@ import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
-import { LayoutDashboard, Package, ShoppingBag, Users, LogOut, Menu, X, ChevronRight, Settings, Tag } from 'lucide-react'
+import { LayoutDashboard, Package, ShoppingBag, Users, LogOut, Menu, X, ChevronRight, Settings, Tag, Store } from 'lucide-react'
 
 const nav = [
   { href: '/admin/dashboard', label: 'Dashboard',    icon: LayoutDashboard },
   { href: '/admin/products',  label: 'ສິນຄ້າ',        icon: Package },
   { href: '/admin/orders',    label: 'ການສັ່ງຊື້',     icon: ShoppingBag },
   { href: '/admin/customers', label: 'ລູກຄ້າ',         icon: Users },
+  { href: '/admin/sellers',   label: 'ຮ້ານຄ້າ Seller', icon: Store },
   { href: '/admin/vouchers',  label: 'ໂຄດສ່ວນຫຼຸດ',   icon: Tag },
   { href: '/admin/settings',  label: 'ຕັ້ງຄ່າການຊຳລະ', icon: Settings },
 ]

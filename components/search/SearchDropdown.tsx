@@ -150,7 +150,7 @@ export default function SearchDropdown({
     setHistory([])
   }
 
-  const showDropdown = open && (history.length > 0 || value.trim().length > 0 || true) // always show on focus
+  const showDropdown = !navbarMode && open
 
   // ── Voice search (Web Speech API placeholder) ──
   const handleVoice = () => {
@@ -221,26 +221,44 @@ export default function SearchDropdown({
                 <X size={14} />
               </button>
             )}
-            {/* Voice search */}
-            <button type="button" onClick={handleVoice}
-              className="shrink-0 px-2 text-gray-400 hover:text-[#1247D8] transition-colors"
-              title="Voice Search">
-              <Mic size={15} />
-            </button>
-            {/* Image / camera search */}
-            <button type="button" onClick={() => cameraRef.current?.click()}
-              className={`shrink-0 px-2 text-gray-400 hover:text-[#1247D8] transition-colors ${navbarMode ? '' : 'border-l border-gray-100'}`}
-              title="ຄົ້ນຫາດ້ວຍຮູບ">
-              <Camera size={15} />
-            </button>
+            {/* Voice + Camera — in navbar mode show both here, no red button */}
+            {navbarMode ? (
+              <>
+                <button type="button" onClick={() => cameraRef.current?.click()}
+                  className="shrink-0 px-1.5 text-gray-400 hover:text-[#1247D8] transition-colors"
+                  title="ຄົ້ນຫາດ້ວຍຮູບ">
+                  <Camera size={15} />
+                </button>
+                <button type="button" onClick={handleVoice}
+                  className="shrink-0 pl-1 pr-2.5 text-gray-400 hover:text-[#1247D8] transition-colors"
+                  title="Voice Search">
+                  <Mic size={15} />
+                </button>
+              </>
+            ) : (
+              <>
+                <button type="button" onClick={handleVoice}
+                  className="shrink-0 px-2 text-gray-400 hover:text-[#1247D8] transition-colors"
+                  title="Voice Search">
+                  <Mic size={15} />
+                </button>
+                <button type="button" onClick={() => cameraRef.current?.click()}
+                  className="shrink-0 px-2 text-gray-400 hover:text-[#1247D8] transition-colors border-l border-gray-100"
+                  title="ຄົ້ນຫາດ້ວຍຮູບ">
+                  <Camera size={15} />
+                </button>
+              </>
+            )}
           </>
         )}
 
-        {/* Submit */}
-        <button type="submit"
-          className={`shrink-0 flex items-center justify-center bg-[#EE4D2D] text-white transition-colors hover:bg-[#d63d1f] ${navbarMode ? 'h-8 px-2.5' : 'h-10 px-3'}`}>
-          <Search size={navbarMode ? 14 : 16} />
-        </button>
+        {/* Submit — hidden in navbar mode */}
+        {!navbarMode && (
+          <button type="submit"
+            className="shrink-0 flex items-center justify-center bg-[#EE4D2D] text-white transition-colors hover:bg-[#d63d1f] h-10 px-3">
+            <Search size={16} />
+          </button>
+        )}
       </div>
 
       {/* ── Dropdown ── */}
