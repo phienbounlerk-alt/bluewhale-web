@@ -88,8 +88,8 @@ body {
   background-color: var(--nav-bg)     !important;
   border-color:     var(--nav-border) !important;
 }
-/* Active icon bg in bottom nav */
-.dark .bg-\[#1247D8\]\/10 { background-color: rgba(18,71,216,0.2) !important; }
+/* Active icon bg in bottom nav — use data attr instead of escaped Tailwind class */
+html.dark [class*="bg-[#1247D8]"] { background-color: rgba(18,71,216,0.2) !important; }
 
 /* Inputs */
 .dark input:not([type="range"]),
@@ -112,13 +112,13 @@ body {
   background-size: 200% 100%;
 }
 
-/* Hover states */
-.dark .hover\:bg-gray-50:hover   { background-color: #1e2d42 !important; }
-.dark .hover\:bg-gray-100:hover  { background-color: #334155 !important; }
-.dark .hover\:bg-blue-50:hover   { background-color: rgba(18,71,216,.15) !important; }
-.dark .hover\:bg-blue-100:hover  { background-color: rgba(18,71,216,.25) !important; }
-.dark .hover\:bg-red-50:hover    { background-color: rgba(238,77,45,.1) !important; }
-.dark .hover\:bg-red-100:hover   { background-color: rgba(238,77,45,.2) !important; }
+/* Hover states — avoid escaped Tailwind selectors in plain CSS */
+html.dark *:hover[class*="hover:bg-gray-50"]  { background-color: #1e2d42 !important; }
+html.dark *:hover[class*="hover:bg-gray-100"] { background-color: #334155 !important; }
+html.dark *:hover[class*="hover:bg-blue-50"]  { background-color: rgba(18,71,216,.15) !important; }
+html.dark *:hover[class*="hover:bg-blue-100"] { background-color: rgba(18,71,216,.25) !important; }
+html.dark *:hover[class*="hover:bg-red-50"]   { background-color: rgba(238,77,45,.1) !important; }
+html.dark *:hover[class*="hover:bg-red-100"]  { background-color: rgba(238,77,45,.2) !important; }
 
 /* Static tinted bg (category icons row, features row) */
 .dark .bg-blue-50   { background-color: rgba(18,71,216,.15) !important; }
@@ -128,8 +128,7 @@ body {
 .dark .bg-red-50    { background-color: rgba(238,77,45,.12)  !important; }
 .dark .bg-yellow-50 { background-color: rgba(202,138,4,.12)  !important; }
 
-.dark .text-blue-600,
-.dark .text-\[#1247D8\] { color: #60a5fa !important; }
+.dark .text-blue-600  { color: #60a5fa !important; }
 .dark .text-orange-600  { color: #fb923c !important; }
 .dark .text-green-600   { color: #4ade80 !important; }
 .dark .text-red-500     { color: #f87171 !important; }
@@ -238,6 +237,12 @@ body {
 /* ── Scrollbar hide ───────────────────────────────────────────────────── */
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Hide all scrollbars globally (PWA/mobile iframe) */
+html, body { scrollbar-width: none; -ms-overflow-style: none; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+*::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; -ms-overflow-style: none; }
 
 /* ── Smooth scroll ────────────────────────────────────────────────────── */
 html { scroll-behavior: smooth; }
